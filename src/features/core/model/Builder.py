@@ -1,5 +1,4 @@
 from src.enums.Feature import Feature
-from src.utils.is_enum_member import is_enum_member
 from .FeatureSet import FeatureSet
 
 
@@ -21,7 +20,7 @@ class Builder:
 
     def set(self, field, val):
         if not self._instance:
-            raise Exception("call spawn() before setting")
+            raise Exception("call spawn() before set() or build()")
         if not hasattr(self._instance, field):
             raise ValueError("invalid field name")
 
@@ -32,4 +31,6 @@ class Builder:
         return self
 
     def build(self):
+        if not self._instance:
+            raise Exception("call spawn() before set() or build()")
         return self._instance

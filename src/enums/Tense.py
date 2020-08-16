@@ -7,3 +7,4 @@ class Tense(Enum):
     PAST = "past"
     PRESENT = "present"
     FUTURE = "future"
+    UNKNOWN = "???"

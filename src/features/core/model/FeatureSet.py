@@ -1,33 +1,33 @@
 class FeatureSet:
     # the untokenized sentence
-    sentence = ""
+    sentence = "???"
 
     # always a noun
-    subject = ""
+    subject = "???"
 
     # always a verb
-    verb = ""
+    verb = "???"
 
     # always a noun
-    object = ""
+    object = "???"
 
     # past, present, future
-    tense = ""
+    tense = "???"
 
     # simple, perfect, continuous, perfect continuous
-    aspect = ""
+    aspect = "???"
 
     # if True, verb is VBZ; if False, verb is VBP
-    is_third_person = False
+    is_third_person = None
 
     # active, passive
-    voice = ""
+    voice = "???"
 
     # declarative, interrogative, exclamatory, imperative
-    purpose = "" 
+    purpose = "???" 
 
     # names/proper nouns
     names = []
 
     # the terminating punctuation of the sentence
-    ending_punct = ""
+    ending_punct = "->???<-"

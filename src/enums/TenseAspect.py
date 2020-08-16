@@ -23,3 +23,4 @@ class TenseAspect(Enum):
     PRESENT_PERF_CONT_3 = "present perfect continuous 3rd"
     PAST_PERF_CONT = "past perfect continuous"
     FUTURE_PERF_CONT = "future perfect continuous"
+    UNKNOWN = "???"

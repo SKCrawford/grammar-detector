@@ -6,3 +6,4 @@ class Purpose(Enum):
     INTERROGATIVE = "interrogative"
     EXCLAMATORY = "exclamatory"
     IMPERATIVE = "imperative"
+    UNKNOWN = "???"

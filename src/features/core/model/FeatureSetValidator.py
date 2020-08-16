@@ -3,12 +3,14 @@ from src.enums.Tense import Tense
 from src.enums.Aspect import Aspect
 from src.enums.Voice import Voice  
 from src.enums.Purpose import Purpose
-from src.utils.is_enum_member import is_enum_member
+from src.utils.is_in_enum import is_in_enum
 
 
 class FeatureSetValidator:
     # this would be a good decorator, just sayin'
     def validate(self, name, value):
+        print(f"Validating {name}: {value}")
+
         with Switch(name) as case:
             if case("noun", "subject", "object", "verb"):
                 err_msg = "expected a non-empty string"
@@ -21,35 +23,33 @@ class FeatureSetValidator:
                 err_msg = "expected a Tense enum member"
                 if not isinstance(value, str): 
                     raise TypeError(err_msg)
-                if not value or not is_enum_member(value, Tense):
+                if not value or not is_in_enum(value, Tense):
                     raise ValueError(err_msg)
 
             if case("aspect"):
                 err_msg = "expected a Aspect enum member"
                 if not isinstance(value, str):
                     raise TypeError(err_msg)
-                if not value or not is_enum_member(value, Aspect):
+                if not value or not is_in_enum(value, Aspect):
                     raise ValueError(err_msg)
 
             if case("is_third_person"):
-                if not isinstance(value, bool):
-                    raise TypeError("expected a boolean")
+                if not value is None and not isinstance(value, bool):
+                    raise TypeError("expected a boolean or None")
 
             if case("voice"):
                 err_msg = "expected a Voice enum member"
                 if not isinstance(value, str):
                     raise TypeError(err_msg)
-                if not value or not is_enum_member(value, Voice):
+                if not value or not is_in_enum(value, Voice):
                     raise ValueError(err_msg)
-
 
             if case("purpose"):
                 err_msg = "expected a Purpose enum member"
                 if not isinstance(value, str):
                     raise TypeError(err_msg)
-                if not value or not is_enum_member(value, Purpose):
+                if not value or not is_in_enum(value, Purpose):
                     raise ValueError(err_msg)
-
 
             if case("names"):
                 if not isinstance(value, list):

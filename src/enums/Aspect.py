@@ -8,3 +8,4 @@ class Aspect(Enum):
     PERF = "perfect"
     CONT = "continuous"
     PERF_CONT = "perfect continuous"
+    UNKNOWN = "???"
