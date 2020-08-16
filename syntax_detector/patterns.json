@@ -1,0 +1,82 @@
+{
+  "tense_aspects": {
+    "present simple": [{ "TAG": "VBP", "DEP": "ROOT", "OP": "+" }],
+    "present simple 3rd": [{ "TAG": "VBZ", "DEP": "ROOT", "OP": "+" }],
+    "past simple": [{ "TAG": "VBD", "DEP": "ROOT", "OP": "+" }],
+    "future simple will": [
+      { "TAG": "MD", "DEP": "aux", "OP": "+", "LOWER": "will" },
+      { "TAG": "VB", "DEP": "ROOT", "OP": "+" }
+    ],
+    "future simple be-going-to": [
+      { "TAG": "VBP", "DEP": "aux", "OP": "+" },
+      { "TAG": "VBG", "DEP": "ROOT", "OP": "+", "LEMMA": "go" },
+      { "TAG": "TO", "DEP": "aux", "OP": "+" },
+      { "TAG": "VB", "DEP": "xcomp", "OP": "+" }
+    ],
+    "future simple be-going-to 3rd": [
+      { "TAG": "VBZ", "DEP": "aux", "OP": "+" },
+      { "TAG": "VBG", "DEP": "ROOT", "OP": "+", "LEMMA": "go" },
+      { "TAG": "TO", "DEP": "aux", "OP": "+" },
+      { "TAG": "VB", "DEP": "xcomp", "OP": "+" }
+    ],
+    "present continuous": [
+      { "TAG": "VBP", "DEP": "aux", "OP": "+" },
+      { "TAG": "VBG", "DEP": "ROOT", "OP": "+" },
+      { "TAG": "TO", "DEP": "aux", "OP": "?" },
+      { "TAG": "VB", "DEP": "xcomp", "OP": "!" }
+    ],
+    "present continuous 3rd": [
+      { "TAG": "VBZ", "DEP": "aux", "OP": "+" },
+      { "TAG": "VBG", "DEP": "ROOT", "OP": "+" },
+      { "TAG": "TO", "DEP": "aux", "OP": "?" },
+      { "TAG": "VB", "DEP": "xcomp", "OP": "!" }
+    ],
+    "past continuous": [
+      { "TAG": "VBD", "DEP": "aux", "OP": "+" },
+      { "TAG": "VBG", "DEP": "ROOT", "OP": "+" }
+    ],
+    "future continuous": [
+      { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
+      { "TAG": "VB", "DEP": "aux", "OP": "+", "LEMMA": "be" },
+      { "TAG": "VBG", "DEP": "ROOT", "OP": "+" }
+    ],
+    "present perfect": [
+      { "TAG": "VBP", "DEP": "aux", "OP": "+", "LEMMA": "have" },
+      { "TAG": "VBN", "DEP": "ROOT", "OP": "+" }
+    ],
+    "present perfect 3rd": [
+      { "TAG": "VBZ", "DEP": "aux", "OP": "+", "LEMMA": "have" },
+      { "TAG": "VBN", "DEP": "ROOT", "OP": "+" }
+    ],
+    "past perfect": [
+      { "TAG": "VBD", "DEP": "aux", "OP": "+", "LEMMA": "have" },
+      { "TAG": "VBN", "DEP": "ROOT", "OP": "+" }
+    ],
+    "future perfect": [
+      { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
+      { "TAG": "VB", "DEP": "aux", "OP": "+" },
+      { "TAG": "VBN", "DEP": "ROOT", "OP": "+" }
+    ],
+    "present perfect continuous": [
+      { "TAG": "VBP", "DEP": "aux", "OP": "+", "LEMMA": "have" },
+      { "TAG": "VBN", "DEP": "aux", "OP": "+" },
+      { "TAG": "VBG", "DEP": "ROOT", "OP": "+" }
+    ],
+    "present perfect continuous 3rd": [
+      { "TAG": "VBZ", "DEP": "aux", "OP": "+", "LEMMA": "have" },
+      { "TAG": "VBN", "DEP": "aux", "OP": "+", "LEMMA": "be" },
+      { "TAG": "VBG", "DEP": "ROOT", "OP": "+" }
+    ],
+    "past perfect continuous": [
+      { "TAG": "VBD", "DEP": "aux", "OP": "+", "LEMMA": "have" },
+      { "TAG": "VBN", "DEP": "aux", "OP": "+", "LEMMA": "be" },
+      { "TAG": "VBG", "DEP": "ROOT", "OP": "+" }
+    ],
+    "future perfect continuous": [
+      { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
+      { "TAG": "VB", "DEP": "aux", "OP": "+", "LEMMA": "have" },
+      { "TAG": "VBN", "DEP": "aux", "OP": "+", "LEMMA": "be" },
+      { "TAG": "VBG", "DEP": "ROOT", "OP": "+" }
+    ]
+  }
+}
