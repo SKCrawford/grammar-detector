@@ -9,7 +9,7 @@ from src.utils.is_in_enum import is_in_enum
 class FeatureSetValidator:
     # this would be a good decorator, just sayin'
     def validate(self, name, value):
-        print(f"Validating {name}: {value}")
+        print(f"Validating {name}: {value} (type {type(value)})")
 
         with Switch(name) as case:
             if case("noun", "subject", "object", "verb"):
@@ -33,9 +33,12 @@ class FeatureSetValidator:
                 if not value or not is_in_enum(value, Aspect):
                     raise ValueError(err_msg)
 
-            if case("is_third_person"):
-                if not value is None and not isinstance(value, bool):
-                    raise TypeError("expected a boolean or None")
+            if case("person"):
+                err_msg = "expected a Person enum member"
+                if not isinstance(value, str):
+                    raise TypeError(err_msg)
+                if not value or not is_in_enum(value, Person):
+                    raise ValueError(err_msg)
 
             if case("voice"):
                 err_msg = "expected a Voice enum member"

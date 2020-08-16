@@ -17,8 +17,8 @@ class FeatureSet:
     # simple, perfect, continuous, perfect continuous
     aspect = "???"
 
-    # if True, verb is VBZ; if False, verb is VBP
-    is_third_person = None
+    # first, second, third
+    person = "???"
 
     # active, passive
     voice = "???"
