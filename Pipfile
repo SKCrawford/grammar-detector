@@ -9,6 +9,7 @@ verify_ssl = true
 spacy = "*"
 nltk = "*"
 spacy-lookups-data = "*"
+switch = "*"
 
 [requires]
 python_version = "3.6.9"
