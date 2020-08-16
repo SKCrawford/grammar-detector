@@ -1,15 +1,14 @@
-from src.enums import *
-
-
 class FeatureSet:
-    raw_sentence = ""
+    # the untokenized sentence
+    sentence = ""
 
-    # noun type
+    # always a noun
     subject = ""
 
+    # always a verb
     verb = ""
 
-    # noun type
+    # always a noun
     object = ""
 
     # past, present, future
@@ -32,17 +31,3 @@ class FeatureSet:
 
     # the terminating punctuation of the sentence
     ending_punct = ""
-
-
-    def __init__(self, sentence):
-        if not isinstance(sentence, str):
-            raise TypeError("expected a string")
-        if not sentence:
-            raise ValueError("expected a truthy string")
-
-        self.raw_sentence = sentence
-        self._load()
-
-    def _load(self):
-        # TODO
-        pass
