@@ -1,6 +1,6 @@
-from ..nlp import nlp
 from spacy.tokens.doc import Doc
 from spacy.matcher import Matcher
+from src.nlp import nlp
 from .PatternSet import PatternSet
 
 

@@ -1,4 +1,4 @@
-from .detectors.verb_tense import detect_verb_tense
+from .features.verb_tense.detector import detect_verb_tense
 import sys
 
 

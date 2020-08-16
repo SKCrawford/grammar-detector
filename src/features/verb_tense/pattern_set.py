@@ -1,11 +1,13 @@
 import json
 import os
-from ..enums.TenseAspect import TenseAspect
-from ..models.PatternSet import PatternSet
+from src.enums.TenseAspect import TenseAspect
+from ..core.model.PatternSet import PatternSet
+
 
 
 def load_patterns():
-    with open(f"{os.path.dirname(__file__)}/../../patterns.json", "r") as f:
+    json_path = f"{os.path.dirname(__file__)}/../../../patterns.json"
+    with open(json_path, "r") as f:
         return json.load(f)
 
 

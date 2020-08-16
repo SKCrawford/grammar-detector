@@ -1,4 +1,4 @@
-from ..enums import *
+from src.enums import *
 
 
 class FeatureSet:

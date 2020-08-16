@@ -1,6 +1,6 @@
-from ..models.PatternSetMatcher import PatternSetMatcher
-from ..nlp import nlp
-from ..pattern_sets.verb_tense import verb_tense_pattern_set
+from src.nlp import nlp
+from ..core.model.PatternSetMatcher import PatternSetMatcher
+from .pattern_set import verb_tense_pattern_set
 
 
 def detect_verb_tense(sentence):

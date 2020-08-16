@@ -1,5 +1,5 @@
-from ..enums import *
-from ..utils import is_enum_member
+from src.enums import *
+from src.utils import is_enum_member
 
 
 class FeatureSetValidator:
