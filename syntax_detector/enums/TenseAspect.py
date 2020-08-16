@@ -1,8 +1,25 @@
 from enum import Enum
 
 
-class VerbTense(Enum):
-    """All possible English verb tenses."""
+class Aspect(Enum):
+    """All possible English verb aspects."""
+
+    SIMPLE = "simple"
+    PERF = "perfect"
+    CONT = "continuous"
+    PERF_CONT = "perfect continuous"
+
+
+class Tense(Enum):
+    """All possible English verb tenses (without the aspect)."""
+
+    PRESENT = "present"
+    PAST = "past"
+    FUTURE = "future"
+
+
+class TenseAspect(Enum):
+    """All possible English verb tenses and aspects."""
 
     PRESENT_SIMPLE = "present simple"
     PRESENT_SIMPLE_3 = "present simple 3rd"
