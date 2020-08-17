@@ -4,38 +4,43 @@ from ..core.model.PatternSetMatcher import PatternSetMatcher
 from .pattern_set import verb_tense_pattern_set
 
 
-# Words with simple only
-segment_verb_tense_pattern = r"^([\w]+)\s([\w]+)\s([\w]+)"
+tense_aspect_reg = r"(\w+)\s([\w\s]*)"
+verb_person_reg = r"\b(?:1st|2nd|3rd|first|second|third)"
 
 
-#  segment_verb_tense_pattern = r"^(\w+)\s(\w+)[\s(\w+)]$"
-#  segment_verb_tense_pattern = r"^(\w+)\s(\w+)$"
+def _strip_person(verb_tense):
+    """Remove persons from the end of a verb tense, such as 1st or first."""
+
+    return re.sub(verb_person_reg, "", verb_tense).strip()
 
 
 def segment_verb_tense(verb_tense):
+    """Split a verb tense into its tense and aspect.
+    
+    Given a string, return a tuple of (tense, aspect).
+    """
+
     tense = "???"
     aspect = "???"
-    person = "???"
 
-    match = re.search(segment_verb_tense_pattern, verb_tense)
-    print("Match found:", bool(match))
+    personless_verb_tense = _strip_person(verb_tense)
+    match = re.search(tense_aspect_reg, personless_verb_tense)
     if match:
-        tense = match.group(1)
-        aspect = match.group(2)
-        person = match.group(3)
-
-    return (tense, aspect, person)
+        tense = match.group(1).strip()
+        aspect = match.group(2).strip()
+    return (tense, aspect)
 
 
 def detect_verb_features(sentence):
-    """Return a sentence's verb and its tense.
+    """Detect a sentence's tense, aspect, and verb.
 
-    Given a string, return a tuple of (rulename, span).
+    Given a string, return a tuple of (tense, aspect, verb).
     """
+
     if not isinstance(sentence, str):
         raise TypeError("arg[0] is not a string")
 
-    if not bool(sentence):
+    if not sentence:
         raise ValueError("arg[0] is not truthy")
 
     doc = nlp(sentence)
@@ -46,6 +51,6 @@ def detect_verb_features(sentence):
         return None
 
     (verb_tense, verb_span) = matcher.best_match(doc, matches)
-    (tense, aspect, is_third_person) = segment_verb_tense(verb_tense)
+    (tense, aspect) = segment_verb_tense(verb_tense)
     verb = verb_span.text
-    return (tense, aspect, is_third_person, verb)
+    return (tense, aspect, verb)

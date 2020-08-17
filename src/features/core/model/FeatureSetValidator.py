@@ -1,9 +1,9 @@
 from switch import Switch
-from src.enums.Tense import Tense
-from src.enums.Aspect import Aspect
-from src.enums.Voice import Voice  
-from src.enums.Purpose import Purpose
-from src.utils.is_in_enum import is_in_enum
+from src.enum.Aspect import Aspect
+from src.enum.Purpose import Purpose
+from src.enum.Tense import Tense
+from src.enum.Voice import Voice  
+from src.util.is_in_enum import is_in_enum
 
 
 class FeatureSetValidator:

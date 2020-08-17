@@ -1,8 +1,7 @@
 import json
 import os
-from src.enums.TenseAspect import TenseAspect
+from src.enum.TenseAspect import TenseAspect
 from ..core.model.PatternSet import PatternSet
-
 
 
 def load_patterns():

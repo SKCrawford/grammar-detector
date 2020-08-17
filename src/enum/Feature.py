@@ -2,6 +2,8 @@ from enum import Enum
 
 
 class Feature(Enum):
+    """All supported linguistic features in a FeatureSet instance."""
+
     SENTENCE = "sentence"
     SUBJECT = "subject"
     VERB = "verb"

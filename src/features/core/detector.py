@@ -1,5 +1,5 @@
-from src.enums.Feature import Feature
-from src.utils.Builder import Builder
+from src.enum.Feature import Feature
+from src.util.Builder import Builder
 from ..verb_tense.detector import detect_verb_features
 from .model.FeatureSet import FeatureSet
 from .model.FeatureSetValidator import FeatureSetValidator
@@ -12,9 +12,7 @@ def detect_features(sentence):
     """
 
     verb_features = detect_verb_features(sentence)
-    if not verb_features:
-        return None
-    (tense, aspect, person, verb) = verb_features
+    (tense, aspect, verb) = verb_features
 
     builder = Builder(FeatureSet, FeatureSetValidator)
     f_set = builder.spawn()                                     \

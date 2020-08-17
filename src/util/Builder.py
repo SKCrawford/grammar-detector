@@ -1,8 +1,13 @@
 class Builder:
+    """This class helps with the creation of class instances with numerous
+    fields. The constructor accepts the class to construct (not an instance)
+    and an optional validator class (not an instance).
+    """
+
     _product_klass = None
     _instance = None
-    _validator = None
     _validator_klass = None
+    _validator = None
 
     def __init__(self, product_klass, validator_klass=None):
         self._product_klass = product_klass

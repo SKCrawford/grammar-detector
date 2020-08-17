@@ -3,6 +3,7 @@ class Pattern:
 
     Usage: `matcher.add(pattern.name, [pattern.tokens])`
     """
+
     name = "untitled pattern"
     tokens = []
 
