@@ -1,5 +1,5 @@
 import sys
-from .features.core.detector import detect_features
+from .features.sentence_set.detector import detect_sentence_features
 
 
 def main():
@@ -7,9 +7,9 @@ def main():
     if len(sys.argv) > 1 and sys.argv[1]:
         sentence = sys.argv[1]
     else:
-        sentence = "This will have been a test sentence."
+        sentence = "I am a test."
 
-    f_set = detect_features(sentence)
+    f_set = detect_sentence_features(sentence)
     print(vars(f_set))
 
 

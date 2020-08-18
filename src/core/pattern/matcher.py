@@ -1,7 +1,8 @@
-from spacy.tokens.doc import Doc
 from spacy.matcher import Matcher
+from spacy.tokens.doc import Doc
 from src.nlp import nlp
-from .PatternSet import PatternSet
+from src.util.validator import is_truthy, is_type
+from .model import PatternSet
 
 
 class PatternSetMatcher:
@@ -16,12 +17,7 @@ class PatternSetMatcher:
     _matcher = Matcher(nlp.vocab)
 
     def __init__(self, pattern_set):
-        if isinstance(pattern_set, type(nlp)):
-            raise TypeError(
-                "expects PatternSet instance but got nlp instance")
-        if not isinstance(pattern_set, PatternSet):
-            raise TypeError(
-                f"expects PatternSet instance but got {type(pattern_set)}")
+        is_type(pattern_set, PatternSet)
         self._pattern_set = pattern_set
         self._load()
 
@@ -31,6 +27,10 @@ class PatternSetMatcher:
         return self._matcher(doc)
 
     def _load(self):
+        """Load the patterns in the pattern set into the matcher.
+        
+        Given void, return void.
+        """
         for pattern in self._pattern_set.find_all():
             self._matcher.add(pattern.name, [pattern.tokens])
         self._is_loaded = True
@@ -47,14 +47,11 @@ class PatternSetMatcher:
         so the best match will be the longer span. This method should
         not be necessary if the patterns are well-made.
 
-        Given a doc and a list of matches, return a tuple of (rulename, span).
+        Given a Doc instance and a list of Match instances, return a tuple of (string, string).
         """
-        if not isinstance(doc, Doc):
-            raise TypeError(
-                f"expects Doc instance but got {type(doc)}")
-        if not list or not isinstance(matches, list):
-            raise TypeError(
-                f"expects a list of matches but got {type(matches)}")
+        is_type(doc, Doc)
+        is_type(matches, list)
+        is_truthy(matches)
 
         best_match_rulename = ""
         best_match_span = ""

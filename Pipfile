@@ -4,12 +4,12 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+python-language-server = "*"
 
 [packages]
 spacy = "*"
 nltk = "*"
 spacy-lookups-data = "*"
-switch = "*"
 
 [requires]
 python_version = "3.6.9"
