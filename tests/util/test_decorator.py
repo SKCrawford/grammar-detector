@@ -9,32 +9,23 @@ class TestEnum(Enum):
 
 @is_in_enum(TestEnum)
 def is_in_enum_func(value):
-    pass
+        pass
 
 
 class TestIsInEnumDecorator(unittest.TestCase):
     def test_is_defined(self):
         self.assertTrue(is_in_enum)
+        self.assertTrue(is_in_enum_func)
 
     def test_true_positive(self):
-        try:
-            is_in_enum_func("exists")
-        except Exception:
-            self.fail("threw")
+        is_in_enum_func("exists")
 
     def test_true_negative(self):
-        try:
-            is_in_enum_func("does_not_exist")
-            self.fail("didn't throw")
-        except Exception:
-            pass
+        self.assertRaises(ValueError, is_in_enum_func, "does not exist")
 
     def test_false_positive(self):
-        try:
-            is_in_enum_func("EXISTS")
-            self.fail("didn't throw")
-        except Exception:
-            pass
+        self.assertRaises(ValueError, is_in_enum_func, "EXISTS")
+        self.assertRaises(ValueError, is_in_enum_func, "Exists")
 
 
 @is_truthy
@@ -45,47 +36,20 @@ def is_truthy_func(value):
 class TestIsTruthyDecorator(unittest.TestCase):
     def test_is_defined(self):
         self.assertTrue(is_truthy)
+        self.assertTrue(is_truthy_func)
 
     def test_true_positive(self):
-        try:
-            is_truthy_func("exists")
-        except Exception:
-            self.fail("threw")
+        is_truthy_func("something")
+        is_truthy_func(100)
+        is_truthy_func(True)
+        is_truthy_func(["something"])
 
-    def test_true_negative_int(self):
-        try:
-            is_truthy_func(0)
-            self.fail("didn't throw")
-        except Exception:
-            pass
-
-    def test_true_negative_string(self):
-        try:
-            is_truthy_func("")
-            self.fail("didn't throw")
-        except Exception:
-            pass
-
-    def test_true_negative_bool(self):
-        try:
-            is_truthy_func(False)
-            self.fail("didn't throw")
-        except Exception:
-            pass
-
-    def test_true_negative_list(self):
-        try:
-            is_truthy_func([])
-            self.fail("didn't throw")
-        except Exception:
-            pass
-
-    def test_true_negative_None(self):
-        try:
-            is_truthy_func(None)
-            self.fail("didn't throw")
-        except Exception:
-            pass
+    def test_true_negative(self):
+        self.assertRaises(ValueError, is_truthy_func, "")
+        self.assertRaises(ValueError, is_truthy_func, 0)
+        self.assertRaises(ValueError, is_truthy_func, False)
+        self.assertRaises(ValueError, is_truthy_func, [])
+        self.assertRaises(ValueError, is_truthy_func, None)
 
 
 class TestType:
@@ -105,44 +69,26 @@ def is_type_class_func(value):
 class TestIsTypeDecorator(unittest.TestCase):
     def test_is_defined(self):
         self.assertTrue(is_type)
+        self.assertTrue(is_type_string_func)
+        self.assertTrue(is_type_class_func)
 
-    def test_true_positive_string(self):
-        try:
-            is_type_string_func("some string")
-        except Exception:
-            self.fail("threw")
+    def test_true_positive(self):
+        is_type_string_func("some string")
+        is_type_string_func("")
+        is_type_class_func(TestType())
 
-    def test_true_positive_class(self):
-        try:
-            is_type_class_func(TestType())
-        except Exception:
-            self.fail("threw")
+    def test_true_negative(self):
+        self.assertRaises(TypeError, is_type_string_func, 0)
+        self.assertRaises(TypeError, is_type_string_func, True)
+        self.assertRaises(TypeError, is_type_string_func, [])
+        self.assertRaises(TypeError, is_type_string_func, None)
+        self.assertRaises(TypeError, is_type_string_func, TestType)
+        self.assertRaises(TypeError, is_type_class_func, "")
+        self.assertRaises(TypeError, is_type_class_func, 0)
+        self.assertRaises(TypeError, is_type_class_func, True)
+        self.assertRaises(TypeError, is_type_class_func, [])
+        self.assertRaises(TypeError, is_type_class_func, None)
 
-    def test_true_negative_string(self):
-        try:
-            is_type_string_func(0)
-            self.fail("didn't throw")
-        except Exception:
-            pass
-
-    def test_true_negative_class(self):
-        try:
-            is_type_class_func(True)
-            self.fail("didn't throw")
-        except Exception:
-            pass
-
-    def test_false_positive_string(self):
-        try:
-            is_type_string_func(str)
-            self.fail("didn't throw")
-        except Exception:
-            pass
-
-
-    def test_false_positive_class(self):
-        try:
-            is_type_class_func(TestType)
-            self.fail("didn't throw")
-        except Exception:
-            pass
+    def test_false_positive(self):
+        self.assertRaises(TypeError, is_type_string_func, str)
+        self.assertRaises(TypeError, is_type_class_func, TestType)
