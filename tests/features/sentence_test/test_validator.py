@@ -12,8 +12,7 @@ class TestSentenceFeatureSetValidator(unittest.TestCase):
         self.assertTrue(validator._validate_verb_features)
 
     def test_feature_set_validator_true_positive(self):
-        # TODO
-        f_set = None
+        f_set = SentenceFeatureSet()
         self.assertIsInstance(f_set, SentenceFeatureSet)
         self.assertTrue(f_set)
 
@@ -37,6 +36,7 @@ class TestSentenceFeatureSetValidator(unittest.TestCase):
 
     def test_verb_features_validator_true_positive(self):
         # TODO
+        self.fail('not yet implemented')
         f_set = None
         self.assertIsInstance(f_set, VerbFeatureSet)
         self.assertTrue(f_set)

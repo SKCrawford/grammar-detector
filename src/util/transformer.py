@@ -2,15 +2,15 @@ import re
 from .validator import is_truthy, is_type
 
 
-def remove_cardinals(string):
-    """Remove alphanumeric cardinal values, such as third or 3rd.
+def remove_ordinals(string):
+    """Remove alphanumeric ordinal values, such as third or 3rd.
 
     Given a string, return a string.
     """
     is_type(string, str)
     is_truthy(string)
-    cardinal_reg = r"\b(?:1st|2nd|3rd|first|second|third)"
-    return re.sub(cardinal_reg, "", string).strip()
+    ordinal_reg = r"\b(\w+)(?:st|nd|rd|th)"
+    return re.sub(ordinal_reg, "", string, flags=re.IGNORECASE).strip()
 
 
 def split_words_into_first_and_rest(string):

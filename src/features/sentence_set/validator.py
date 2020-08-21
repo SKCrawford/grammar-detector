@@ -1,4 +1,6 @@
 from src.util.decorator import is_truthy, is_type
+from ..verb_set.model import VerbFeatureSet
+from .model import SentenceFeatureSet
 
 
 def validate_sentence_feature_set(feature_set):
@@ -11,6 +13,7 @@ def validate_sentence_feature_set(feature_set):
     _validate_verb_features(feature_set.verb_features)
 
 
+@is_type(SentenceFeatureSet)
 @is_truthy
 def _validate_feature_set(feature_set):
     pass
@@ -23,5 +26,6 @@ def _validate_sentence(sentence):
 
 
 @is_truthy
+@is_type(VerbFeatureSet)
 def _validate_verb_features(verb_features):
     pass

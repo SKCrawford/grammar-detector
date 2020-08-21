@@ -1,48 +1,48 @@
 import unittest
-from src.util.transformer import remove_cardinals, split_words_into_first_and_rest
+from src.util.transformer import remove_ordinals, split_words_into_first_and_rest
 
 
 class TestRemoveCardinalsTransformer(unittest.TestCase):
     def test_is_defined(self):
-        self.assertTrue(remove_cardinals)
+        self.assertTrue(remove_ordinals)
 
     def test_alphanumeric_lower(self):
-        result = remove_cardinals("present continuous 3rd".lower())
+        result = remove_ordinals("present continuous 3rd".lower())
         expected = "present continuous".lower()
         self.assertEqual(result, expected)
 
     def test_alphanumeric_upper(self):
-        result = remove_cardinals("present continuous 3rd".upper())
+        result = remove_ordinals("present continuous 3rd".upper())
         expected = "present continuous".upper()
         self.assertEqual(result, expected)
 
     def test_alphanumeric_title(self):
-        result = remove_cardinals("present continuous 3rd".title())
+        result = remove_ordinals("present continuous 3rd".title())
         expected = "present continuous".title()
         self.assertEqual(result, expected)
 
     def test_alpha_lower(self):
-        result = remove_cardinals("present continuous third".lower())
+        result = remove_ordinals("present continuous third".lower())
         expected = "present continuous".lower()
         self.assertEqual(result, expected)
 
     def test_alpha_upper(self):
-        result = remove_cardinals("present continuous third".upper())
+        result = remove_ordinals("present continuous third".upper())
         expected = "present continuous".upper()
         self.assertEqual(result, expected)
 
     def test_alpha_title(self):
-        result = remove_cardinals("present continuous third".title())
+        result = remove_ordinals("present continuous third".title())
         expected = "present continuous".title()
         self.assertEqual(result, expected)
 
     def test_name(self):
-        result = remove_cardinals("Lupin the Third")
+        result = remove_ordinals("Lupin the Third")
         expected = "Lupin the"
         self.assertEqual(result, expected)
 
     def test_identical(self):
-        result = remove_cardinals("present continuous")
+        result = remove_ordinals("present continuous")
         expected = "present continuous"
         self.assertEqual(result, expected)
 

@@ -1,4 +1,4 @@
-from src.util.transformer import remove_cardinals, split_words_into_first_and_rest
+from src.util.transformer import remove_ordinals, split_words_into_first_and_rest
 from .model import VerbFeatureSet
 
 
