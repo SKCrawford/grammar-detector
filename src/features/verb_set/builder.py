@@ -7,6 +7,10 @@ class VerbFeatureSetBuilder:
 
     _instance = None
 
+    def _ensure_spawned(self):
+        if not self._instance:
+            raise ValueError("call spawn() first")
+
     def spawn(self):
         """Create the private instance.
 
@@ -20,21 +24,25 @@ class VerbFeatureSetBuilder:
 
         Given a string, return self.
         """
-        if not self._instance:
-            raise ValueError("call spawn() first")
+        self._ensure_spawned()
         self._instance.verb = verb
         return self
 
-    def derive_tense_and_aspect(self, verb_tense):
-        """Determine the tense and aspect from the verb tense phrase and 
-        set them to the private instance.
+    def set_tense(self, tense):
+        """Set the tense to the private instance.
 
         Given a string, return self.
         """
-        if not self._instance:
-            raise ValueError("call spawn() first")
-        (tense, aspect) = split_words_into_first_and_rest(verb_tense)
+        self._ensure_spawned()
         self._instance.tense = tense
+        return self
+
+    def set_aspect(self, aspect):
+        """Set the aspect to the private instance.
+
+        Given a string, return self.
+        """
+        self._ensure_spawned()
         self._instance.aspect = aspect
         return self
 
@@ -43,6 +51,5 @@ class VerbFeatureSetBuilder:
 
         Given void, return a VerbFeatureSet instance.
         """
-        if not self._instance:
-            raise ValueError("call spawn() first")
+        self._ensure_spawned()
         return self._instance

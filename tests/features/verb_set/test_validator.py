@@ -1,5 +1,5 @@
 import unittest
-from src.features.verb_set import validator
+from src.features.verb_set.validator import validate_verb_feature_set
 
 
 class TestVerbFeatureSetValidator(unittest.TestCase):

@@ -11,6 +11,7 @@ def main():
 
     f_set = detect_sentence_features(sentence)
     print(vars(f_set))
+    print(vars(f_set.verb_features))
 
 
 if __name__ == "__main__":
