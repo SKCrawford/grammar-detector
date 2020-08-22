@@ -5,12 +5,11 @@ from .model import SentenceFeatureSet
 
 def validate_sentence_feature_set(feature_set):
     """Validate a SentenceFeatureSet instance.
-    
+
     Given a SentenceFeatureSet instance, return void.
     """
     _validate_feature_set(feature_set)
     _validate_sentence(feature_set.sentence)
-    _validate_verb_features(feature_set.verb_features)
 
 
 @is_type(SentenceFeatureSet)
@@ -22,10 +21,4 @@ def _validate_feature_set(feature_set):
 @is_type(str)
 @is_truthy
 def _validate_sentence(sentence):
-    pass
-
-
-@is_truthy
-@is_type(VerbFeatureSet)
-def _validate_verb_features(verb_features):
     pass

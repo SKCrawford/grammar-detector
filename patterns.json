@@ -21,15 +21,11 @@
     ],
     "present continuous": [
       { "TAG": "VBP", "DEP": "aux", "OP": "+" },
-      { "TAG": "VBG", "DEP": "ROOT", "OP": "+" },
-      { "TAG": "TO", "DEP": "aux", "OP": "?" },
-      { "TAG": "VB", "DEP": "xcomp", "OP": "!" }
+      { "TAG": "VBG", "DEP": "ROOT", "OP": "+" }
     ],
     "present continuous 3rd": [
       { "TAG": "VBZ", "DEP": "aux", "OP": "+" },
-      { "TAG": "VBG", "DEP": "ROOT", "OP": "+" },
-      { "TAG": "TO", "DEP": "aux", "OP": "?" },
-      { "TAG": "VB", "DEP": "xcomp", "OP": "!" }
+      { "TAG": "VBG", "DEP": "ROOT", "OP": "+" }
     ],
     "past continuous": [
       { "TAG": "VBD", "DEP": "aux", "OP": "+" },

@@ -1,5 +1,4 @@
 from spacy.matcher import Matcher
-from spacy.tokens.doc import Doc
 from src.nlp import nlp
 from src.util.validator import is_truthy, is_type
 from .model import PatternSet
@@ -18,6 +17,7 @@ class PatternSetMatcher:
 
     def __init__(self, pattern_set):
         is_type(pattern_set, PatternSet)
+        is_truthy(pattern_set)
         self._pattern_set = pattern_set
         self._load()
 

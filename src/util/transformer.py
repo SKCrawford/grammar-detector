@@ -1,11 +1,14 @@
 import re
 from spacy.tokens.doc import Doc
 from src.nlp import nlp
-from .validator import is_truthy, is_type
+from .validator import is_not_type, is_truthy, is_type
 
 
 def make_doc(sentence_or_doc):
     """Given a string or a Doc instance, return a Doc instance."""
+    is_not_type(sentence_or_doc, type(None))
+    is_truthy(sentence_or_doc)
+
     if isinstance(sentence_or_doc, str):
         return nlp(sentence_or_doc)
     elif isinstance(sentence_or_doc, Doc):
@@ -30,6 +33,8 @@ def split_words_into_first_and_rest(string):
 
     Given a string, return a tuple of (string, string).
     """
+    is_type(string, str)
+    is_truthy(string)
     first_word_and_rest_of_words_reg = r"(\w+)\s([\w\s]*)"
     match = re.search(first_word_and_rest_of_words_reg, string)
 

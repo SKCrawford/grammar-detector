@@ -9,3 +9,12 @@ class Aspect(Enum):
     CONT = "continuous"
     PERF_CONT = "perfect continuous"
     UNKNOWN = "???"
+
+
+class Tense(Enum):
+    """All possible English verb tenses (without the aspect)."""
+
+    PAST = "past"
+    PRESENT = "present"
+    FUTURE = "future"
+    UNKNOWN = "???"

@@ -1,7 +1,5 @@
 from functools import wraps
-from .validator import is_in_enum as is_in_enum_validate
-from .validator import is_truthy as is_truthy_validate
-from .validator import is_type as is_type_validate
+from . import validator
 
 
 def is_in_enum(enum):
@@ -13,7 +11,7 @@ def is_in_enum(enum):
         @wraps(fn)
         def wrapper(*w_args, **w_kwargs):
             value = w_args[0]
-            is_in_enum_validate(value, enum)
+            validator.is_in_enum(value, enum)
             return fn(*w_args, **w_kwargs)
         return wrapper
     return decorator
@@ -24,7 +22,7 @@ def is_truthy(fn):
     @wraps(fn)
     def wrapper(*w_args, **w_kwargs):
         value = w_args[0]
-        is_truthy_validate(value)
+        validator.is_truthy(value)
         return fn(*w_args, **w_kwargs)
     return wrapper
 
@@ -38,7 +36,7 @@ def is_type(type_):
         @wraps(fn)
         def wrapper(*w_args, **w_kwargs):
             value = w_args[0]
-            is_type_validate(value, type_)
+            validator.is_type(value, type_)
             return fn(*w_args, **w_kwargs)
         return wrapper
     return decorator

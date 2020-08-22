@@ -24,3 +24,11 @@ class TenseAspect(Enum):
     PAST_PERF_CONT = "past perfect continuous"
     FUTURE_PERF_CONT = "future perfect continuous"
     UNKNOWN = "???"
+
+
+class Voice(Enum):
+    """All possible English sentence voices."""
+
+    ACTIVE = "active"
+    PASSIVE = "passive"
+    UNKNOWN = "???"

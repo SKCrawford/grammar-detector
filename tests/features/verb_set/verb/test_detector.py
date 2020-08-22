@@ -2,7 +2,7 @@ import unittest
 from src.features.verb_set.verb.detector import detect_verb
 
 
-class TestVerbFeatureSetDetector(unittest.TestCase):
+class TestVerbVerbDetector(unittest.TestCase):
     def assertVerb_(self, value, expected):
         result = detect_verb(value)
         self.assertEqual(result, expected)
@@ -22,7 +22,7 @@ class TestVerbFeatureSetDetector(unittest.TestCase):
 
         self.assertVerb_("I ran.", "ran")
         self.assertVerb_("I had run.", "had run")
-        self.assertVerb_("I was running.", " was running")
+        self.assertVerb_("I was running.", "was running")
         self.assertVerb_("I had been running.", "had been running")
 
         self.assertVerb_("I will run.", "will run")
