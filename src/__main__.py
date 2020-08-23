@@ -1,4 +1,5 @@
 import sys
+from src.util.misc_tools import print_token_table
 from .features.sentence_set.detector import detect_sentence_features
 
 
@@ -10,6 +11,7 @@ def main():
         sentence = "I am a test."
 
     f_set = detect_sentence_features(sentence)
+    print_token_table(sentence)
     print(vars(f_set))
     print(vars(f_set.verb_features))
 

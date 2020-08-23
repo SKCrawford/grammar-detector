@@ -11,9 +11,6 @@ class Pattern:
     Usage: `matcher.add(pattern.name, [pattern.tokens])`
     """
 
-    name = default_pattern_name
-    tokens = []
-
     def __init__(self, name, tokens):
         if not name: 
             name = default_pattern_name
@@ -24,14 +21,11 @@ class Pattern:
 class PatternSet:
     """A named collection of patterns."""
 
-    name = ""
-    _patterns = {}
-
     def __init__(self, name):
         if not name: 
             name = default_pattern_set_name
         self.name = name
-
+        self._patterns = {}
 
     def create(self, name, tokens):
         """Create and save a pattern.

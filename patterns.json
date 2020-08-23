@@ -1,4 +1,8 @@
 {
+  "voices": {
+    "active": [{ "DEP": "nsubj" }],
+    "passive": [{ "DEP": "nsubjpass" }]
+  },
   "tense_aspects": {
     "present simple": [{ "TAG": "VBP", "DEP": "ROOT", "OP": "+" }],
     "present simple 3rd": [{ "TAG": "VBZ", "DEP": "ROOT", "OP": "+" }],

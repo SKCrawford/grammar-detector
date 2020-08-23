@@ -2,8 +2,8 @@ from src.core.pattern.model import PatternSet
 from src.SyntaxPatterns import SyntaxPatterns
 
 
-def create_verb_tense_pattern_set():
-    """ Return a pattern set related to verb tenses.
+def create_verb_feature_set_pattern_set():
+    """Return a pattern set related to verb feature sets.
 
     Given void, return a PatternSet instance.
     """

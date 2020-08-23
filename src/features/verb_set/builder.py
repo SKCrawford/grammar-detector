@@ -45,6 +45,15 @@ class VerbFeatureSetBuilder:
         self._instance.aspect = aspect
         return self
 
+    def set_voice(self, voice):
+        """Set the voice to the private instance.
+
+        Given a string, return self.
+        """
+        self._ensure_spawned()
+        self._instance.voice = voice
+        return self
+
     def build(self):
         """Finalize the creation of the VerbFeatureSet.
 

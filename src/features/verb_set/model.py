@@ -7,3 +7,6 @@ class VerbFeatureSet:
 
     # simple, perfect, continuous, perfect continuous
     aspect = ""
+
+    # active, passive
+    voice = ""

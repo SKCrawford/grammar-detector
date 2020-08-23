@@ -17,6 +17,3 @@ def extract_tense_aspect(verb_tense):
         tense = match.group(1).strip()
         aspect = match.group(2).strip()
     return (tense, aspect)
-
-
-

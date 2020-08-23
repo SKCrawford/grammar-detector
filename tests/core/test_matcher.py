@@ -3,6 +3,7 @@ from spacy import load
 from spacy.matcher import Matcher
 from src.core.pattern.model import PatternSet
 from src.core.pattern.matcher import PatternSetMatcher
+from src.nlp import nlp
 
 
 def create_testing_pattern_set():
@@ -36,5 +37,14 @@ class TestPatternSetMatcher(unittest.TestCase):
     def test_has_base_matcher_instance(self):
         p_set = create_testing_pattern_set()
         p_set_matcher = PatternSetMatcher(p_set)
-        self.assertTrue(p_set_matcher._matcher)
+        p_set_matcher._load()
         self.assertIsInstance(p_set_matcher._matcher, Matcher)
+
+    def test_creates_a_new_matcher_on_each_construction(self):
+        p_set = create_testing_pattern_set()
+        p_set_matcher1 = PatternSetMatcher(p_set)
+        p_set_matcher2 = PatternSetMatcher(p_set)
+        p_set_matcher1._load()
+        p_set_matcher2._load()
+        self.assertIsNot(p_set_matcher1._matcher, p_set_matcher2._matcher)
+        self.assertNotEqual(hex(id(p_set_matcher1._matcher)), hex(id(p_set_matcher2._matcher)))
