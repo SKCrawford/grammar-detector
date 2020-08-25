@@ -1,4 +1,8 @@
 {
+  "persons": {
+    "non-3rd": [{ "TAG": "VBP" }],
+    "3rd": [{ "TAG": "VBZ" }]
+  },
   "voices": {
     "active": [{ "DEP": "nsubj" }],
     "passive": [{ "DEP": "nsubjpass" }]

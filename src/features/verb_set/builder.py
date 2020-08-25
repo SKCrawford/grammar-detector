@@ -54,6 +54,15 @@ class VerbFeatureSetBuilder:
         self._instance.voice = voice
         return self
 
+    def set_person(self, person):
+        """Set the person to the private instance.
+
+        Given a string, return self.
+        """
+        self._ensure_spawned()
+        self._instance.person = person
+        return self
+
     def build(self):
         """Finalize the creation of the VerbFeatureSet.
 
