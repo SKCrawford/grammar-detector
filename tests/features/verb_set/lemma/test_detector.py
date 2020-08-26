@@ -1,5 +1,5 @@
 import unittest
-from src.features.verb_set.lemmas.detector import detect_verb_lemmas
+from src.features.verb_set.lemma.detector import detect_verb_lemmas
 
 
 class TestVerbLemmasDetector(unittest.TestCase):
