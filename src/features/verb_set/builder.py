@@ -63,6 +63,15 @@ class VerbFeatureSetBuilder:
         self._instance.person = person
         return self
 
+    def set_lemmas(self, lemmas):
+        """Set the lemmas to the private instance.
+
+        Given a string, return self.
+        """
+        self._ensure_spawned()
+        self._instance.lemmas = lemmas
+        return self
+
     def build(self):
         """Finalize the creation of the VerbFeatureSet.
 
