@@ -1,7 +1,7 @@
 import unittest
 from src.features.noun_set.builder import NounFeatureSetBuilder
 from src.features.noun_set.model import NounFeatureSet
-from src.features.noun_set.noun.model import Noun
+from src.features.noun_set.noun.model import NounFeature
 
 
 class TestNounFeatureSetBuilder(unittest.TestCase):
@@ -26,14 +26,14 @@ class TestNounFeatureSetBuilder(unittest.TestCase):
         self.assertTrue(self.builder._instance)
 
     def test_can_build_complete_product_instance(self):
-        instance = NounFeatureSetBuilder()  \
-            .spawn()                        \
-            .set_attr('nouns', [Noun()])    \
-            .set_attr('person', "1st")      \
+        instance = NounFeatureSetBuilder()          \
+            .spawn()                                \
+            .set_attr('nouns', [NounFeature()])     \
+            .set_attr('person', "1st")              \
             .build()
         self.assertIsInstance(instance, NounFeatureSet)
         self.assertTrue(instance)
         self.assertIsInstance(instance.nouns, list)
-        [self.assertIsInstance(noun, Noun) for noun in instance.nouns]
+        [self.assertIsInstance(noun, NounFeature) for noun in instance.nouns]
         self.assertIsInstance(instance.person, str)
         self.assertTrue(instance.person)

@@ -1,23 +1,18 @@
 from spacy import explain
-from .model import Noun
+from .model import NounFeature
 
 
 def extract_features_from_noun_chunk(noun_chunk):
-    features = {}
-    features["text"] = noun_chunk.text
-    features["root_text"] = noun_chunk.root.text
-    features["root_head_text"]= noun_chunk.root.head.text
-    features["pos"] = noun_chunk.root.pos_
-    features["tag"] = noun_chunk.root.tag_
-    features["dep"] = noun_chunk.root.dep_
-    features["lemmas"] = noun_chunk.lemma_
-    features["root_lemma"] = noun_chunk.root.lemma_
-    features["pos_desc"] = explain(noun_chunk.root.pos_)
-    features["tag_desc"] = explain(noun_chunk.root.tag_)
-    features["dep_desc"] = explain(noun_chunk.root.dep_)
-
-    test_noun = Noun()
-    for key in features:
-        if not hasattr(test_noun, key):
-            raise ValueError(f"feature got invalid attribute {key}")
-    return features
+    noun = NounFeature()
+    noun.phrase = noun_chunk.text
+    noun.root = noun_chunk.root.text
+    noun.root_head = noun_chunk.root.head.text
+    noun.pos = noun_chunk.root.pos_
+    noun.tag = noun_chunk.root.tag_
+    noun.dep = noun_chunk.root.dep_
+    noun.phrase_lemma = noun_chunk.lemma_
+    noun.root_lemma = noun_chunk.root.lemma_
+    noun.pos_desc = explain(noun_chunk.root.pos_)
+    noun.tag_desc = explain(noun_chunk.root.tag_)
+    noun.dep_desc = explain(noun_chunk.root.dep_)
+    return noun

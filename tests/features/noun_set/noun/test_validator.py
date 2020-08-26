@@ -1,6 +1,6 @@
 import unittest
 from src.features.noun_set.noun.validator import validate_noun
-from src.features.noun_set.noun.model import Noun
+from src.features.noun_set.noun.model import NounFeature
 
 
 class TestNounValidator(unittest.TestCase):
@@ -8,7 +8,7 @@ class TestNounValidator(unittest.TestCase):
         self.assertTrue(validate_noun)
 
     def test_noun_validator_true_positive(self):
-        noun = Noun()
+        noun = NounFeature()
         noun.text = "the books"
         noun.lemmas = "the book"
         noun.root_lemma = "book"
@@ -18,4 +18,4 @@ class TestNounValidator(unittest.TestCase):
         self.assertRaises(TypeError, validate_noun, "book")
         self.assertRaises(TypeError, validate_noun, 100)
         self.assertRaises(TypeError, validate_noun, True)
-        self.assertRaises(TypeError, validate_noun, [Noun()])
+        self.assertRaises(TypeError, validate_noun, [NounFeature()])

@@ -16,11 +16,11 @@ def main():
         print(vars(f_set))
         print(vars(f_set.verb_features))
         print(vars(f_set.noun_features))
-        
-        i = 0
+
+        count = 0
         for noun in f_set.noun_features.nouns:
-            i += 1
-            print(f"Noun {i}:", vars(noun))
+            print(f"Noun {count}:", vars(noun))
+            count += 1
         print()
 
 

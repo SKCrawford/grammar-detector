@@ -1,18 +1,19 @@
 import unittest
+from src.features.noun_set.person.model import PersonFeature
 from src.features.noun_set.person.detector import detect_noun_person
 
 
 class TestNounPersonDetector(unittest.TestCase):
     def assertPerson_(self, value, expected_person):
         result = detect_noun_person(value)
-        self.assertEqual(result, expected_person)
+        self.assertEqual(result.value, expected_person)
 
     def test_is_defined(self):
         self.assertTrue(detect_noun_person)
 
     def test_returns_a_string(self):
         person = detect_noun_person("She is running for President.")
-        self.assertIsInstance(person, str)
+        self.assertIsInstance(person, PersonFeature)
 
     def test_true_positive(self):
         self.assertPerson_("I am running for President.", "1st")

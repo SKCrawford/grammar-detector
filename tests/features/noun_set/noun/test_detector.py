@@ -1,6 +1,6 @@
 import unittest
 from src.features.noun_set.noun.detector import detect_nouns
-from src.features.noun_set.noun.model import Noun
+from src.features.noun_set.noun.model import NounFeature
 
 
 class TestNounDetector(unittest.TestCase):
@@ -9,7 +9,7 @@ class TestNounDetector(unittest.TestCase):
         count = 0
         for expected_text in expected_texts:
             noun = result[count]
-            result_text = noun.text
+            result_text = noun.phrase
             self.assertEqual(result_text, expected_text)
             count += 1
 
@@ -23,10 +23,10 @@ class TestNounDetector(unittest.TestCase):
     def test_returns_a_list_of_nouns(self):
         result = detect_nouns("I ran to the beach.")
         self.assertIsInstance(result, list)
-        [self.assertIsInstance(noun, Noun) for noun in result]
+        [self.assertIsInstance(noun, NounFeature) for noun in result]
 
     def test_true_positive(self):
-        expected = Noun()
+        expected = NounFeature()
         expected.text = "I"
         self.assertNounText_("I ran to you.", ["I", "you"])
         self.assertNounText_("You ran to her.", ["You", "her"])

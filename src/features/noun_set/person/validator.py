@@ -5,5 +5,5 @@ from .enum import Person
 @is_type(str)
 @is_truthy
 @is_in_enum(Person)
-def validate_person(noun):
+def validate_person(value):
     pass

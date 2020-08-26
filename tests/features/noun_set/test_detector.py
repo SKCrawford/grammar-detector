@@ -11,11 +11,10 @@ class TestNounFeatureSetDetector(unittest.TestCase):
         result = detect_noun_features("I am a test.")
         self.assertTrue(result)
         self.assertIsInstance(result, NounFeatureSet)
-        self.assertIsInstance(result.nouns, list)
-        self.assertIsInstance(result.person, str)
 
     def test_true_negative(self):
         self.assertRaises(TypeError, detect_noun_features, 100)
         self.assertRaises(TypeError, detect_noun_features, True)
         self.assertRaises(TypeError, detect_noun_features, ["test string"])
         self.assertRaises(TypeError, detect_noun_features, None)
+        self.assertRaises(ValueError, detect_noun_features, "")
