@@ -14,7 +14,14 @@ def main():
         print_token_table(sentence)
         f_set = detect_sentence_features(sentence)
         print(vars(f_set))
-        print(vars(f_set.verb_features), "\n")
+        print(vars(f_set.verb_features))
+        print(vars(f_set.noun_features))
+        
+        i = 0
+        for noun in f_set.noun_features.nouns:
+            i += 1
+            print(f"Noun {i}:", vars(noun))
+        print()
 
 
 if __name__ == "__main__":

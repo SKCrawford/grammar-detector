@@ -1,18 +1,19 @@
-from src.util.matcher import run_matcher
+from spacy import explain
 from src.util.transformer import make_doc
-from .matcher import create_noun_matcher
+from .model import Noun
+from .transformer import extract_features_from_noun_chunk
 from .validator import validate_noun
 
 
 def detect_nouns(sentence_or_doc):
     doc = make_doc(sentence_or_doc)
-    matcher = create_noun_matcher()
-    match = run_matcher(matcher, doc)
-    print(match)
+    nouns = []
+    for noun_chunk in doc.noun_chunks:
+        noun = Noun()
+        features = extract_features_from_noun_chunk(noun_chunk)
 
-    if not match:
-        return ""
-    (rulename, noun_span) = match
-    noun = noun_span.text
-    validate_noun(noun)
-    return noun
+        for feature_name in features:
+            setattr(noun, feature_name, features[feature_name])
+        validate_noun(noun)
+        nouns.append(noun)
+    return nouns

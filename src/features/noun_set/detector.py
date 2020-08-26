@@ -12,8 +12,8 @@ def detect_noun_features(sentence_or_doc):
     """
     doc = make_doc(sentence_or_doc)
 
-    noun = detect_nouns(doc)
-    person = detect_noun_persons(doc)
+    nouns = detect_nouns(doc)
+    person = detect_noun_person(doc)
 
     noun_f_set = NounFeatureSetBuilder()    \
         .spawn()                            \
