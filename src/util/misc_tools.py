@@ -8,25 +8,25 @@ def print_sentence_feature_set(f_set, sort_dicts=False):
     #  printer = PrettyPrinter(sort_dicts=sort_dicts)
     printer = PrettyPrinter()
 
-    print("### Sentence features ###")
+    print("##### Sentence features #####")
     printer.pprint(vars(f_set))
-    print("\n")
+    print()
 
-    print("### Verb features ###")
+    print("##### Verb features #####")
     printer.pprint(vars(f_set.verb_features))
-    print("\n")
+    print()
 
-    print("### Noun features ###")
+    print("##### Noun features #####")
     printer.pprint(vars(f_set.noun_features))
     print()
 
-    print("## Person ##")
+    print("### Person ###")
     printer.pprint(f_set.noun_features.person.value)
     print()
 
     count = 0
     for noun in f_set.noun_features.nouns:
-        print(f"## Noun {count} ##")
+        print(f"### Noun {count} ###")
         printer.pprint(vars(noun))
         print()
         count += 1
@@ -41,8 +41,6 @@ def print_token_table(sentence, pos=True, tag=True, dependency=True, lemma=True)
 
     Given a string, return None.
     """
-    print(f"### Sentence tokens ###")
-
     # Create the table headers
     headers = []
     headers.append("Word")

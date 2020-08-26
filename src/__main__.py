@@ -16,11 +16,12 @@ def main():
 
         if count:  # all lines after the 1st have whitespace between
             print()
-        print(f"##### START SENTENCE {count} #####")
+        print(f"####### START SENTENCE {count} #######")
+        print("##### Sentence tokens #####")
         print_token_table(sentence)
         print()
         print_sentence_feature_set(f_set)
-        print(f"##### END SENTENCE {count} #####")
+        print(f"####### END SENTENCE {count} #######")
         count += 1
 
 
