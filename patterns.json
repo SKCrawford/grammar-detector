@@ -1,7 +1,16 @@
 {
   "persons": {
-    "non-3rd": [{ "TAG": "VBP" }],
-    "3rd": [{ "TAG": "VBZ" }]
+    "1st": [
+      { "DEP": "nsubj", "OP": "?", "LOWER": "i" },
+      { "DEP": "nsubj", "OP": "?", "LOWER": "we" },
+      { "DEP": "nsubjpass", "OP": "?", "LOWER": "i" },
+      { "DEP": "nsubjpass", "OP": "?", "LOWER": "we" }
+    ],
+    "2nd": [
+      { "DEP": "nsubj", "OP": "?", "LOWER": "you" },
+      { "DEP": "nsubjpass", "OP": "?", "LOWER": "you" }
+    ],
+    "3rd": [{ "DEP": "nsubj", "OP": "?" }, { "DEP": "nsubjpass", "OP": "?" }]
   },
   "voices": {
     "active": [{ "DEP": "nsubj" }],

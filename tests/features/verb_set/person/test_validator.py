@@ -7,7 +7,8 @@ class TestVerbPersonValidator(unittest.TestCase):
         self.assertTrue(validate_person)
 
     def test_person_validator_true_positive(self):
-        validate_person("non-3rd")
+        validate_person("1st")
+        validate_person("2nd")
         validate_person("3rd")
 
     def test_person_validator_true_negative(self):
@@ -23,8 +24,3 @@ class TestVerbPersonValidator(unittest.TestCase):
         self.assertRaises(ValueError, validate_person, "third".lower())
         self.assertRaises(ValueError, validate_person, "third".upper())
         self.assertRaises(ValueError, validate_person, "third".title())
-        self.assertRaises(ValueError, validate_person, "non-3rd".upper())
-        self.assertRaises(ValueError, validate_person, "non-3rd".title())
-        self.assertRaises(ValueError, validate_person, "non-third".lower())
-        self.assertRaises(ValueError, validate_person, "non-third".upper())
-        self.assertRaises(ValueError, validate_person, "non-third".title())

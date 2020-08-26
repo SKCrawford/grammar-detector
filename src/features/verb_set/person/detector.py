@@ -11,6 +11,9 @@ def detect_verb_person(sentence_or_doc):
 
     if not match:
         return ""
+
+    # the person_phrase also contains the tense
+    # this is required in order to have unique pattern names
     (person, verb_span) = match
     validate_person(person)
     return person
