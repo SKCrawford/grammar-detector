@@ -1,5 +1,5 @@
 import sys
-from src.util.misc_tools import print_token_table
+from src.util.misc_tools import print_sentence_feature_set, print_token_table
 from .features.sentence_set.detector import detect_sentence_features
 
 
@@ -10,18 +10,18 @@ def main():
     else:
         raise ValueError("No sentences were provided")
 
+    count = 0
     for sentence in sentences:
-        print_token_table(sentence)
         f_set = detect_sentence_features(sentence)
-        print(vars(f_set))
-        print(vars(f_set.verb_features))
-        print(vars(f_set.noun_features))
 
-        count = 0
-        for noun in f_set.noun_features.nouns:
-            print(f"Noun {count}:", vars(noun))
-            count += 1
+        if count:  # all lines after the 1st have whitespace between
+            print()
+        print(f"##### START SENTENCE {count} #####")
+        print_token_table(sentence)
         print()
+        print_sentence_feature_set(f_set)
+        print(f"##### END SENTENCE {count} #####")
+        count += 1
 
 
 if __name__ == "__main__":
