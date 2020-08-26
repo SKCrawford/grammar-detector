@@ -1,13 +1,11 @@
-from src.util.matcher import run_matcher
-from src.util.transformer import make_doc
+from src.util.spacy import run_matcher
 from .matcher import create_verb_matcher
 from .validator import validate_verb
 
 
 def detect_verb(sentence_or_doc):
-    doc = make_doc(sentence_or_doc)
     matcher = create_verb_matcher()
-    match = run_matcher(matcher, doc)
+    match = run_matcher(matcher, sentence_or_doc)
 
     if not match:
         return ""

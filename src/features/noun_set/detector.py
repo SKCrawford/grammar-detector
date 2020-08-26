@@ -1,4 +1,4 @@
-from src.util.transformer import make_doc
+from src.util.spacy import make_doc
 from .person.detector import detect_noun_person
 from .noun.detector import detect_nouns
 from .builder import NounFeatureSetBuilder

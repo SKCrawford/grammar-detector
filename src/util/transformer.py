@@ -4,19 +4,6 @@ from src.nlp import nlp
 from .validator import is_not_type, is_truthy, is_type
 
 
-def make_doc(sentence_or_doc):
-    """Given a string or a Doc instance, return a Doc instance."""
-    is_not_type(sentence_or_doc, type(None))
-    is_truthy(sentence_or_doc)
-
-    if isinstance(sentence_or_doc, str):
-        return nlp(sentence_or_doc)
-    elif isinstance(sentence_or_doc, Doc):
-        return sentence_or_doc
-    else:
-        raise TypeError(f"expected a string or Doc instance but got {type(sentence_or_doc)}")
-
-
 def remove_ordinals(string):
     """Remove alphanumeric ordinal values, such as third or 3rd.
 

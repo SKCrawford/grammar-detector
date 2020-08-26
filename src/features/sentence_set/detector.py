@@ -1,5 +1,4 @@
-from src.util.transformer import make_doc
-from src.util.matcher import run_matcher
+from src.util.spacy import make_doc
 from ..noun_set.detector import detect_noun_features
 from ..verb_set.detector import detect_verb_features
 from .builder import SentenceFeatureSetBuilder

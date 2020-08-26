@@ -1,4 +1,4 @@
-from src.util.transformer import make_doc
+from src.util.spacy import make_doc
 from .transformer import extract_features_from_noun_chunk
 from .validator import validate_noun
 
