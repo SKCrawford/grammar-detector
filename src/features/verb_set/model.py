@@ -1,15 +1,20 @@
 class VerbFeatureSet:
-    # always a verb
-    verb = ""
+    def __init__(self):
+        # always a verb
+        self.verb = "" 
 
-    # past, present, future
-    tense = ""
+        # past, present, future
+        self.tense = "" 
 
-    # simple, perfect, continuous, perfect continuous
-    aspect = ""
+        # simple, perfect, continuous, perfect continuous
+        self.aspect = "" 
 
-    # active, passive
-    voice = ""
+        # active, passive
+        self.voice = "" 
 
-    # non-3rd, 3rd
-    person = ""
+        # non-3rd, 3rd
+        self.person = "" 
+
+        # single string phrase
+        # e.g. "have be eat"
+        self.lemmas = ""

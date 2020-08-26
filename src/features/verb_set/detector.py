@@ -1,6 +1,6 @@
 from src.util.transformer import make_doc
-from .tense_aspect.detector import detect_verb_tense_aspect
 from .lemma.detector import detect_verb_lemmas
+from .tense_aspect.detector import detect_verb_tense_aspect
 from .person.detector import detect_verb_person
 from .verb.detector import detect_verb
 from .voice.detector import detect_verb_voice
@@ -24,12 +24,13 @@ def detect_verb_features(sentence_or_doc):
 
     verb_f_set = VerbFeatureSetBuilder()    \
         .spawn()                            \
-        .set_verb(verb)                     \
-        .set_tense(tense)                   \
-        .set_aspect(aspect)                 \
-        .set_voice(voice)                   \
-        .set_person(person)                 \
-        .set_lemmas(lemmas)                 \
+        .set_attr('verb', verb)             \
+        .set_attr('tense', tense)           \
+        .set_attr('aspect', aspect)         \
+        .set_attr('tense', tense)           \
+        .set_attr('voice', voice)           \
+        .set_attr('person', person)         \
+        .set_attr('lemmas', lemmas)         \
         .build()
     validate_verb_feature_set(verb_f_set)
     return verb_f_set

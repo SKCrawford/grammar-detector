@@ -25,10 +25,14 @@ class TestVerbFeatureSetBuilder(unittest.TestCase):
         self.assertTrue(self.builder._instance)
 
     def test_can_build_complete_product_instance(self):
-        instance = self.builder.spawn()         \
-            .set_verb("had been running")       \
-            .set_tense("past")                  \
-            .set_aspect("perfect continuous")   \
+        instance = VerbFeatureSetBuilder()              \
+            .spawn()                                    \
+            .set_attr('verb', "have been running")      \
+            .set_attr('tense', "present")               \
+            .set_attr('aspect', "perfect continuous")   \
+            .set_attr('voice', "active")                \
+            .set_attr('person', "1st")                  \
+            .set_attr('lemmas', "have be run")          \
             .build()
         self.assertIsInstance(instance, VerbFeatureSet)
         self.assertTrue(instance)

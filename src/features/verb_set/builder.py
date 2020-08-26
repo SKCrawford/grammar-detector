@@ -4,7 +4,8 @@ from .model import VerbFeatureSet
 class VerbFeatureSetBuilder:
     """Creates VerbFeatureSet instances."""
 
-    _instance = None
+    def __init__(self):
+        self._instance = None
 
     def _ensure_spawned(self):
         if not self._instance:
@@ -18,58 +19,15 @@ class VerbFeatureSetBuilder:
         self._instance = VerbFeatureSet()
         return self
 
-    def set_verb(self, verb):
+    def set_attr(self, name, value):
         """Set the verb to the private instance.
 
         Given a string, return self.
         """
         self._ensure_spawned()
-        self._instance.verb = verb
-        return self
-
-    def set_tense(self, tense):
-        """Set the tense to the private instance.
-
-        Given a string, return self.
-        """
-        self._ensure_spawned()
-        self._instance.tense = tense
-        return self
-
-    def set_aspect(self, aspect):
-        """Set the aspect to the private instance.
-
-        Given a string, return self.
-        """
-        self._ensure_spawned()
-        self._instance.aspect = aspect
-        return self
-
-    def set_voice(self, voice):
-        """Set the voice to the private instance.
-
-        Given a string, return self.
-        """
-        self._ensure_spawned()
-        self._instance.voice = voice
-        return self
-
-    def set_person(self, person):
-        """Set the person to the private instance.
-
-        Given a string, return self.
-        """
-        self._ensure_spawned()
-        self._instance.person = person
-        return self
-
-    def set_lemmas(self, lemmas):
-        """Set the lemmas to the private instance.
-
-        Given a string, return self.
-        """
-        self._ensure_spawned()
-        self._instance.lemmas = lemmas
+        if not hasattr(self._instance, name):
+            raise ValueError(f"invalid attribute name {name}")
+        setattr(self._instance, name, value)
         return self
 
     def build(self):
