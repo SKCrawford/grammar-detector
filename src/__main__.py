@@ -4,16 +4,17 @@ from .features.sentence_set.detector import detect_sentence_features
 
 
 def main():
-    sentence = ""
-    if len(sys.argv) > 1 and sys.argv[1]:
-        sentence = sys.argv[1]
+    sentences = []
+    if len(sys.argv) > 0:
+        sentences = sys.argv[1:]
     else:
-        sentence = "I am a test."
+        raise ValueError("No sentences were provided")
 
-    f_set = detect_sentence_features(sentence)
-    print_token_table(sentence)
-    print(vars(f_set))
-    print(vars(f_set.verb_features))
+    for sentence in sentences:
+        print_token_table(sentence)
+        f_set = detect_sentence_features(sentence)
+        print(vars(f_set))
+        print(vars(f_set.verb_features), "\n")
 
 
 if __name__ == "__main__":

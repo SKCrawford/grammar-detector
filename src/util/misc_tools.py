@@ -12,6 +12,8 @@ def print_token_table(sentence, pos=True, tag=True, dependency=True, lemma=True)
 
     Given a string, return None.
     """
+    print(f"### {sentence} ###")
+
     # Create the table headers
     headers = []
     headers.append("Word")
