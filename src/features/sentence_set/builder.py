@@ -4,11 +4,12 @@ from .model import SentenceFeatureSet
 class SentenceFeatureSetBuilder:
     """Create and modify a SentenceFeatureSet instance."""
 
-    _instance = None
+    def __init__(self):
+        self._instance = None
 
     def spawn(self):
         """Create an instance.
-        
+
         Given void, return self.
         """
         self._instance = SentenceFeatureSet()
@@ -16,10 +17,14 @@ class SentenceFeatureSetBuilder:
 
     def build(self):
         """Return the instance created in spawn().
-        
+
         Given void, reutrn a SentenceFeatureSet instance.
         """
         return self._instance
+
+    def set_noun_feature_set(self, noun_feature_set):
+        self._instance.noun_features = noun_feature_set
+        return self
 
     def set_sentence(self, sentence):
         self._instance.sentence = sentence

@@ -5,8 +5,12 @@ class SentenceFeatureSet:
     It is not intended to call the constructor manually.
     """
 
-    # the untokenized sentence
-    sentence = ""
+    def __init__(self):
+        # the untokenized sentence
+        self.sentence = ""
 
-    # features relating to the verb
-    verb_features = None
+        # features relating to the nouns in the sentence
+        self.noun_features = None
+
+        # features relating to the root verb
+        self.verb_features = None
