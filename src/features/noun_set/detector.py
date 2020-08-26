@@ -1,7 +1,8 @@
+from src.util.builder import Builder
 from src.util.spacy import make_doc
 from .person.detector import detect_noun_person
 from .noun.detector import detect_nouns
-from .builder import NounFeatureSetBuilder
+from .model import NounFeatureSet
 from .validator import validate_noun_feature_set
 
 
@@ -11,12 +12,10 @@ def detect_noun_features(sentence_or_doc):
     Given a string, return a NounFeatureSet instance.
     """
     doc = make_doc(sentence_or_doc)
-
     nouns = detect_nouns(doc)
     person = detect_noun_person(doc)
 
-    noun_f_set = NounFeatureSetBuilder()    \
-        .spawn()                            \
+    noun_f_set = Builder(NounFeatureSet)    \
         .set_attr('nouns', nouns)           \
         .set_attr('person', person)         \
         .build()

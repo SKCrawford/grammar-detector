@@ -6,7 +6,7 @@ from .validator import validate_person
 
 def detect_noun_person(sentence_or_doc):
     matcher = create_noun_person_matcher()
-    match = run_matcher(sentence_or_doc, matcher))
+    match = run_matcher(matcher, sentence_or_doc)
 
     if not match:
         return ""

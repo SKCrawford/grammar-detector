@@ -5,7 +5,7 @@ from .validator import validate_lemma_phrase
 
 def detect_verb_lemmas(sentence_or_doc):
     matcher = create_verb_lemma_matcher()
-    match = run_matcher(matcher, doc)
+    match = run_matcher(matcher, sentence_or_doc)
 
     if not match:
         return ""

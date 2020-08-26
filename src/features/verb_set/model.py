@@ -12,9 +12,6 @@ class VerbFeatureSet:
         # active, passive
         self.voice = "" 
 
-        # non-3rd, 3rd
-        self.person = "" 
-
         # single string phrase
         # e.g. "have be eat"
         self.lemmas = ""
