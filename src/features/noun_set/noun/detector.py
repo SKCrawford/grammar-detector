@@ -1,13 +1,14 @@
+from src.core.feature.detector import PhraseFeatureDetector
 from src.util.spacy import make_doc
-from .transformer import extract_features_from_noun_chunk
-from .validator import validate_noun
+from .model import NounFeature
+from .validator import validate_noun_feature
 
 
-def detect_nouns(sentence_or_doc):
-    doc = make_doc(sentence_or_doc)
+def detect_nouns(maybe_tokenized):
+    doc = make_doc(maybe_tokenized)
+    detector = PhraseFeatureDetector(NounFeature, None)
     nouns = []
     for noun_chunk in doc.noun_chunks:
-        noun = extract_features_from_noun_chunk(noun_chunk)
-        validate_noun(noun)
+        noun = detector.detect(noun_chunk)[0]
         nouns.append(noun)
     return nouns

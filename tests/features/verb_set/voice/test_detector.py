@@ -1,18 +1,19 @@
 import unittest
 from src.features.verb_set.voice.detector import detect_verb_voice
+from src.features.verb_set.voice.model import VoiceFeature
 
 
 class TestVerbVoiceDetector(unittest.TestCase):
     def assertVoice_(self, value, expected_voice):
         result = detect_verb_voice(value)
-        self.assertEqual(result, expected_voice)
+        self.assertEqual(result.value, expected_voice)
 
     def test_is_defined(self):
         self.assertTrue(detect_verb_voice)
 
     def test_returns_a_string(self):
         voice = detect_verb_voice("The cat was chased by the dog.")
-        self.assertIsInstance(voice, str)
+        self.assertIsInstance(voice, VoiceFeature)
 
     def test_true_positive(self):
         self.assertVoice_("The cat was chased by the dog.", "passive")

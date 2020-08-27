@@ -1,7 +1,7 @@
 class VerbFeatureSet:
     def __init__(self):
-        # always a verb
-        self.verb = "" 
+        # always VerbFeatures
+        self.verbs = []
 
         # past, present, future
         self.tense = "" 
@@ -10,8 +10,4 @@ class VerbFeatureSet:
         self.aspect = "" 
 
         # active, passive
-        self.voice = "" 
-
-        # single string phrase
-        # e.g. "have be eat"
-        self.lemmas = ""
+        self.voice = None

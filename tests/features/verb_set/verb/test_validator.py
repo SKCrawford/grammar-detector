@@ -1,17 +1,18 @@
 import unittest
-from src.features.verb_set.verb.validator import validate_verb
+from src.features.verb_set.verb import validator
 
 
 class TestVerbVerbValidator(unittest.TestCase):
     def test_are_validators_defined(self):
-        self.assertTrue(validate_verb)
+        self.assertTrue(validator.validate_verb)
+        self.assertTrue(validator._validate_verb_text)
 
     def test_verb_validator_true_positive(self):
-        validate_verb("run")
-        validate_verb("run away")
+        validator._validate_verb_text("run")
+        validator._validate_verb_text("run away")
 
     def test_verb_validator_true_negative(self):
-        self.assertRaises(TypeError, validate_verb, 100)
-        self.assertRaises(TypeError, validate_verb, True)
-        self.assertRaises(TypeError, validate_verb, ["run"])
-        self.assertRaises(ValueError, validate_verb, "")
+        self.assertRaises(TypeError, validator._validate_verb_text, 100)
+        self.assertRaises(TypeError, validator._validate_verb_text, True)
+        self.assertRaises(TypeError, validator._validate_verb_text, ["run"])
+        self.assertRaises(ValueError, validator._validate_verb_text, "")

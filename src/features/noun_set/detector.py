@@ -6,12 +6,12 @@ from .model import NounFeatureSet
 from .validator import validate_noun_feature_set
 
 
-def detect_noun_features(sentence_or_doc):
+def detect_noun_features(maybe_tokenized):
     """Detect the features of a sentence's noun.
 
     Given a string, return a NounFeatureSet instance.
     """
-    doc = make_doc(sentence_or_doc)
+    doc = make_doc(maybe_tokenized)
     nouns = detect_nouns(doc)
     person = detect_noun_person(doc)
 

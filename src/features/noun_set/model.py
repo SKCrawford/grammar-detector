@@ -4,4 +4,4 @@ class NounFeatureSet:
         self.nouns = []
 
         # non-3rd, 3rd
-        self.person = "" 
+        self.person = None

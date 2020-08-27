@@ -13,9 +13,6 @@ class SimpleFeature(Serializable):
         # the value of the feature (e.g. present)
         self.value = None
 
-    def __str__(self):
-        return f"{self.name.title()}: {self.value}"
-
 
 class PhraseFeature(Serializable):
     """A concrete implementor for bridging to services (abstraction).
@@ -54,6 +51,3 @@ class PhraseFeature(Serializable):
 
         # the explained dependency label
         self.dep_desc = ""
-
-    def __str__(self):
-        return f"{self.phrase} ({self.tag}/{self.dep})"

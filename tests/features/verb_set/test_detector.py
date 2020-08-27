@@ -14,8 +14,8 @@ class TestVerbFeatureSetDetector(unittest.TestCase):
 
     def test_detect_verb_feature_set_verb(self):
         result = detect_verb_features("I am a test.")
-        self.assertIsInstance(result.verb, str)
-        self.assertEqual(result.verb, "am")
+        self.assertIsInstance(result.verb.root, str)
+        self.assertEqual(result.verb.root, "am")
 
     def test_detect_verb_feature_set_tense(self):
         result = detect_verb_features("I am a test.")
