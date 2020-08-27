@@ -26,38 +26,27 @@ def run_matcher(matcher, sentence_or_doc):
     if not matches:
         return None
 
-    match = _find_best_match(matches, doc)
-    (pattern_name, matching_span) = match
+    (match_id, start, end) = find_best_match(matches, doc)
+    pattern_name = nlp.vocab.strings[match_id]
+    matching_span = doc[start:end]
     return (pattern_name, matching_span)
 
 
-def _find_best_match(matches, doc):
-    """Determine the best match out of a list of matches.
+def find_best_match(matches, doc):
+    """Determine the best match out of a list of matches by 
+    the start and end values.
 
-    The best match is determined by the length of the matches' `span`s.
-    Some verb tenses will be flagged for multiple matches. For example,
-    'I will have been doing that' will be flagged for both:
-        * present perfect continuous 'have been doing'
-        * future perfect continuous 'will have been doing'
-    The length of 'will have been doing' is longer than 'have been doing',
-    so the best match will be the longer span. This method should
-    not be necessary if the patterns are well-made.
-
-    Given a list of Match instances and a Doc instance, return a tuple of (string, string).
+    Given a list of Matches and a Doc, return a tuple of (int, int, int).
     """
     is_type(doc, Doc)
     is_type(matches, list)
     is_truthy(matches)
 
-    best_match_rulename = ""
-    best_match_span = ""
-
+    lowest_start = 100000
+    highest_end = -1
     for (match_id, start, end) in matches:
-        rulename = nlp.vocab.strings[match_id]
-        span = doc[start:end]
-
-        if len(best_match_span) < len(span):
-            best_match_rulename = rulename
-            best_match_span = span
-
-    return (best_match_rulename, best_match_span)
+        if start < lowest_start:
+            lowest_start = start
+        if end > highest_end:
+            highest_end = end
+    return (match_id, lowest_start, highest_end)
