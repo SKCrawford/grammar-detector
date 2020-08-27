@@ -2,7 +2,7 @@ from src.util.spacy import run_matcher
 
 
 class FeatureDetector:
-    """The implementor."""
+    """The abstraction for bridging to Feature instances (implementors)."""
 
     def __init__(self, feature, matcher, validate_fn):
         self._feature = feature
@@ -24,7 +24,7 @@ class FeatureDetector:
 
 
 class SimpleFeatureDetector(FeatureDetector):
-    """A concrete implementor."""
+    """A refined abstraction for bridging to Feature instances (implementors)."""
 
     def set_feature(self, value):
         self._feature.value = value

@@ -1,5 +1,5 @@
 import json
-from src.util.serializer import Serializable
+from src.util.serializable import Serializable
 
 
 class SentenceFeatureSet(Serializable):

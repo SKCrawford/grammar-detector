@@ -1,6 +1,10 @@
-class SimpleFeature:
-    """A bridge Implementor interface for features with a name and a value.
-    A good example would be verb tense/aspect, verb voice, or noun person."""
+from src.util.serializable import Serializable
+
+
+class SimpleFeature(Serializable):
+    """A concrete implementor for bridging to services (abstraction).
+    A good use-case for this implementor would be verb tense/aspect,
+    verb voice, or noun person."""
 
     def __init__(self):
         # the name of the feature (e.g. tense)
@@ -13,8 +17,9 @@ class SimpleFeature:
         return f"{self.name.title()}: {self.value}"
 
 
-class PhraseFeature:
-    """A bridge Implementor interface for phrasal features."""
+class PhraseFeature(Serializable):
+    """A concrete implementor for bridging to services (abstraction).
+    A good use-case for this implementor would be verb or noun phrases."""
 
     def __init__(self):
         # the phrase's text
