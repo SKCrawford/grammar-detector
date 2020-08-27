@@ -1,5 +1,5 @@
 import sys
-from src.util.misc_tools import print_sentence_feature_set, print_token_table
+from src.util.misc_tools import print_token_table
 from .features.sentence_set.detector import detect_sentence_features
 
 
@@ -20,7 +20,7 @@ def main():
         print("##### Sentence tokens #####")
         print_token_table(sentence)
         print()
-        print_sentence_feature_set(f_set)
+        print(f_set.toJSON())
         print(f"####### END SENTENCE {count} #######")
         count += 1
 

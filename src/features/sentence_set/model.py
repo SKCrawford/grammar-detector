@@ -1,4 +1,8 @@
-class SentenceFeatureSet:
+import json
+from src.util.serializer import Serializable
+
+
+class SentenceFeatureSet(Serializable):
     """A dictionary of the linguistic features of a sentence. The sentence
     itself is also exposed. This is intended to be used in conjunction
     with the SentenceFeatureSetBuilder to create and modify instances.

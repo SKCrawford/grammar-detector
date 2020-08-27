@@ -1,35 +1,7 @@
-from pprint import PrettyPrinter
 from tabulate import tabulate
 from spacy import explain
+from src.features.sentence_set.model import SentenceFeatureSet
 from src.nlp import nlp
-
-
-def print_sentence_feature_set(f_set, sort_dicts=False):
-    #  printer = PrettyPrinter(sort_dicts=sort_dicts)
-    printer = PrettyPrinter()
-
-    print("##### Sentence features #####")
-    printer.pprint(vars(f_set))
-    print()
-
-    print("##### Verb features #####")
-    printer.pprint(vars(f_set.verb_features))
-    print()
-
-    print("##### Noun features #####")
-    printer.pprint(vars(f_set.noun_features))
-    print()
-
-    print("### Person ###")
-    printer.pprint(f_set.noun_features.person.value)
-    print()
-
-    count = 0
-    for noun in f_set.noun_features.nouns:
-        print(f"### Noun {count} ###")
-        printer.pprint(vars(noun))
-        print()
-        count += 1
 
 
 def print_token_table(sentence, pos=True, tag=True, dependency=True, lemma=True):
