@@ -1,16 +1,26 @@
 {
   "persons": {
     "1st": [
-      { "DEP": "nsubj", "OP": "?", "LOWER": "i" },
-      { "DEP": "nsubj", "OP": "?", "LOWER": "we" },
-      { "DEP": "nsubjpass", "OP": "?", "LOWER": "i" },
-      { "DEP": "nsubjpass", "OP": "?", "LOWER": "we" }
+      {
+        "DEP": { "IN": ["nsubj", "nsubjpass"] },
+        "OP": "+",
+        "LOWER": { "IN": ["i", "we"] }
+      }
     ],
     "2nd": [
-      { "DEP": "nsubj", "OP": "?", "LOWER": "you" },
-      { "DEP": "nsubjpass", "OP": "?", "LOWER": "you" }
+      {
+        "DEP": { "IN": ["nsubj", "nsubjpass"] },
+        "OP": "+",
+        "LOWER": "you"
+      }
     ],
-    "3rd": [{ "DEP": "nsubj", "OP": "?" }, { "DEP": "nsubjpass", "OP": "?" }]
+    "3rd": [
+      {
+        "DEP": { "IN": ["nsubj", "nsubjpass"] },
+        "OP": "+",
+        "LOWER": { "NOT_IN": ["i", "we", "you"] }
+      }
+    ]
   },
   "voices": {
     "active": [{ "DEP": "nsubj" }],
