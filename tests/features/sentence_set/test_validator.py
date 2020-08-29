@@ -1,7 +1,6 @@
 import unittest
 from src.features.sentence_set import validator
 from src.features.sentence_set.model import SentenceFeatureSet
-from src.features.verb_set.model import VerbFeatureSet
 
 
 class TestSentenceFeatureSetValidator(unittest.TestCase):

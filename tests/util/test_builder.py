@@ -1,19 +1,24 @@
 import unittest
 from src.util.builder import Builder
-from src.features.verb_set.model import VerbFeatureSet
+
+
+class Foo:
+    def __init__(self):
+        self.bar = ""
+        self.baz = ""
 
 
 class TestBuilder(unittest.TestCase):
     builder = None
 
     def setUp(self):
-        self.builder = Builder(VerbFeatureSet)
+        self.builder = Builder(Foo)
 
     def test_is_defined(self):
         self.assertTrue(Builder)
 
     def test_is_constructable(self):
-        self.assertTrue(Builder(VerbFeatureSet))
+        self.assertTrue(Builder(Foo))
 
     def test_can_spawn_product_instance(self):
         self.assertIsInstance(self.builder, Builder)
@@ -25,16 +30,13 @@ class TestBuilder(unittest.TestCase):
         self.assertTrue(self.builder._instance)
 
     def test_can_build_complete_product_instance(self):
-        instance = Builder(VerbFeatureSet)              \
-            .set_attr('verb', "have been running")      \
-            .set_attr('tense', "present")               \
-            .set_attr('aspect', "perfect continuous")   \
+        instance = Builder(Foo)         \
+            .set_attr("bar", "foobar")  \
+            .set_attr("baz", "foobaz")  \
             .build()
-        self.assertIsInstance(instance, VerbFeatureSet)
+        self.assertIsInstance(instance, Foo)
         self.assertTrue(instance)
-        self.assertIsInstance(instance.verb, str)
-        self.assertIsInstance(instance.tense, str)
-        self.assertIsInstance(instance.aspect, str)
-        self.assertTrue(instance.verb)
-        self.assertTrue(instance.tense)
-        self.assertTrue(instance.aspect)
+        self.assertIsInstance(instance.bar, str)
+        self.assertIsInstance(instance.baz, str)
+        self.assertTrue(instance.bar)
+        self.assertTrue(instance.baz)

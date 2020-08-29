@@ -1,4 +1,3 @@
-import json
 from src.util.serializable import Serializable
 
 
@@ -14,7 +13,7 @@ class SentenceFeatureSet(Serializable):
         self.sentence = ""
 
         # features relating to the nouns in the sentence
-        self.noun_features = None
+        self.nouns = []
 
         # features relating to the root verb
-        self.verb_features = None
+        self.verbs = []

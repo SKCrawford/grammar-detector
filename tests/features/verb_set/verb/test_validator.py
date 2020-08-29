@@ -4,7 +4,7 @@ from src.features.verb_set.verb import validator
 
 class TestVerbVerbValidator(unittest.TestCase):
     def test_are_validators_defined(self):
-        self.assertTrue(validator.validate_verb)
+        self.assertTrue(validator.validate_verb_feature)
         self.assertTrue(validator._validate_verb_text)
 
     def test_verb_validator_true_positive(self):

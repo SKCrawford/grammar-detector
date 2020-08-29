@@ -1,7 +1,7 @@
 from src.util.builder import Builder
 from src.util.spacy import make_doc
-from ..noun_set.detector import detect_noun_features
-from ..verb_set.detector import detect_verb_features
+from ..noun_set import detect_nouns
+from ..verb_set import detect_verbs
 from .model import SentenceFeatureSet
 from .validator import validate_sentence_feature_set
 
@@ -12,13 +12,13 @@ def detect_sentence_features(sentence):
     Given a string, return a SentenceFeatureSet instance.
     """
     doc = make_doc(sentence)
-    verb_f_set = detect_verb_features(doc)
-    noun_f_set = detect_noun_features(doc)
+    verbs = detect_verbs(doc)
+    nouns = detect_nouns(doc)
 
     sent_f_set = Builder(SentenceFeatureSet)    \
         .set_attr("sentence", sentence)         \
-        .set_attr("verb_features", verb_f_set)  \
-        .set_attr("noun_features", noun_f_set)  \
+        .set_attr("verbs", verbs)               \
+        .set_attr("nouns", nouns)               \
         .build()                                    
     validate_sentence_feature_set(sent_f_set)
     return sent_f_set

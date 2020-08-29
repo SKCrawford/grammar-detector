@@ -3,7 +3,7 @@ import unittest
 from src.features.verb_set.voice import validator
 
 
-class TestVerbgValidator(unittest.TestCase):
+class TestVerbVoiceValidator(unittest.TestCase):
     def test_are_validators_defined(self):
         self.assertTrue(validator._validate_voice)
         self.assertTrue(validator._validate_voice)

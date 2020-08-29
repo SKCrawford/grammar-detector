@@ -7,6 +7,6 @@ from .validator import validate_person_feature
 def detect_noun_person(maybe_tokenized):
     matcher = create_noun_person_matcher()
     detector = SimpleFeatureDetector(PersonFeature, matcher)
-    feature = detector.detect(maybe_tokenized)[0]
+    feature = detector.detect_one(maybe_tokenized)
     validate_person_feature(feature)
     return feature

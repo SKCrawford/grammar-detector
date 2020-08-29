@@ -4,16 +4,17 @@ from src.features.verb_set.tense_aspect.detector import detect_verb_tense_aspect
 
 class TestVerbTenseAspectDetector(unittest.TestCase):
     def assertTenseAspect_(self, value, expected_tense, expected_aspect):
-        result = detect_verb_tense_aspect(value)
-        self.assertEqual(result, (expected_tense, expected_aspect))
+        feature = detect_verb_tense_aspect(value)
+        self.assertEqual(feature.value["tense"], expected_tense)
+        self.assertEqual(feature.value["aspect"], expected_aspect)
 
     def test_is_defined(self):
         self.assertTrue(detect_verb_tense_aspect)
 
     def test_returns_a_tuple_of_strings(self):
-        (tense, aspect) = detect_verb_tense_aspect("I am a test.")
-        self.assertIsInstance(tense, str)
-        self.assertIsInstance(aspect, str)
+        feature = detect_verb_tense_aspect("I am a test.")
+        self.assertIsInstance(feature.value["tense"], str)
+        self.assertIsInstance(feature.value["aspect"], str)
 
     def test_true_positive(self):
         self.assertTenseAspect_("I run.", "present", "simple")

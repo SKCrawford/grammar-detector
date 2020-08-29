@@ -4,9 +4,9 @@ from src.features.verb_set.voice.model import VoiceFeature
 
 
 class TestVerbVoiceDetector(unittest.TestCase):
-    def assertVoice_(self, value, expected_voice):
-        result = detect_verb_voice(value)
-        self.assertEqual(result.value, expected_voice)
+    def assertVoice_(self, sentence, expected_voice):
+        feature = detect_verb_voice(sentence)
+        self.assertEqual(feature.value, expected_voice)
 
     def test_is_defined(self):
         self.assertTrue(detect_verb_voice)

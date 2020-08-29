@@ -7,6 +7,6 @@ from .validator import validate_voice_feature
 def detect_verb_voice(maybe_tokenized):
     matcher = create_verb_voice_matcher()
     detector = SimpleFeatureDetector(VoiceFeature, matcher)
-    feature = detector.detect(maybe_tokenized)[0]
+    feature = detector.detect_many(maybe_tokenized)[0]
     validate_voice_feature(feature)
     return feature

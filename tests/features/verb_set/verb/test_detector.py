@@ -4,16 +4,16 @@ from src.features.verb_set.verb.model import VerbFeature
 
 
 class TestVerbVerbDetector(unittest.TestCase):
-    def assertVerb_(self, value, expected):
-        result = detect_verbs(value)[0]
-        self.assertEqual(result.phrase, expected)
+    def assertVerb_(self, sentence, expected):
+        verb = detect_verbs(sentence)[0]
+        self.assertEqual(verb.phrase, expected)
 
     def test_is_defined(self):
         self.assertTrue(detect_verbs)
 
     def test_returns_a_string(self):
-        result = detect_verbs("I am a test.")
-        self.assertIsInstance(result, VerbFeature)
+        verbs = detect_verbs("I run.")
+        [self.assertIsInstance(verb, VerbFeature) for verb in verbs]
 
     def test_true_positive(self):
         self.assertVerb_("I run.", "run")

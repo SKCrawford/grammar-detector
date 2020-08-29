@@ -2,29 +2,37 @@
   "persons": {
     "1st": [
       {
-        "DEP": { "IN": ["nsubj", "nsubjpass"] },
+        "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
         "OP": "+",
         "LOWER": { "IN": ["i", "we"] }
       }
     ],
     "2nd": [
       {
-        "DEP": { "IN": ["nsubj", "nsubjpass"] },
+        "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
         "OP": "+",
         "LOWER": "you"
       }
     ],
     "3rd": [
       {
-        "DEP": { "IN": ["nsubj", "nsubjpass"] },
+        "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
         "OP": "+",
         "LOWER": { "NOT_IN": ["i", "we", "you"] }
       }
     ]
   },
   "voices": {
-    "active": [{ "DEP": "nsubj" }],
-    "passive": [{ "DEP": "nsubjpass" }]
+    "active": [
+      { "DEP": "auxpass", "OP": "!" },
+      { "DEP": "aux", "OP": "*" },
+      { "POS": "VERB", "OP": "+" }
+    ],
+    "passive": [
+      { "DEP": "aux", "OP": "*" },
+      { "DEP": "auxpass" },
+      { "TAG": "VBN" }
+    ]
   },
   "tense_aspects": {
     "present simple": [{ "TAG": "VBP", "OP": "+" }],
