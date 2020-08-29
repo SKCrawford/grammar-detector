@@ -4,7 +4,7 @@ from .model import VerbFeature
 
 @is_type(VerbFeature)
 @is_truthy
-def validate_verb(feature):
+def validate_verb_feature(feature):
     _validate_verb_text(feature.phrase)
 
 

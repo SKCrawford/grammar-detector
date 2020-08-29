@@ -1,5 +1,4 @@
 from src.util.decorator import is_truthy, is_type
-from ..verb_set.model import VerbFeatureSet
 from .model import SentenceFeatureSet
 
 

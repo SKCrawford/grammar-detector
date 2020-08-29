@@ -10,5 +10,6 @@ def detect_nouns(maybe_tokenized):
     nouns = []
     for noun_chunk in doc.noun_chunks:
         noun = detector.detect(noun_chunk)[0]
+        validate_noun_feature(noun)
         nouns.append(noun)
     return nouns
