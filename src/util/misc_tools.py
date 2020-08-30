@@ -4,7 +4,7 @@ from src.features.sentence_set.model import SentenceFeatureSet
 from src.nlp import nlp
 
 
-def print_token_table(sentence, pos=True, tag=True, dependency=True, lemma=True):
+def to_token_table(sentence, pos=True, tag=True, dependency=True, lemma=True):
     """Print the linguistics features of each word in a sentence.
     If pos is True, then print the part-of-speech (POS). Defaults to True.
     If tag is True, then print the tag. Defaults to True.
@@ -46,6 +46,4 @@ def print_token_table(sentence, pos=True, tag=True, dependency=True, lemma=True)
         if lemma:
             entry.append(word.lemma_)
         data.append(entry)
-
-    # Print the table
-    print(tabulate(data, headers=headers, tablefmt="github"))
+    return tabulate(data, headers=headers, tablefmt="github")
