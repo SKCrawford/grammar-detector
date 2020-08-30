@@ -1,6 +1,3 @@
-from .validator import validate_pattern
-
-
 default_pattern_name = "untitled pattern"
 default_pattern_set_name = "untitled pattern set"
 
@@ -32,7 +29,6 @@ class PatternSet:
 
         Given a string and a list of tokens, return void.
         """
-        validate_pattern(name, tokens)
         self._patterns[name] = Pattern(name, tokens)
 
     def find(self, name):

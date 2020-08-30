@@ -1,5 +1,9 @@
+import logging
 from functools import wraps
 from . import validator
+
+
+logger = logging.getLogger(__name__)
 
 
 def is_in_enum(enum):
@@ -47,7 +51,13 @@ def singleton(klass):
     """A class decorator adding singleton functionality."""
     instances = [None]
     def wrapper(*args, **kwargs):
-        if instances[0] is None:
-            instances[0] = klass(*args, **kwargs)
-        return instances[0]
+        logger.debug(f"Looking for a pre-existing instance of `{klass}`")
+        instance = instances[0]
+        if instance is None:
+            logger.debug("Didn't find a pre-existing instance")
+            logger.debug("Creating a new instance")
+            instance = klass(*args, **kwargs)
+            instances[0] = instance
+        logger.debug(f"Returning the instance `{instance}`")
+        return instance
     return wrapper

@@ -1,7 +1,10 @@
+import logging
 from spacy import explain
 
 
 def parse_phrase_features_from_chunk(chunk):
+    logger = logging.getLogger(parse_phrase_features_from_chunk.__name__)
+    logger.info(f"Parsing `{chunk}`")
     features = {}
     features["phrase"] = chunk.text
     features["root"] = chunk.root.text

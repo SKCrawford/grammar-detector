@@ -1,8 +1,10 @@
 import json
+import logging
 import os
 from src.util.decorator import singleton
 
 
+logger = logging.getLogger(__name__)
 patterns_json_path = f"{os.path.dirname(__file__)}/../patterns.json"
 
 
@@ -13,9 +15,8 @@ class SyntaxPatterns:
     because the patterns do not change at runtime.
     """
 
-    patterns = None
-
     def __init__(self):
+        logger.debug(f"Loading syntax patterns from the JSON file at `{patterns_json_path}`")
         self.patterns = self._load_syntax_patterns()
 
     def _load_syntax_patterns(self):

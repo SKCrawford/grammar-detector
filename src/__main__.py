@@ -1,6 +1,11 @@
+import logging
 import sys
-from src.util.misc_tools import print_token_table
+import src.logger
+from src.util.misc_tools import to_token_table
 from .features.sentence_set.detector import detect_sentence_features
+
+
+logger = logging.getLogger(__name__)
 
 
 def main():
@@ -12,15 +17,18 @@ def main():
 
     count = 0
     for sentence in sentences:
-        f_set = detect_sentence_features(sentence)
-
-        if count:  # all lines after the 1st have whitespace between
-            print()
+        logger.info(f"Sentences ({len(sentences)}): `{sentences}`")
         print(f"####### START SENTENCE {count} #######")
+        logger.info(f"Sentence {count}: `{sentence}`")
+
         print("##### Sentence tokens #####")
-        print_token_table(sentence)
-        print()
-        print(f_set.toJSON())
+        token_table = to_token_table(sentence)
+        logger.info(f"Token table:\n{token_table}")
+        print(token_table, "\n")
+
+        set_json = detect_sentence_features(sentence).toJSON()
+        logger.info(f"Sentence feature set:\n{set_json}")
+        print(set_json)
         print(f"####### END SENTENCE {count} #######")
         count += 1
 
