@@ -11,42 +11,36 @@ class FeatureDetector:
     logger = logging.getLogger(__name__)
 
     def __init__(self, feature_klass, matcher):
-        self.logger.debug(f"Started constructing for `{feature_klass}`")
-        self.logger.debug(f"A matcher was provided: `{bool(matcher)}`")
+        self.logger.debug(f"Constructing FeatureDetector for `{feature_klass}` with matcher `{matcher}`")
         self._feature_klass = feature_klass
         self._matcher = matcher
-        self.logger.debug("Finished constructing")
 
     def determine_features(self, pattern_name, span):
         self.logger.error("determine_features() was not implemented")
         raise NotImplementedError
 
     def to_feature(self, pattern_name, span):
-        self.logger.debug(f"Started extracting features from the pattern `{pattern_name}` and the span `{span}`")
-        feature_dict = self.determine_features(pattern_name, span)
-        self.logger.debug(f"Finished extracting features: `{feature_dict}`")
-
-        self.logger.debug(f"Started creating instance of `{self._feature_klass}`")
+        self.logger.debug(f"Creating instance of `{self._feature_klass}`")
         feature = self._feature_klass()
-        self.logger.debug(f"Finished creating instance: `{feature}`")
 
-        self.logger.debug(f"Started setting `{feature}` attributes to `{feature_dict}` attributes")
+        self.logger.debug(f"Extracting features from the pattern `{pattern_name}` and the span `{span}`")
+        feature_dict = self.determine_features(pattern_name, span)
+
+        self.logger.debug(f"Setting `{feature}` attributes to `{feature_dict}` attributes")
         for key in feature_dict:
             feature_dict_val = feature_dict[key]
-            self.logger.debug(f"Started adding value `{feature_dict_val}`")
+            self.logger.debug(f"Adding `{feature_dict_val}` to `{key}`")
             setattr(feature, key, feature_dict_val)
-            self.logger.debug("Finished adding value")
-        self.logger.debug("Finished setting feature attributes")
         return feature
 
     def detect_many(self, maybe_tokenized):
-        self.logger.debug(f"Started detecting features in `{maybe_tokenized}`")
+        self.logger.debug(f"Detecting features in `{maybe_tokenized}`")
         doc = make_doc(maybe_tokenized)
         matches = []
         if self._matcher:
-            self.logger.debug(f"Started running the matcher on `{doc}`")
+            self.logger.debug(f"Running the matcher on `{doc}`")
             matches = run_matcher(self._matcher, doc)
-            self.logger.debug(f"The matcher found `{len(matches)}` match(es)`")
+            self.logger.debug(f"The matcher found `{len(matches)}` match(es)")
         else:
             # if matcher was not provided and the input is intended to be used as
             # the span for determine_features(), create a dummy match with the 
@@ -60,7 +54,7 @@ class FeatureDetector:
             err_msg = "No matches were found"
             self.logger.debug(err_msg)
             raise ValueError(err_msg)
-        self.logger.debug(f"Started creating feature instances of type {self._feature_klass}")
+        self.logger.debug(f"Creating feature instances of type `{self._feature_klass}`")
         features = [self.to_feature(name, span) for (name, span) in matches]
         self.logger.debug(f"Created `{len(features)}` instance(s)")
         return features

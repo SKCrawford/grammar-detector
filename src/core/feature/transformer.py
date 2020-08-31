@@ -4,7 +4,7 @@ from spacy import explain
 
 def parse_phrase_features_from_chunk(chunk):
     logger = logging.getLogger(parse_phrase_features_from_chunk.__name__)
-    logger.info("Started parsing chunk")
+    logger.info(f"Parsing `{chunk}`")
     features = {}
     features["phrase"] = chunk.text
     features["root"] = chunk.root.text
@@ -17,5 +17,4 @@ def parse_phrase_features_from_chunk(chunk):
     features["pos_desc"] = explain(chunk.root.pos_)
     features["tag_desc"] = explain(chunk.root.tag_)
     features["dep_desc"] = explain(chunk.root.dep_)
-    logger.info(f"Finished parsing chunk: `{features}`")
     return features

@@ -1,13 +1,14 @@
 import logging
 
 
+logger = logging.getLogger(__name__)
+
+
 class Builder:
     def __init__(self, klass):
-        logger = logging.getLogger(self.__init__.__name__)
-        logger.debug(f"Started constructing builder for class `{klass}`")
+        logger.debug(f"Constructing builder for `{klass}`")
         self._klass = klass
         self._instance = None
-        logger.debug("Finished constructing builder")
 
     def _ensure_spawned(self):
         if not self._instance:
@@ -19,10 +20,8 @@ class Builder:
 
         Given args and/or kwargs, return self.
         """
-        logger = logging.getLogger(self.spawn.__name__)
-        logger.debug(f"Started spawning instance of `{self._klass}`")
+        logger.debug(f"Spawning instance of `{self._klass}`")
         self._instance = self._klass(*args, **kwargs)
-        logger.debug(f"Finished spawning instance: `{self._instance}`")
         return self
 
     def set_attr(self, name, value):
@@ -30,15 +29,13 @@ class Builder:
 
         Given a string, return self.
         """
-        logger = logging.getLogger(self.set_attr.__name__)
         self._ensure_spawned()
-        logger.debug(f"Started setting feature value `{value}` to attribute `{name}` onto the instance `{self._instance}`")
+        logger.debug(f"Setting instance's attribute `{name}` to `{value}`")
         if not hasattr(self._instance, name):
             msg = f"Invalid attribute name `{name}`"
             logger.error(msg)
             raise ValueError(msg)
         setattr(self._instance, name, value)
-        logger.debug("Finished setting feature value onto the instance")
         return self
 
     def build(self):
@@ -46,7 +43,6 @@ class Builder:
 
         Given void, return a VerbFeatureSet instance.
         """
-        logger = logging.getLogger(self.build.__name__)
         self._ensure_spawned()
-        logger.debug(f"Returning the built instance of class `{self._klass}`: `{self._instance}`")
+        logger.debug(f"Returning the instance `{self._instance}`")
         return self._instance

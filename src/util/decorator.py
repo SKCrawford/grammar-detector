@@ -3,6 +3,9 @@ from functools import wraps
 from . import validator
 
 
+logger = logging.getLogger(__name__)
+
+
 def is_in_enum(enum):
     """A decorator wrapping the is_in_enum validator.
 
@@ -46,18 +49,15 @@ def is_type(type_):
 # source: https://riptutorial.com/python/example/10954/create-singleton-class-with-a-decorator
 def singleton(klass):
     """A class decorator adding singleton functionality."""
-    logger = logging.getLogger(singleton.__name__)
     instances = [None]
     def wrapper(*args, **kwargs):
-        logger.debug(f"Started looking for pre-existing instance of `{klass}`")
+        logger.debug(f"Looking for a pre-existing instance of `{klass}`")
         instance = instances[0]
-        logger.debug("Finished looking for pre-existing instance")
         if instance is None:
             logger.debug("Didn't find a pre-existing instance")
-            logger.debug(f"Started creating a new instance of `{klass}`")
+            logger.debug("Creating a new instance")
             instance = klass(*args, **kwargs)
-            logger.debug(f"Finished creating a new instance: `{instance}`")
             instances[0] = instance
-        logger.debug("Returning the created instance")
+        logger.debug(f"Returning the instance `{instance}`")
         return instance
     return wrapper

@@ -17,17 +17,18 @@ def main():
 
     count = 0
     for sentence in sentences:
-        logger.info(f"Sentences ({len(sentences)}): {sentences}")
+        logger.info(f"Sentences ({len(sentences)}): `{sentences}`")
         print(f"####### START SENTENCE {count} #######")
-        logger.info(f"Sentence {count}: {sentence}")
+        logger.info(f"Sentence {count}: `{sentence}`")
 
         print("##### Sentence tokens #####")
-        logger.info(f"Token table:\n{to_token_table(sentence)}")
-        print(to_token_table(sentence), "\n")
+        token_table = to_token_table(sentence)
+        logger.info(f"Token table:\n{token_table}")
+        print(token_table, "\n")
 
-        f_set = detect_sentence_features(sentence)
-        logger.info(f"Sentence feature set:\n{f_set.toJSON()}")
-        print(f_set.toJSON())
+        set_json = detect_sentence_features(sentence).toJSON()
+        logger.info(f"Sentence feature set:\n{set_json}")
+        print(set_json)
         print(f"####### END SENTENCE {count} #######")
         count += 1
 

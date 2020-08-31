@@ -16,10 +16,8 @@ class SyntaxPatterns:
     """
 
     def __init__(self):
-        logger.debug("Started loading syntax patterns from the JSON file")
-        logger.info(f"JSON patterns filepath: `{patterns_json_path}`")
+        logger.debug(f"Loading syntax patterns from the JSON file at `{patterns_json_path}`")
         self.patterns = self._load_syntax_patterns()
-        logger.debug("Finished loading syntax patterns from the JSON file")
 
     def _load_syntax_patterns(self):
         with open(patterns_json_path, "r") as f:

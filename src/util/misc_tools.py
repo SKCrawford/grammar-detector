@@ -5,6 +5,9 @@ from src.features.sentence_set.model import SentenceFeatureSet
 from src.nlp import nlp
 
 
+logger = logging.getLogger(__name__)
+
+
 def to_token_table(sentence, pos=True, tag=True, dependency=True, lemma=True):
     """Print the linguistics features of each word in a sentence.
     If pos is True, then print the part-of-speech (POS). Defaults to True.
@@ -14,11 +17,9 @@ def to_token_table(sentence, pos=True, tag=True, dependency=True, lemma=True):
 
     Given a string, return None.
     """
-    logger = logging.getLogger(to_token_table.__name__)
-    logger.debug("Started creating the token table")
-    logger.debug(f"Sentence: `{sentence}`")
+    logger.debug(f"Creating the token table for `{sentence}`")
 
-    logger.debug("Started creating the token table headers")
+    logger.debug("Creating the table headers")
     headers = []
     headers.append("Word")
     if pos:
@@ -32,13 +33,11 @@ def to_token_table(sentence, pos=True, tag=True, dependency=True, lemma=True):
         headers.append("Dep. Definition")
     if lemma:
         headers.append("Lemma.")
-    logger.debug("Finished creating the token table headers")
 
-    logger.debug("Started tokenizing the sentence")
+    logger.debug("Tokenizing")
     tagged_words = nlp(sentence)
-    logger.debug("Finished tokenizing the sentence")
 
-    logger.debug("Started extracting features from the tokenized sentence")
+    logger.debug("Extracting features")
     data = []
     for word in tagged_words:
         entry = []
@@ -55,6 +54,5 @@ def to_token_table(sentence, pos=True, tag=True, dependency=True, lemma=True):
         if lemma:
             entry.append(word.lemma_)
         data.append(entry)
-    logger.debug("Finished extracting features from the tokenized sentence")
     logger.debug("Returning the token table")
     return tabulate(data, headers=headers, tablefmt="github")
