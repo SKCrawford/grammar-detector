@@ -51,12 +51,13 @@ def singleton(klass):
     def wrapper(*args, **kwargs):
         logger.debug(f"Started looking for pre-existing instance of `{klass}`")
         instance = instances[0]
-        logger.debug(f"Finished looking for pre-existing instance of `{klass}`")
+        logger.debug("Finished looking for pre-existing instance")
         if instance is None:
-            logger.debug(f"Didn't find a pre-existing instance of `{klass}`")
+            logger.debug("Didn't find a pre-existing instance")
             logger.debug(f"Started creating a new instance of `{klass}`")
             instance = klass(*args, **kwargs)
-            logger.debug(f"Finished creating a new instance of `{klass}`: `{instance}`")
+            logger.debug(f"Finished creating a new instance: `{instance}`")
             instances[0] = instance
+        logger.debug("Returning the created instance")
         return instance
     return wrapper

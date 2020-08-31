@@ -17,14 +17,20 @@ def get_best_match(matches):
         logger.error(err_msg)
         raise ValueError(err_msg)
 
-    logger.debug(f"Finished validating matches: `{matches}`")
+    logger.debug("Finished validating matches")
+    logger.debug(f"Started determining the best match: `{matches}`")
     match = matches.pop()
-    logger.debug(f"Returning best match: `{match}`")
+    logger.debug(f"Finished determining the best match: `{match}`")
     return match
 
 
 def get_best_matches(match_groups):
-    return [get_best_match(matches) for matches in match_groups]
+    logger = logging.getLogger(get_best_matches.__name__)
+    logger.debug(f"Started determining the best match for each group: {match_groups}")
+    best_matches = [get_best_match(matches) for matches in match_groups]
+    logger.debug(f"Finished determining the best match for each group: {best_matches}")
+    return best_matches
+
 
 
 def group_matches_by_start(matches):
@@ -48,13 +54,18 @@ def group_matches_by_start(matches):
 
 def is_tokenized(maybe_tokenized):
     logger = logging.getLogger(is_tokenized.__name__)
+    logger.debug(f"Started validating input: {maybe_tokenized}")
     is_not_type(maybe_tokenized, type(None))
     is_truthy(maybe_tokenized)
+    logger.debug("Finished validating input")
+    logger.debug("Started determining if input is already tokenized")
     if isinstance(maybe_tokenized, str):
-        logger.debug(f"Sentence `{maybe_tokenized}` is not tokenized")
+        logger.debug("Finished determining if input is already tokenized")
+        logger.debug("Sentence is not tokenized, so returning False")
         return False
     elif isinstance(maybe_tokenized, Doc) or isinstance(maybe_tokenized, Span):
-        logger.debug(f"Sentence `{maybe_tokenized}` is already tokenized")
+        logger.debug("Finished determining if input is already tokenized")
+        logger.debug("Sentence is already tokenized, so returning True")
         return True
     err_msg = f"Expected a string, Doc, or Span but got `{type(maybe_tokenized)}`"
     logger.error(err_msg)
@@ -66,7 +77,7 @@ def make_doc(maybe_tokenized):
     logger = logging.getLogger(make_doc.__name__)
     logger.debug(f"Started tokenizing `{maybe_tokenized}`")
     doc = nlp(maybe_tokenized) if not is_tokenized(maybe_tokenized) else maybe_tokenized
-    logger.debug(f"Finished tokenizing `{maybe_tokenized}`: `{doc}`")
+    logger.debug(f"Finished tokenizing: `{doc}`")
     return doc
 
 
@@ -85,12 +96,14 @@ def run_matcher(matcher, maybe_tokenized):
     logger.debug(f"Started validating matcher: `{matcher}`")
     is_not_type(matcher, type(None))
     is_truthy(matcher)
-    logger.debug(f"Finished validating matcher: `{matcher}`")
+    logger.debug(f"Finished validating matcher")
+    logger.debug(f"Started tokenizing the input: `{input}`")
     doc = make_doc(maybe_tokenized)
+    logger.debug(f"Finished tokenizing the input: `{doc}`")
 
-    logger.debug(f"Started running matcher `{matcher}` on doc `{doc}`")
+    logger.debug("Started running matcher on doc")
     matches = matcher(doc)
-    logger.debug(f"Finished running matcher `{matcher}` on doc `{doc}`: {matches}")
+    logger.debug(f"Finished running matcher: `{matches}`")
 
     logger.debug(f"Started grouping matches: `{matches}`")
     grouped_matches = group_matches_by_start(matches) # 2D list
