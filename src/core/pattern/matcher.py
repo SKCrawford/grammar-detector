@@ -29,7 +29,7 @@ class PatternSetMatcher:
 
         Given void, return void.
         """
-        self._matcher = Matcher(nlp.vocab)
+        self._matcher = Matcher(nlp.vocab, validate=True)
         for pattern in self._pattern_set.find_all():
             self._matcher.add(pattern.name, [pattern.tokens])
         self._is_loaded = True
