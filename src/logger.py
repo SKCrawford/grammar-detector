@@ -2,7 +2,7 @@ import logging
 
 
 logging.basicConfig(
-    filename="all.log",
+    filename="info.log",
     format="[%(asctime)s][%(name)s][%(levelname)s] %(message)s",
-    level=logging.DEBUG,
+    level=logging.INFO,
 )

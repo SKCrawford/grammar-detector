@@ -1,3 +1,4 @@
+import logging
 import re
 from spacy.tokens.doc import Doc
 from src.nlp import nlp
@@ -9,10 +10,17 @@ def remove_ordinals(string):
 
     Given a string, return a string.
     """
+    logger = logging.getLogger(remove_ordinals.__name__)
+    logger.debug(f"Started validating string `{string}`")
     is_type(string, str)
     is_truthy(string)
+    logger.debug(f"Finished validating string `{string}`")
+
+    logger.debug(f"Started removing ordinals from string `{string}`")
     ordinal_reg = r"\b(\w+)(?:st|nd|rd|th)"
-    return re.sub(ordinal_reg, "", string, flags=re.IGNORECASE).strip()
+    stripped = re.sub(ordinal_reg, "", string, flags=re.IGNORECASE).strip()
+    logger.debug(f"Finished removing ordinals from string `{string}`: `{stripped}`")
+    return stripped
 
 
 def split_words_into_first_and_rest(string):
@@ -20,8 +28,13 @@ def split_words_into_first_and_rest(string):
 
     Given a string, return a tuple of (string, string).
     """
+    logger = logging.getLogger(split_words_into_first_and_rest.__name__)
+    logger.debug(f"Started validating string `{string}`")
     is_type(string, str)
     is_truthy(string)
+    logger.debug(f"Finished validating string `{string}`")
+
+    logger.debug(f"Started splitting string `{string}`")
     first_word_and_rest_of_words_reg = r"(\w+)\s([\w\s]*)"
     match = re.search(first_word_and_rest_of_words_reg, string)
 
@@ -30,4 +43,5 @@ def split_words_into_first_and_rest(string):
     if match:
         first_word = match.group(1).strip()
         rest_of_words = match.group(2).strip()
+    logger.debug(f"Finished splitting string `{string}`: ('{first_word}`, `{rest_of_words}`)")
     return (first_word, rest_of_words)

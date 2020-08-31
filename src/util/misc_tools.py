@@ -1,3 +1,4 @@
+import logging
 from tabulate import tabulate
 from spacy import explain
 from src.features.sentence_set.model import SentenceFeatureSet
@@ -13,7 +14,11 @@ def to_token_table(sentence, pos=True, tag=True, dependency=True, lemma=True):
 
     Given a string, return None.
     """
-    # Create the table headers
+    logger = logging.getLogger(to_token_table.__name__)
+    logger.debug("Started creating the token table")
+    logger.debug(f"Sentence: `{sentence}`")
+
+    logger.debug("Started creating the token table headers")
     headers = []
     headers.append("Word")
     if pos:
@@ -27,9 +32,13 @@ def to_token_table(sentence, pos=True, tag=True, dependency=True, lemma=True):
         headers.append("Dep. Definition")
     if lemma:
         headers.append("Lemma.")
+    logger.debug("Finished creating the token table headers")
 
-    # Create the table data
+    logger.debug("Started tokenizing the sentence")
     tagged_words = nlp(sentence)
+    logger.debug("Finished tokenizing the sentence")
+
+    logger.debug("Started extracting features from the tokenized sentence")
     data = []
     for word in tagged_words:
         entry = []
@@ -46,4 +55,6 @@ def to_token_table(sentence, pos=True, tag=True, dependency=True, lemma=True):
         if lemma:
             entry.append(word.lemma_)
         data.append(entry)
+    logger.debug("Finished extracting features from the tokenized sentence")
+    logger.debug("Returning the token table")
     return tabulate(data, headers=headers, tablefmt="github")

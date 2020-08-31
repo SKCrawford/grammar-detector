@@ -1,3 +1,4 @@
+import logging
 from functools import wraps
 from . import validator
 
@@ -45,9 +46,17 @@ def is_type(type_):
 # source: https://riptutorial.com/python/example/10954/create-singleton-class-with-a-decorator
 def singleton(klass):
     """A class decorator adding singleton functionality."""
+    logger = logging.getLogger(singleton.__name__)
     instances = [None]
     def wrapper(*args, **kwargs):
-        if instances[0] is None:
-            instances[0] = klass(*args, **kwargs)
-        return instances[0]
+        logger.debug(f"Started looking for pre-existing instance of `{klass}`")
+        instance = instances[0]
+        logger.debug(f"Finished looking for pre-existing instance of `{klass}`")
+        if instance is None:
+            logger.debug(f"Didn't find a pre-existing instance of `{klass}`")
+            logger.debug(f"Started creating a new instance of `{klass}`")
+            instance = klass(*args, **kwargs)
+            logger.debug(f"Finished creating a new instance of `{klass}`: `{instance}`")
+            instances[0] = instance
+        return instance
     return wrapper
