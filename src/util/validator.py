@@ -53,7 +53,7 @@ def is_type(value, type_):
     """
     logger.debug(f"Validating `{value}` is of type `{type_}`")
     if not isinstance(value, type_):
-        err_msg = "Invalid: type is `{type(value)}`"
+        err_msg = f"Invalid: type is `{type(value)}`"
         logger.error(err_msg)
-        raise ValueError(err_msg)
+        raise TypeError(err_msg)
     logger.debug("Valid")
