@@ -14,4 +14,4 @@ spacy-lookups-data = "*"
 jsonschema = "*"
 
 [requires]
-python_version = "3.6.9"
+python_version = "3.8.2"
