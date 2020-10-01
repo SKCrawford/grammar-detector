@@ -10,4 +10,4 @@ def create_noun_person_pattern_set():
     return PatternSetFactory()      \
         .set_json_key("persons")    \
         .set_name("person")         \
-        .build()                    \
+        .build()                    

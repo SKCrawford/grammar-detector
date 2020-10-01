@@ -9,4 +9,4 @@ def create_verb_voice_pattern_set():
     return PatternSetFactory()      \
         .set_json_key("voices")     \
         .set_name("voice")          \
-        .build()                    \
+        .build()
