@@ -1,0 +1,23 @@
+{
+    "1st": [
+        {
+            "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
+            "OP": "+",
+            "LOWER": { "IN": ["i", "we"] }
+        }
+    ],
+    "2nd": [
+        {
+            "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
+            "OP": "+",
+            "LOWER": "you"
+        }
+    ],
+    "3rd": [
+        {
+            "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
+            "OP": "+",
+            "LOWER": { "NOT_IN": ["i", "we", "you"] }
+        }
+    ]
+}

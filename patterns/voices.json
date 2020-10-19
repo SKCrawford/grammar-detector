@@ -1,0 +1,8 @@
+{
+    "active": [{ "DEP": "aux", "OP": "*" }, { "POS": "VERB", "OP": "+" }],
+    "passive": [
+        { "DEP": "aux", "OP": "*" },
+        { "DEP": "auxpass", "OP": "+" },
+        { "TAG": "VBN", "OP": "+" }
+    ]
+}
