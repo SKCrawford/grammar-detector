@@ -66,7 +66,7 @@ class FeatureDetector:
             self.logger.warning(err_msg)
             warn(err_msg)
         feature = features[0]
-        print(f"Returning the feature `{feature}`")
+        self.logger.debug(f"Returning the feature `{feature}`")
         return feature
 
 

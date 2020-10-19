@@ -1,7 +1,6 @@
 import logging
 from tabulate import tabulate
 from spacy import explain
-from src.features.sentence_set.model import SentenceFeatureSet
 from src.nlp import nlp
 
 
