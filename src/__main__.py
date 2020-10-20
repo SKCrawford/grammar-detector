@@ -2,7 +2,7 @@ import logging
 import sys
 import src.logger
 from src.util.misc_tools import to_token_table
-from .features.detector import detect_features
+from .features import detect_features
 
 
 logger = logging.getLogger(__name__)
@@ -26,7 +26,7 @@ def main():
         logger.info(f"Token table:\n{token_table}")
         print(token_table, "\n")
 
-        set_json = detect_features(sentence).toJSON()
+        set_json = detect_features(sentence).to_JSON()
         logger.info(f"Sentence feature set:\n{set_json}")
         print(set_json)
         print(f"####### END SENTENCE {count} #######")
