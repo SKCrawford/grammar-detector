@@ -2,6 +2,7 @@ import logging
 import re
 from enum import Enum
 from src.core import match_by_pattern
+from src.util.validator import is_in_enum, is_truthy
 
 
 logger = logging.getLogger(__name__)
@@ -51,6 +52,21 @@ class TenseAspect(Enum):
     UNKNOWN = "???"
 
 
+def is_verb_tense_aspect(tense_aspect):
+    is_truthy(tense_aspect)
+    is_in_enum(tense_aspect, TenseAspect)
+
+
+def is_verb_tense(tense):
+    is_truthy(tense)
+    is_in_enum(tense, Tense)
+
+
+def is_verb_aspect(aspect):
+    is_truthy(aspect)
+    is_in_enum(aspect, Aspect)
+
+
 def extract_tense_aspect(verb_tense):
     """Determine the tense and aspect of a verb tense phrase. For example
     'future perfect continuous' should return ('future', 'perfect continuous').
@@ -73,5 +89,9 @@ def detect_verb_tense_aspect(maybe_tokenized):
     logger.debug("Started detecting")
     matches = match_by_pattern("tense_aspects", maybe_tokenized)
     (tense_aspect, span) = matches[0]
+    is_verb_tense_aspect(tense_aspect)
+
     (tense, aspect) = extract_tense_aspect(tense_aspect)
+    is_verb_tense(tense)
+    is_verb_aspect(aspect)
     return (tense, aspect)
