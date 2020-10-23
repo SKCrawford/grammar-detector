@@ -2,7 +2,7 @@ import logging
 from enum import Enum
 from src.core import match_by_pattern, parse_phrase_features_from_chunk
 from src.util.serializable import Serializable
-from src.util.validator import is_in_enum, is_truthy
+from src.util.validator import is_in_enum, is_truthy, is_type
 from .tense_aspect import detect_verb_tense_aspect
 from .voice import detect_verb_voice
 
@@ -19,6 +19,7 @@ class Verbial(Enum):
 
 
 def is_verb(verb):
+    is_type(verb, Serializable)
     is_truthy(verb)
     is_in_enum(verb.pos, Verbial)
 

@@ -1,7 +1,7 @@
 import logging
 from enum import Enum
 from src.core import match_by_pattern
-from src.util.validator import is_in_enum, is_truthy
+from src.util.validator import is_in_enum, is_truthy, is_type
 
 
 logger = logging.getLogger(__name__)
@@ -16,6 +16,7 @@ class Voice(Enum):
 
 
 def is_verb_voice(voice):
+    is_type(voice, str)
     is_truthy(voice)
     is_in_enum(voice, Voice)
 

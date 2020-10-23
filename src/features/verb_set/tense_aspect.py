@@ -2,7 +2,7 @@ import logging
 import re
 from enum import Enum
 from src.core import match_by_pattern
-from src.util.validator import is_in_enum, is_truthy
+from src.util.validator import is_in_enum, is_truthy, is_type
 
 
 logger = logging.getLogger(__name__)
@@ -53,16 +53,19 @@ class TenseAspect(Enum):
 
 
 def is_verb_tense_aspect(tense_aspect):
+    is_type(tense_aspect, str)
     is_truthy(tense_aspect)
     is_in_enum(tense_aspect, TenseAspect)
 
 
 def is_verb_tense(tense):
+    is_type(tense, str)
     is_truthy(tense)
     is_in_enum(tense, Tense)
 
 
 def is_verb_aspect(aspect):
+    is_type(aspect, str)
     is_truthy(aspect)
     is_in_enum(aspect, Aspect)
 
