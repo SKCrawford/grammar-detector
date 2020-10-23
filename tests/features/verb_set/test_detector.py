@@ -1,11 +1,11 @@
 import unittest
-from src.features.verb_set import detect_verbs
+from src.features.verb_set import detect_verb_features
 from src.util.serializable import Serializable
 
 
-class TestVerbVerbDetector(unittest.TestCase):
+class TestVerbFeaturesDetector(unittest.TestCase):
     def assertVerbText_(self, value, expected_texts):
-        result = detect_verbs(value)
+        result = detect_verb_features(value)
         count = 0
         for expected_text in expected_texts:
             verb = result[count]
@@ -14,10 +14,10 @@ class TestVerbVerbDetector(unittest.TestCase):
             count += 1
 
     def test_is_defined(self):
-        self.assertTrue(detect_verbs)
+        self.assertTrue(detect_verb_features)
 
     def test_returns_a_list_of_serializable_objects(self):
-        result = detect_verbs("I ran to the beach.")
+        result = detect_verb_features("I ran to the beach.")
         self.assertIsInstance(result, list)
         [self.assertIsInstance(verb, Serializable) for verb in result]
 
@@ -39,8 +39,8 @@ class TestVerbVerbDetector(unittest.TestCase):
         self.assertVerbText_("I will have been running.", ["will have been running"])
 
     def test_true_negative(self):
-        self.assertRaises(TypeError, detect_verbs, 100)
-        self.assertRaises(TypeError, detect_verbs, True)
-        self.assertRaises(TypeError, detect_verbs, ["I ran to the beach."])
-        self.assertRaises(TypeError, detect_verbs, None)
-        self.assertRaises(ValueError, detect_verbs, "")
+        self.assertRaises(TypeError, detect_verb_features, 100)
+        self.assertRaises(TypeError, detect_verb_features, True)
+        self.assertRaises(TypeError, detect_verb_features, ["I ran to the beach."])
+        self.assertRaises(TypeError, detect_verb_features, None)
+        self.assertRaises(ValueError, detect_verb_features, "")

@@ -1,18 +1,24 @@
 import unittest
+from src.features.verb_set.verb import is_verb
+from src.util.serializable import Serializable
 
 
-@unittest.skip("TODO needs major updates")
 class TestVerbVerbValidator(unittest.TestCase):
     def test_are_validators_defined(self):
-        self.assertTrue(validator.validate_verb_feature)
-        self.assertTrue(validator._validate_verb_text)
+        self.assertTrue(is_verb)
 
     def test_verb_validator_true_positive(self):
-        validator._validate_verb_text("run")
-        validator._validate_verb_text("run away")
+        verb = Serializable()           \
+            .set("pos", "VERB")         \
+            .set("text", "run")         \
+            .set("lemmas", "run")       \
+            .set("root_lemma", "run")
+        is_verb(verb)
 
     def test_verb_validator_true_negative(self):
-        self.assertRaises(TypeError, validator._validate_verb_text, 100)
-        self.assertRaises(TypeError, validator._validate_verb_text, True)
-        self.assertRaises(TypeError, validator._validate_verb_text, ["run"])
-        self.assertRaises(ValueError, validator._validate_verb_text, "")
+        self.assertRaises(TypeError, is_verb, 100)
+        self.assertRaises(TypeError, is_verb, True)
+        self.assertRaises(TypeError, is_verb, ["run"])
+        self.assertRaises(TypeError, is_verb, "")
+        noun = Serializable().set("pos", "NOUN")
+        self.assertRaises(ValueError, is_verb, noun)

@@ -3,7 +3,7 @@ from enum import Enum
 from src.core import parse_phrase_features_from_chunk
 from src.util.serializable import Serializable
 from src.util.spacy import make_doc
-from src.util.validator import is_in_enum, is_truthy
+from src.util.validator import is_in_enum, is_truthy, is_type
 from .person import detect_noun_person
 
 
@@ -19,6 +19,7 @@ class Nominal(Enum):
 
 
 def is_noun(noun):
+    is_type(noun, Serializable)
     is_truthy(noun)
     is_in_enum(noun.pos, Nominal)
 
