@@ -1,16 +1,7 @@
 import unittest
-#  from src.features.verb_set.transitivity import is_verb_transitivity
+from src.features.verb_set.transitivity import is_verb_transitivity, is_verb_valency
 
 
-def is_verb_transitivity(transitivity):
-    pass
-
-
-def is_verb_valency(valency):
-    pass
-
-
-@unittest.skip("TODO")
 class TestVerbTransitivityValidator(unittest.TestCase):
     def test_are_validators_defined(self):
         self.assertTrue(is_verb_transitivity)
@@ -39,6 +30,7 @@ class TestVerbTransitivityValidator(unittest.TestCase):
         self.assertRaises(TypeError, is_verb_valency, "2")
         self.assertRaises(TypeError, is_verb_valency, "3")
         self.assertRaises(TypeError, is_verb_valency, True)
+        self.assertRaises(TypeError, is_verb_valency, False)
         self.assertRaises(TypeError, is_verb_valency, [0])
         self.assertRaises(ValueError, is_verb_valency, -1)
         self.assertRaises(ValueError, is_verb_valency, 4)

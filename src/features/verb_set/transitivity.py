@@ -1,6 +1,7 @@
 import logging
 from enum import Enum, IntEnum
 from src.core import match_by_pattern
+from src.util.decorator import is_in_enum, is_not_type, is_truthy, is_type
 
 
 logger = logging.getLogger(__name__)
@@ -22,6 +23,21 @@ class Valency(IntEnum):
     INTRANSITIVE = 1
     TRANSITIVE = 2
     DITRANSITIVE = 3
+
+
+@is_type(str)
+@is_truthy
+@is_in_enum(Transitivity)
+def is_verb_transitivity(transitivity):
+    pass
+
+
+@is_type(int) # unintentionally accept bools
+@is_not_type(bool) # intentionally reject the bools
+@is_in_enum(Valency)
+def is_verb_valency(valency):
+    if valency < 0 or valency > 3:
+        raise ValueError(f"Invalid valency: expected 0 to 3 but got `{valency}`")
 
 
 def determine_valency(transitivity):
