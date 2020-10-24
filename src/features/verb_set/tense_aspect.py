@@ -30,6 +30,7 @@ class Tense(Enum):
 class TenseAspect(Enum):
     """All possible English verb tenses and aspects."""
 
+    # Active voice
     PRESENT_SIMPLE = "present simple"
     PRESENT_SIMPLE_3 = "present simple 3rd"
     PAST_SIMPLE = "past simple"
@@ -49,6 +50,27 @@ class TenseAspect(Enum):
     PRESENT_PERF_CONT_3 = "present perfect continuous 3rd"
     PAST_PERF_CONT = "past perfect continuous"
     FUTURE_PERF_CONT = "future perfect continuous"
+
+    # Passive voice
+    PRESENT_SIMPLE_PASSIVE = "present simple passive"
+    PRESENT_SIMPLE_3_PASSIVE = "present simple 3rd passive"
+    PAST_SIMPLE_PASSIVE = "past simple passive"
+    FUTURE_SIMPLE_PASSIVE = "future simple passive"
+    FUTURE_SIMPLE_WILL_PASSIVE = "future simple will passive"
+    FUTURE_SIMPLE_BE_GOING_TO_PASSIVE = "future simple be-going-to passive"
+    FUTURE_SIMPLE_BE_GOING_TO_3_PASSIVE = "future simple be-going-to 3rd passive"
+    PRESENT_CONT_PASSIVE = "present continuous passive"
+    PRESENT_CONT_3_PASSIVE = "present continuous 3rd passive"
+    PAST_CONT_PASSIVE = "past continuous passive"
+    FUTURE_CONT_PASSIVE = "future continuous passive"
+    PRESENT_PERF_PASSIVE = "present perfect passive"
+    PRESENT_PERF_3_PASSIVE = "present perfect 3rd passive"
+    PAST_PERF_PASSIVE = "past perfect passive"
+    FUTURE_PERF_PASSIVE = "future perfect passive"
+    PRESENT_PERF_CONT_PASSIVE = "present perfect continuous passive"
+    PRESENT_PERF_CONT_3_PASSIVE = "present perfect continuous 3rd passive"
+    PAST_PERF_CONT_PASSIVE = "past perfect continuous passive"
+    FUTURE_PERF_CONT_PASSIVE = "future perfect continuous passive"
     UNKNOWN = "???"
 
 

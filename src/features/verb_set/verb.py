@@ -13,8 +13,7 @@ logger = logging.getLogger(__name__)
 class Verbial(Enum):
     """All possible verbial parts of speech."""
 
-    # TODO does AUX count as verbial? includes "will (do)" and "should (do)"
-    #  AUX = "AUX"
+    AUX = "AUX" # POS "AUX" can be DEP "ROOT"
     VERB = "VERB"
 
 

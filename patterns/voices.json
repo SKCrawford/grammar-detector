@@ -1,8 +1,11 @@
 {
-    "active": [{ "DEP": "aux", "OP": "*" }, { "POS": "VERB", "OP": "+" }],
+    "active": [
+        { "DEP": "aux", "OP": "*" }, 
+        { "DEP": "ROOT" }
+    ],
     "passive": [
         { "DEP": "aux", "OP": "*" },
         { "DEP": "auxpass", "OP": "+" },
-        { "TAG": "VBN", "OP": "+" }
+        { "TAG": "VBN", "DEP": "ROOT" }
     ]
 }

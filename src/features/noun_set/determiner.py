@@ -11,10 +11,10 @@ logger = logging.getLogger(__name__)
 class Determiner(Enum):
     """All possible determiners."""
 
-    DEFINITE = "DEFINITE"
-    INDEFINITE = "INDEFINITE"
-    OTHER = "OTHER"
-    NONE = "NONE"
+    DEFINITE = "definite"
+    INDEFINITE = "indefinite"
+    OTHER = "other"
+    NONE = "none"
 
 
 def detect_determiner(maybe_tokenized):
@@ -23,8 +23,6 @@ def detect_determiner(maybe_tokenized):
 
     (determiner_type, span) = matches[0]
     determiner = None
-    # enum doesn't work (yet)
-    # if determiner_type != Determiner.NONE:
-    if determiner_type != "NONE": 
-        determiner = span[0].text.lower()
-    return (determiner, determiner_type.lower())
+    if determiner_type != Determiner.NONE.value:
+        determiner = span[0].text
+    return (determiner, determiner_type)
