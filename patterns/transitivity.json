@@ -1,0 +1,28 @@
+{
+    "ditransitive": [
+        { "DEP": "nsubj" },
+        { "OP": "*" },
+        { "DEP": "ROOT" },
+        { "OP": "*" },
+        { "DEP": { "IN": ["dobj", "iobj", "pobj", "dative"] } },
+        { "OP": "*" },
+        { "DEP": { "IN": ["dobj", "iobj", "pobj", "dative"] } }
+    ],
+    "transitive": [
+        { "DEP": "nsubj" },
+        { "OP": "*" },
+        { "DEP": "ROOT" },
+        { "OP": "*" },
+        { "DEP": "dobj" }
+    ],
+    "intransitive": [
+        { "DEP": "nsubj", "LOWER": { "NOT_IN": ["it"] } },
+        { "OP": "*" },
+        { "DEP": "ROOT" }
+    ],
+    "impersonal": [
+        { "TAG": "PRP", "DEP": "nsubj", "LOWER": "it" },
+        { "OP": "*" },
+        { "DEP": "ROOT" }
+    ]
+}

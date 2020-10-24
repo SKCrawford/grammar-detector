@@ -4,6 +4,7 @@ from src.core import match_by_pattern, parse_phrase_features_from_chunk
 from src.util.serializable import Serializable
 from src.util.validator import is_in_enum, is_truthy, is_type
 from .tense_aspect import detect_verb_tense_aspect
+from .transitivity import detect_verb_transitivity
 from .voice import detect_verb_voice
 
 
@@ -29,14 +30,17 @@ def detect_verbs(maybe_tokenized):
     verbs = []
     for (tense_aspect, span) in matches:
         (tense, aspect) = detect_verb_tense_aspect(span)
+        (transitivity, valency) = detect_verb_transitivity(maybe_tokenized)
         voice = detect_verb_voice(span)
         phrase_features = parse_phrase_features_from_chunk(span)
 
-        verb = Serializable()           \
-            .copy_dict(phrase_features) \
-            .set("tense", tense)        \
-            .set("aspect", aspect)      \
-            .set("voice", voice)
+        verb = Serializable()                       \
+            .copy_dict(phrase_features)             \
+            .set("tense", tense)                    \
+            .set("aspect", aspect)                  \
+            .set("voice", voice)                    \
+            .set("transitivity", transitivity)      \
+            .set("valency", valency)
         is_verb(verb)
         verbs.append(verb)
     return verbs
