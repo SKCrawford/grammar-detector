@@ -1,0 +1,21 @@
+{
+    "INDEFINITE": [
+        { "POS": "DET", "LOWER": { "IN": ["a", "an"] } },
+        { "OP": "*" },
+        { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
+    ],
+    "DEFINITE": [
+        { "POS": "DET", "LOWER": "the" },
+        { "OP": "*" },
+        { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
+    ],
+    "OTHER": [
+        { "POS": "DET", "LOWER": { "NOT_IN": ["a", "an", "the"] } },
+        { "OP": "*" },
+        { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
+    ],
+    "NONE": [
+        { "POS": { "NOT_IN": ["DET"] }, "OP": "?" },
+        { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
+    ]
+}
