@@ -9,6 +9,7 @@ def is_noun_determiner_type(determiner_type):
     pass
 
 
+@unittest.skip("TODO")
 class TestNounPersonValidator(unittest.TestCase):
     def test_are_validators_defined(self):
         self.assertTrue(is_noun_determiner)
