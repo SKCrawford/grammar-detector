@@ -17,7 +17,7 @@ class Determiner(Enum):
     NONE = "none"
 
 
-def detect_determiner(maybe_tokenized):
+def detect_noun_determiner(maybe_tokenized):
     logger.debug("Started detecting")
     matches = match_by_pattern("determiners", maybe_tokenized)
 

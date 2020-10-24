@@ -5,7 +5,7 @@ from src.util.serializable import Serializable
 from src.util.spacy import make_doc
 from src.util.validator import is_in_enum, is_truthy, is_type
 from .person import detect_noun_person
-from .determiner import detect_determiner
+from .determiner import detect_noun_determiner
 
 
 logger = logging.getLogger(__name__)
@@ -31,7 +31,7 @@ def detect_nouns(maybe_tokenized):
     nouns = []
     for noun_chunk in doc.noun_chunks:
         person = detect_noun_person(noun_chunk)
-        (determiner, determiner_type) = detect_determiner(noun_chunk)
+        (determiner, determiner_type) = detect_noun_determiner(noun_chunk)
         phrase_features = parse_phrase_features_from_chunk(noun_chunk)
 
         noun = Serializable()                           \
