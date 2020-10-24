@@ -21,6 +21,21 @@ def is_in_enum(enum):
     return decorator
 
 
+def is_not_type(type_):
+    """A decorator wrapping the is_not_type validator.
+
+    Given a type, return a function decorator.
+    """
+    def decorator(fn):
+        @wraps(fn)
+        def wrapper(*w_args, **w_kwargs):
+            value = w_args[0]
+            validator.is_not_type(value, type_)
+            return fn(*w_args, **w_kwargs)
+        return wrapper
+    return decorator
+
+
 def is_truthy(fn):
     """A decorator wrapping the is_truthy validator. Does not accept arguments."""
     @wraps(fn)
@@ -32,7 +47,7 @@ def is_truthy(fn):
 
 
 def is_type(type_):
-    """A decorator wrapping the is_in_enum validator.
+    """A decorator wrapping the is_type validator.
 
     Given a type, return a function decorator.
     """
