@@ -1,6 +1,5 @@
 import unittest
 from src.features.noun_set import detect_nouns
-from src.util.serializable import Serializable
 
 
 class TestNounDetector(unittest.TestCase):
@@ -19,7 +18,7 @@ class TestNounDetector(unittest.TestCase):
     def test_returns_a_list_of_serializable_objects(self):
         result = detect_nouns("I ran to the beach.")
         self.assertIsInstance(result, list)
-        [self.assertIsInstance(noun, Serializable) for noun in result]
+        [self.assertIsInstance(noun, dict) for noun in result]
 
     def test_true_positive(self):
         self.assertNounText_("I ran to you.", ["I", "you"])

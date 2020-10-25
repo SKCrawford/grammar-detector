@@ -1,5 +1,4 @@
 import logging
-from src.util.serializable import Serializable
 from .noun_set import detect_noun_features
 from .verb_set import detect_verb_features
 
@@ -14,8 +13,8 @@ def detect_features(sentence):
     nouns = detect_noun_features(sentence)
     verbs = detect_verb_features(sentence)
 
-    feature_set = Serializable()    \
-        .set("sentence", sentence)  \
-        .set("nouns", nouns)        \
-        .set("verbs", verbs)
+    feature_set = {}
+    feature_set["sentence"] = sentence
+    feature_set["nouns"] = nouns
+    feature_set["verbs"] = verbs
     return feature_set

@@ -1,6 +1,5 @@
 import unittest
 from src.features.verb_set import detect_verb_features
-from src.util.serializable import Serializable
 
 
 class TestVerbFeaturesDetector(unittest.TestCase):
@@ -19,7 +18,7 @@ class TestVerbFeaturesDetector(unittest.TestCase):
     def test_returns_a_list_of_serializable_objects(self):
         result = detect_verb_features("I ran to the beach.")
         self.assertIsInstance(result, list)
-        [self.assertIsInstance(verb, Serializable) for verb in result]
+        [self.assertIsInstance(verb, dict) for verb in result]
 
     def test_true_positive(self):
         self.assertVerbText_("I run.", ["run"])

@@ -1,6 +1,5 @@
 import unittest
 from src.features.verb_set.verb import is_verb
-from src.util.serializable import Serializable
 
 
 class TestVerbVerbValidator(unittest.TestCase):
@@ -8,11 +7,11 @@ class TestVerbVerbValidator(unittest.TestCase):
         self.assertTrue(is_verb)
 
     def test_verb_validator_true_positive(self):
-        verb = Serializable()           \
-            .set("pos", "VERB")         \
-            .set("text", "run")         \
-            .set("lemmas", "run")       \
-            .set("root_lemma", "run")
+        verb = {}
+        verb["pos"] = "VERB"
+        verb["text"] = "run"
+        verb["lemmas"] = "run"
+        verb["root_lemma"] = "run"
         is_verb(verb)
 
     def test_verb_validator_true_negative(self):
@@ -20,5 +19,5 @@ class TestVerbVerbValidator(unittest.TestCase):
         self.assertRaises(TypeError, is_verb, True)
         self.assertRaises(TypeError, is_verb, ["run"])
         self.assertRaises(TypeError, is_verb, "")
-        noun = Serializable().set("pos", "NOUN")
+        noun = { "pos": "NOUN" }
         self.assertRaises(ValueError, is_verb, noun)

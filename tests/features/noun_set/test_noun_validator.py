@@ -1,6 +1,5 @@
 import unittest
 from src.features.noun_set.noun import is_noun
-from src.util.serializable import Serializable
 
 
 class TestNounValidator(unittest.TestCase):
@@ -8,11 +7,11 @@ class TestNounValidator(unittest.TestCase):
         self.assertTrue(is_noun)
 
     def test_noun_validator_true_positive(self):
-        noun = Serializable()           \
-            .set("pos", "NOUN")         \
-            .set("text", "the books")   \
-            .set("lemmas", "the book")  \
-            .set("root_lemma", "book")
+        noun = {}
+        noun["pos"] = "NOUN"
+        noun["text"] = "the books"
+        noun["lemmas"] = "the book"
+        noun["root_lemma"] = "book"
         is_noun(noun)
 
     def test_noun_validator_true_negative(self):

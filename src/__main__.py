@@ -1,4 +1,5 @@
 import logging
+import pprint
 import sys
 import src.logger
 from src.util.misc_tools import to_token_table
@@ -26,9 +27,10 @@ def main():
         logger.info(f"Token table:\n{token_table}")
         print(token_table, "\n")
 
-        set_json = detect_features(sentence).to_JSON()
-        logger.info(f"Sentence feature set:\n{set_json}")
-        print(set_json)
+        feature_set = detect_features(sentence)
+        logger.info("Detected features:")
+        logger.info(pprint.pformat(feature_set))
+        pprint.pprint(feature_set)
         print(f"####### END SENTENCE {count} #######")
         count += 1
 

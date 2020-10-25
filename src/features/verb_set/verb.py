@@ -1,7 +1,6 @@
 import logging
 from enum import Enum
-from src.core import match_by_pattern, parse_phrase_features_from_chunk
-from src.util.serializable import Serializable
+from src.core import extract_span_features, match_by_pattern
 from src.util.validator import is_in_enum, is_truthy, is_type
 from .tense_aspect import detect_verb_tense_aspect
 from .transitivity import detect_verb_transitivity
@@ -19,28 +18,25 @@ class Verbial(Enum):
 
 
 def is_verb(verb):
-    is_type(verb, Serializable)
     is_truthy(verb)
-    is_in_enum(verb.pos, Verbial)
+    is_in_enum(verb["pos"], Verbial)
 
 
 def detect_verbs(maybe_tokenized):
     logger.debug("Started detecting")
     matches = match_by_pattern("tense_aspects", maybe_tokenized)
     verbs = []
-    for (tense_aspect, span) in matches:
-        (tense, aspect) = detect_verb_tense_aspect(span)
+    for (_, match_span) in matches:
+        (tense, aspect) = detect_verb_tense_aspect(match_span)
         (transitivity, valency) = detect_verb_transitivity(maybe_tokenized)
-        voice = detect_verb_voice(span)
-        phrase_features = parse_phrase_features_from_chunk(span)
+        voice = detect_verb_voice(match_span)
 
-        verb = Serializable()                       \
-            .copy_dict(phrase_features)             \
-            .set("tense", tense)                    \
-            .set("aspect", aspect)                  \
-            .set("voice", voice)                    \
-            .set("transitivity", transitivity)      \
-            .set("valency", valency)
+        verb = extract_span_features(match_span)
+        verb["tense"] = tense
+        verb["aspect"] = aspect
+        verb["voice"] = voice
+        verb["transitivity"] = transitivity
+        verb["valency"] = valency
         is_verb(verb)
         verbs.append(verb)
     return verbs
