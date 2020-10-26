@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from enum import Enum
 from src.core import match_by_pattern
@@ -30,9 +31,9 @@ def is_noun_determiner_type(determiner_type):
     pass
 
 
-def detect_noun_determiner(maybe_tokenized):
+async def detect_noun_determiner(maybe_tokenized):
     logger.debug("Started detecting")
-    matches = match_by_pattern("determiners", maybe_tokenized)
+    matches = await match_by_pattern("determiners", maybe_tokenized)
     (determiner_type, span) = matches[0]
     is_noun_determiner_type(determiner_type)
 

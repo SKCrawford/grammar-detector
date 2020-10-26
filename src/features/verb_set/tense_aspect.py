@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import re
 from enum import Enum
@@ -110,9 +111,9 @@ def extract_tense_aspect(verb_tense):
     return (tense, aspect)
 
 
-def detect_verb_tense_aspect(maybe_tokenized):
+async def detect_verb_tense_aspect(maybe_tokenized):
     logger.debug("Started detecting")
-    matches = match_by_pattern("tense_aspects", maybe_tokenized)
+    matches = await match_by_pattern("tense_aspects", maybe_tokenized)
     (tense_aspect, span) = matches[0]
     is_verb_tense_aspect(tense_aspect)
 

@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from enum import Enum
 from src.core import match_by_pattern
@@ -21,9 +22,9 @@ def is_verb_voice(voice):
     is_in_enum(voice, Voice)
 
 
-def detect_verb_voice(maybe_tokenized):
+async def detect_verb_voice(maybe_tokenized):
     logger.debug("Started detecting")
-    matches = match_by_pattern("voices", maybe_tokenized)
+    matches = await match_by_pattern("voices", maybe_tokenized)
     (voice, span) = matches[0]
     is_verb_voice(voice)
     return voice

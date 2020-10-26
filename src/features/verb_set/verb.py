@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from enum import Enum
 from src.core import extract_span_features, match_by_pattern
@@ -22,14 +23,16 @@ def is_verb(verb):
     is_in_enum(verb["pos"], Verbial)
 
 
-def detect_verbs(maybe_tokenized):
+async def detect_verbs(maybe_tokenized):
     logger.debug("Started detecting")
-    matches = match_by_pattern("tense_aspects", maybe_tokenized)
+    matches = await match_by_pattern("tense_aspects", maybe_tokenized)
     verbs = []
     for (_, match_span) in matches:
-        (tense, aspect) = detect_verb_tense_aspect(match_span)
-        (transitivity, valency) = detect_verb_transitivity(maybe_tokenized)
-        voice = detect_verb_voice(match_span)
+        (tense, aspect), (transitivity, valency), voice = await asyncio.gather(
+            detect_verb_tense_aspect(match_span),
+            detect_verb_transitivity(maybe_tokenized),
+            detect_verb_voice(match_span),
+        )
 
         verb = extract_span_features(match_span)
         verb["tense"] = tense

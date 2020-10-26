@@ -5,7 +5,7 @@ from src.util.spacy import get_doc, get_span
 logger = logging.getLogger(__name__)
 
 
-def detect_similarity(base_word, target_words):
+async def detect_similarity(base_word, target_words):
     """Determine the similarity scores between a word and a list of words.
     Produces a list of tuples of shape (similarity_score, target_span, base_span).
 
@@ -26,7 +26,7 @@ def detect_similarity(base_word, target_words):
     return similarities
 
 
-def detect_similarities_between_verbs_and_nouns(verbs, nouns):
+async def detect_similarities_between_verbs_and_nouns(verbs, nouns):
     """For each verb and noun, add an attribute called `similarities`,
     which holds the similarity scores relevant to each verb and noun.
 
@@ -37,7 +37,7 @@ def detect_similarities_between_verbs_and_nouns(verbs, nouns):
     nouns = [dict(noun, **{ "similarities": [] }) for noun in list.copy(nouns)]
 
     for verb in verbs:
-        entries = detect_similarity(verb["span"], [noun["span"] for noun in nouns])
+        entries = await detect_similarity(verb["span"], [noun["span"] for noun in nouns])
         noun_i = 0 # The order of nouns matches the order of similarity entries
         for entry in entries:
             verb["similarities"].append(entry)

@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from enum import Enum
 from src.core import match_by_pattern
@@ -21,9 +22,9 @@ def is_noun_person(person):
     is_in_enum(person, Person)
 
 
-def detect_noun_person(maybe_tokenized):
+async def detect_noun_person(maybe_tokenized):
     logger.debug("Started detecting")
-    matches = match_by_pattern("persons", maybe_tokenized)
+    matches = await match_by_pattern("persons", maybe_tokenized)
     (person, span) = matches[0]
     is_noun_person(person)
     return person

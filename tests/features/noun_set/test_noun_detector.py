@@ -1,10 +1,11 @@
+import asyncio
 import unittest
 from src.features.noun_set import detect_nouns
 
 
-class TestNounDetector(unittest.TestCase):
-    def assertNounText_(self, value, expected_texts):
-        result = detect_nouns(value)
+class TestNounDetector(unittest.IsolatedAsyncioTestCase):
+    async def assertNounText_(self, value, expected_texts):
+        result = await detect_nouns(value)
         count = 0
         for expected_text in expected_texts:
             noun = result[count]
@@ -15,23 +16,28 @@ class TestNounDetector(unittest.TestCase):
     def test_is_defined(self):
         self.assertTrue(detect_nouns)
 
-    def test_returns_a_list_of_serializable_objects(self):
-        result = detect_nouns("I ran to the beach.")
+    async def test_returns_a_list_of_serializable_objects(self):
+        result = await detect_nouns("I ran to the beach.")
         self.assertIsInstance(result, list)
         [self.assertIsInstance(noun, dict) for noun in result]
 
-    def test_true_positive(self):
-        self.assertNounText_("I ran to you.", ["I", "you"])
-        self.assertNounText_("You ran to her.", ["You", "her"])
-        self.assertNounText_("She ran to him.", ["She", "him"])
-        self.assertNounText_("He ran to me.", ["He", "me"])
+    async def test_true_positive(self):
         value = "The pretty, little girl played with her extravagant dollhouse that her mother bought the day before."
         expected = ["The pretty, little girl", "her extravagant dollhouse", "her mother", "the day"]
-        self.assertNounText_(value, expected) 
+        await asyncio.gather(
+            self.assertNounText_("I ran to you.", ["I", "you"]),
+            self.assertNounText_("You ran to her.", ["You", "her"]),
+            self.assertNounText_("She ran to him.", ["She", "him"]),
+            self.assertNounText_("He ran to me.", ["He", "me"]),
+            self.assertNounText_(value, expected),
+        )
 
-    def test_true_negative(self):
-        self.assertRaises(TypeError, detect_nouns, 100)
-        self.assertRaises(TypeError, detect_nouns, True)
-        self.assertRaises(TypeError, detect_nouns, ["I ran to the beach."])
-        self.assertRaises(TypeError, detect_nouns, None)
-        self.assertRaises(ValueError, detect_nouns, "")
+    async def test_true_negative(self):
+        with self.assertRaises(TypeError):
+            await detect_nouns(100)
+            await detect_nouns(True)
+            await detect_nouns(["I ran to the beach."])
+            await detect_nouns(None)
+
+        with self.assertRaises(ValueError):
+            await detect_nouns("")

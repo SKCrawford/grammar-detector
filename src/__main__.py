@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import pprint
 import sys
@@ -10,7 +11,7 @@ from .features import detect_features
 logger = logging.getLogger(__name__)
 
 
-def main():
+async def main():
     start_time = time.time()
     sentences = []
     if len(sys.argv) > 0:
@@ -30,7 +31,7 @@ def main():
         logger.info(f"Token table:\n{token_table}")
         print(token_table, "\n")
 
-        feature_set = detect_features(sentence)
+        feature_set = await detect_features(sentence)
         logger.info("Detected features:")
         logger.info(pprint.pformat(feature_set))
         pprint.pprint(feature_set)
@@ -41,4 +42,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

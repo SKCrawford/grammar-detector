@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from spacy.matcher import Matcher
 from src.nlp import nlp
@@ -17,7 +18,7 @@ def create_matcher(ruleset):
     return matcher
 
 
-def run_matcher(matcher, maybe_tokenized):
+async def run_matcher(matcher, maybe_tokenized):
     logger.debug(f"Validating matcher `{matcher}`")
     is_not_type(matcher, type(None))
     is_truthy(matcher)
@@ -39,7 +40,7 @@ def run_matcher(matcher, maybe_tokenized):
     return parsed_best_matches
 
 
-def match_by_pattern(pattern_filename, maybe_tokenized):
+async def match_by_pattern(pattern_filename, maybe_tokenized):
     ruleset = load_patterns(pattern_filename)
     matcher = create_matcher(ruleset)
-    return run_matcher(matcher, maybe_tokenized)
+    return await run_matcher(matcher, maybe_tokenized)

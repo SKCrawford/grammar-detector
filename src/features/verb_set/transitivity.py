@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from enum import Enum, IntEnum
 from src.core import match_by_pattern
@@ -57,7 +58,7 @@ def determine_valency(transitivity):
         raise ValueError(msg)
 
 
-def detect_verb_transitivity(maybe_tokenized):
+async def detect_verb_transitivity(maybe_tokenized):
     """Detect a verb's transitivity and valency. This detector cannot yet
     distinguish between [dobj] [*] [pobj] and [dobj] [prep] [pobj]. This means that
     these verbs are identified as ditransitive:
@@ -67,7 +68,7 @@ def detect_verb_transitivity(maybe_tokenized):
     Given a string, Doc, or Span, return a tuple of (string, int).
     """
     logger.debug("Started detecting")
-    matches = match_by_pattern("transitivity", maybe_tokenized)
+    matches = await match_by_pattern("transitivity", maybe_tokenized)
 
     transitivity = None
     valency = None
