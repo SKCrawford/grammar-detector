@@ -1,7 +1,7 @@
 import logging
 from spacy.matcher import Matcher
 from src.nlp import nlp
-from src.util.spacy import make_doc
+from src.util.spacy import get_doc
 from src.util.validator import is_not_type, is_truthy
 from ..pattern import load_patterns
 from .parse import get_best_match, group_matches_by_start, parse_match
@@ -21,8 +21,9 @@ def run_matcher(matcher, maybe_tokenized):
     logger.debug(f"Validating matcher `{matcher}`")
     is_not_type(matcher, type(None))
     is_truthy(matcher)
+
     logger.debug(f"Tokenizing `{maybe_tokenized}`")
-    doc = make_doc(maybe_tokenized)
+    doc = get_doc(maybe_tokenized)
 
     logger.debug("Running matcher")
     matches = matcher(doc)

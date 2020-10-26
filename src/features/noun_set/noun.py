@@ -2,7 +2,7 @@ import logging
 from spacy.tokens.span import Span
 from enum import Enum
 from src.core import extract_span_features
-from src.util.spacy import make_doc
+from src.util.spacy import get_doc
 from src.util.validator import is_in_enum, is_truthy, is_type
 from .person import detect_noun_person
 from .determiner import detect_noun_determiner
@@ -26,7 +26,7 @@ def is_noun(noun):
 
 def detect_nouns(maybe_tokenized):
     logger.debug("Started detecting")
-    doc = make_doc(maybe_tokenized)
+    doc = get_doc(maybe_tokenized)
     nouns = []
     for noun_chunk in doc.noun_chunks:
         person = detect_noun_person(noun_chunk)

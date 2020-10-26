@@ -1,5 +1,5 @@
 import logging
-from src.util.spacy import get_span, make_doc
+from src.util.spacy import get_doc, get_span
 
 
 logger = logging.getLogger(__name__)

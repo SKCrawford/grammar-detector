@@ -3,7 +3,6 @@ from enum import Enum
 from src.core import match_by_pattern
 from src.core.matcher.parse import parse_match
 from src.util.decorator import is_in_enum, is_not_type, is_truthy, is_type
-from src.util.spacy import make_doc
 
 
 logger = logging.getLogger(__name__)
