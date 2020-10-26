@@ -30,3 +30,19 @@ def make_doc(maybe_tokenized):
     """Given a string, Doc, or Span, return a Doc."""
     logger.debug(f"Tokenizing `{maybe_tokenized}`")
     return nlp(maybe_tokenized) if not is_tokenized(maybe_tokenized) else maybe_tokenized
+
+
+def get_span(phrase):
+    """Given a str, a Span, or a Doc, return a Span."""
+    span = None
+    if type(phrase) == str:
+        span = make_doc(phrase)[:]
+    elif type(phrase) == Doc:
+        span = phrase[:]
+    elif type(phrase) == Span:
+        span = phrase
+    else:
+        msg = f"Cannot get span of {type(phrase)}"
+        logger.error(msg)
+        raise TypeError(msg)
+    return span
