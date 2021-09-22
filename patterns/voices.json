@@ -1,11 +1,19 @@
-{
-    "active": [
-        { "DEP": "aux", "OP": "*" }, 
-        { "DEP": "ROOT" }
-    ],
-    "passive": [
-        { "DEP": "aux", "OP": "*" },
-        { "DEP": "auxpass", "OP": "+" },
-        { "TAG": "VBN", "DEP": "ROOT" }
-    ]
-}
+[
+    {
+        "rulename": "active",
+        "value": "active",
+        "pattern": [
+            { "DEP": "aux", "OP": "*" }, 
+            { "DEP": "ROOT" }
+        ]
+    },
+    {
+        "rulename": "passive",
+        "value": "passive",
+        "pattern": [
+            { "DEP": "aux", "OP": "*" },
+            { "DEP": "auxpass", "OP": "+" },
+            { "TAG": "VBN", "DEP": "ROOT" }
+        ]
+    }
+]

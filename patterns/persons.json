@@ -1,23 +1,35 @@
-{
-    "1st": [
-        {
-            "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
-            "OP": "+",
-            "LOWER": { "IN": ["i", "we"] }
-        }
-    ],
-    "2nd": [
-        {
-            "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
-            "OP": "+",
-            "LOWER": "you"
-        }
-    ],
-    "3rd": [
-        {
-            "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
-            "OP": "+",
-            "LOWER": { "NOT_IN": ["i", "we", "you"] }
-        }
-    ]
-}
+[
+    {
+        "rulename": "1st",
+        "value": 1,
+        "pattern": [
+            {
+                "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
+                "OP": "+",
+                "LOWER": { "IN": ["i", "we"] }
+            }
+        ]
+    },
+    {
+        "rulename": "2nd",
+        "value": 2,
+        "pattern": [
+            {
+                "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
+                "OP": "+",
+                "LOWER": "you"
+            }
+        ]
+    },
+    {
+        "rulename": "3rd",
+        "value": 3,
+        "pattern": [
+            {
+                "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
+                "OP": "+",
+                "LOWER": { "NOT_IN": ["i", "we", "you"] }
+            }
+        ]
+    }
+]

@@ -13,8 +13,8 @@ logger = logging.getLogger(__name__)
 
 def create_matcher(ruleset):
     matcher = Matcher(nlp.vocab, validate=True)
-    for rule in ruleset:
-        matcher.add(rule, [ruleset[rule]])
+    for r in ruleset:
+        matcher.add(r["rulename"], None, r["pattern"])
     return matcher
 
 

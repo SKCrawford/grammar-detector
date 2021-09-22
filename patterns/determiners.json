@@ -1,21 +1,37 @@
-{
-    "indefinite": [
-        { "POS": "DET", "LOWER": { "IN": ["a", "an"] } },
-        { "OP": "*" },
-        { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
-    ],
-    "definite": [
-        { "POS": "DET", "LOWER": "the" },
-        { "OP": "*" },
-        { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
-    ],
-    "other": [
-        { "POS": "DET", "LOWER": { "NOT_IN": ["a", "an", "the"] } },
-        { "OP": "*" },
-        { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
-    ],
-    "none": [
-        { "POS": { "NOT_IN": ["DET"] }, "OP": "?" },
-        { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
-    ]
-}
+[
+    {
+        "rulename": "indefinite",
+        "value": "indefinite",
+        "pattern": [
+            { "POS": "DET", "LOWER": { "IN": ["a", "an"] } },
+            { "OP": "*" },
+            { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
+        ]
+    },
+    {
+        "rulename": "definite",
+        "value": "definite",
+        "pattern": [
+            { "POS": "DET", "LOWER": "the" },
+            { "OP": "*" },
+            { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
+        ]
+    },
+    {
+        "rulename": "other",
+        "value": "other",
+        "pattern": [
+            { "POS": "DET", "LOWER": { "NOT_IN": ["a", "an", "the"] } },
+            { "OP": "*" },
+            { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
+        ]
+    },
+    {
+        "rulename": "none",
+        "value": null,
+        "pattern": [
+            { "POS": { "NOT_IN": ["DET"] }, "OP": "?" },
+            { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
+        ]
+    }
+]
