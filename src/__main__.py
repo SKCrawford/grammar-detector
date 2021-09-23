@@ -14,6 +14,8 @@ logger = logging.getLogger(__name__)
 async def main():
     start_time = time.time()
     sentences = []
+    pattern_sets = ["transitivity", "voices"]
+
     if len(sys.argv) > 0:
         sentences = sys.argv[1:]
     else:
@@ -31,7 +33,8 @@ async def main():
         logger.info(f"Token table:\n{token_table}")
         print(token_table, "\n")
 
-        feature_set = await detect_features(sentence)
+        feature_set = await detect_features(sentence, pattern_sets)
+
         logger.info("Detected features:")
         logger.info(pprint.pformat(feature_set))
         pprint.pprint(feature_set)
