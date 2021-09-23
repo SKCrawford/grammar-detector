@@ -1,13 +1,13 @@
 import logging
 from functools import wraps
-from . import validator
+from . import validators
 
 
 logger = logging.getLogger(__name__)
 
 
 def is_in_enum(enum):
-    """A decorator wrapping the is_in_enum validator.
+    """A decorator wrapping the is_in_enum validators.
 
     Given an Enum, return a function decorator.
     """
@@ -15,14 +15,14 @@ def is_in_enum(enum):
         @wraps(fn)
         def wrapper(*w_args, **w_kwargs):
             value = w_args[0]
-            validator.is_in_enum(value, enum)
+            validators.is_in_enum(value, enum)
             return fn(*w_args, **w_kwargs)
         return wrapper
     return decorator
 
 
 def is_not_type(type_):
-    """A decorator wrapping the is_not_type validator.
+    """A decorator wrapping the is_not_type validators.
 
     Given a type, return a function decorator.
     """
@@ -30,24 +30,24 @@ def is_not_type(type_):
         @wraps(fn)
         def wrapper(*w_args, **w_kwargs):
             value = w_args[0]
-            validator.is_not_type(value, type_)
+            validators.is_not_type(value, type_)
             return fn(*w_args, **w_kwargs)
         return wrapper
     return decorator
 
 
 def is_truthy(fn):
-    """A decorator wrapping the is_truthy validator. Does not accept arguments."""
+    """A decorator wrapping the is_truthy validators. Does not accept arguments."""
     @wraps(fn)
     def wrapper(*w_args, **w_kwargs):
         value = w_args[0]
-        validator.is_truthy(value)
+        validators.is_truthy(value)
         return fn(*w_args, **w_kwargs)
     return wrapper
 
 
 def is_type(type_):
-    """A decorator wrapping the is_type validator.
+    """A decorator wrapping the is_type validators.
 
     Given a type, return a function decorator.
     """
@@ -55,7 +55,7 @@ def is_type(type_):
         @wraps(fn)
         def wrapper(*w_args, **w_kwargs):
             value = w_args[0]
-            validator.is_type(value, type_)
+            validators.is_type(value, type_)
             return fn(*w_args, **w_kwargs)
         return wrapper
     return decorator

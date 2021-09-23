@@ -7,7 +7,8 @@ from settings import PATTERNS_DIR
 logger = logging.getLogger(__name__)
 
 
-def load_patterns(pattern_filename):
+def load_patternset(pattern_filename):
+    """Given a filepath ending with .json, """
     pattern_path = join(PATTERNS_DIR, f"{pattern_filename}.json")
     logger.debug(f"Loading {pattern_path}")
     with open(pattern_path, "r") as f:

@@ -1,7 +1,7 @@
 import logging
 from tabulate import tabulate
 from spacy import explain
-from src.nlp import nlp
+from .nlp import nlp
 
 
 logger = logging.getLogger(__name__)
@@ -12,7 +12,7 @@ def to_token_table(sentence, pos=True, tag=True, dependency=True, lemma=True):
     If pos is True, then print the part-of-speech (POS). Defaults to True.
     If tag is True, then print the tag. Defaults to True.
     If dependency is True, then print the dependencices. Defaults to True.
-    If lemma is True, then print the lemma. Defaults to False.
+    If lemma is True, then print the lemma. Defaults to True.
 
     Given a string, return None.
     """

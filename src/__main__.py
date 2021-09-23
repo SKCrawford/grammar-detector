@@ -4,8 +4,8 @@ import pprint
 import sys
 import time
 import src.logger
-from src.util.misc_tools import to_token_table
-from .features import detect_features
+from .detectors import detect_features
+from .utils import to_token_table
 
 
 logger = logging.getLogger(__name__)
