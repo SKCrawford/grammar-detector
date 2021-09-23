@@ -1,16 +1,16 @@
 import asyncio
 import logging
 from spacy.matcher import Matcher
+from . import validators
 from .extractors import get_doc
 from .nlp import nlp
-from .pattern import load_patternset
-from .validators import is_not_type, is_truthy
+from .patterns import load_patternset
 
 
 logger = logging.getLogger(__name__)
 
 
-async def match_by_pattern(pattern_filename, maybe_tokenized):
+async def match_by_pattern(patternset_filename, maybe_tokenized):
     ruleset = load_patternset(patternset_filename)
     matcher = _create_matcher(ruleset)
     return await _run_matcher(matcher, maybe_tokenized)
@@ -25,8 +25,8 @@ def _create_matcher(ruleset):
 
 async def _run_matcher(matcher, maybe_tokenized):
     logger.debug(f"Validating matcher `{matcher}`")
-    is_not_type(matcher, type(None))
-    is_truthy(matcher)
+    validators.is_not_type(matcher, type(None))
+    validators.is_truthy(matcher)
 
     logger.debug(f"Tokenizing `{maybe_tokenized}`")
     doc = get_doc(maybe_tokenized)
@@ -47,8 +47,8 @@ async def _run_matcher(matcher, maybe_tokenized):
 
 def _get_best_match(matches):
     logger.debug(f"Validating matches `{matches}`")
-    is_type(matches, list)
-    is_truthy(matches)
+    validators.is_type(matches, list)
+    validators.is_truthy(matches)
 
     all_starts = [start for (_, start, _) in matches]
     starts_are_identical = len(set(all_starts)) < 2

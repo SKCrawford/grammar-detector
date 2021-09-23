@@ -1,5 +1,9 @@
 import logging
 from spacy import explain
+from .nlp import nlp
+
+
+logger = logging.getLogger(__name__)
 
 
 def get_doc(phrase):
