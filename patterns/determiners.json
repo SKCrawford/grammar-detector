@@ -2,7 +2,7 @@
     {
         "rulename": "indefinite",
         "value": "indefinite",
-        "pattern": [
+        "tokens": [
             { "POS": "DET", "LOWER": { "IN": ["a", "an"] } },
             { "OP": "*" },
             { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
@@ -11,7 +11,7 @@
     {
         "rulename": "definite",
         "value": "definite",
-        "pattern": [
+        "tokens": [
             { "POS": "DET", "LOWER": "the" },
             { "OP": "*" },
             { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
@@ -20,7 +20,7 @@
     {
         "rulename": "other",
         "value": "other",
-        "pattern": [
+        "tokens": [
             { "POS": "DET", "LOWER": { "NOT_IN": ["a", "an", "the"] } },
             { "OP": "*" },
             { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
@@ -29,7 +29,7 @@
     {
         "rulename": "none",
         "value": null,
-        "pattern": [
+        "tokens": [
             { "POS": { "NOT_IN": ["DET"] }, "OP": "?" },
             { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
         ]

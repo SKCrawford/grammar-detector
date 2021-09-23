@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 def create_matcher(ruleset):
     matcher = Matcher(nlp.vocab, validate=True)
     for r in ruleset:
-        matcher.add(r["rulename"], None, r["pattern"])
+        matcher.add(r["rulename"], None, r["tokens"])
     return matcher
 
 

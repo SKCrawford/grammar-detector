@@ -2,7 +2,7 @@
     {
         "rulename": "active",
         "value": "active",
-        "pattern": [
+        "tokens": [
             { "DEP": "aux", "OP": "*" }, 
             { "DEP": "ROOT" }
         ]
@@ -10,7 +10,7 @@
     {
         "rulename": "passive",
         "value": "passive",
-        "pattern": [
+        "tokens": [
             { "DEP": "aux", "OP": "*" },
             { "DEP": "auxpass", "OP": "+" },
             { "TAG": "VBN", "DEP": "ROOT" }

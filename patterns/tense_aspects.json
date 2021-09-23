@@ -2,12 +2,12 @@
     {
         "rulename": "present simple", 
         "value": "present simple",
-        "pattern": [{ "TAG": { "IN": ["VBP", "VBZ"] }, "OP": "+" }]
+        "tokens": [{ "TAG": { "IN": ["VBP", "VBZ"] }, "OP": "+" }]
     }, 
     {
         "rulename": "present simple passive", 
         "value": "present simple passive", 
-        "pattern": [
+        "tokens": [
             {
                 "TAG": { "IN": ["VBP", "VBZ"] },
                 "DEP": "auxpass",
@@ -20,12 +20,12 @@
     {
         "rulename": "past simple", 
         "value": "past simple", 
-        "pattern": [{ "TAG": "VBD", "OP": "+" }]
+        "tokens": [{ "TAG": "VBD", "OP": "+" }]
     },
     {
         "rulename": "past simple passive", 
         "value": "past simple passive", 
-        "pattern": [
+        "tokens": [
             { "TAG": "VBD", "DEP": "auxpass", "LEMMA": "be", "OP": "+" },
             { "TAG": "VBN", "OP": "+" }
         ]
@@ -33,7 +33,7 @@
     {
         "rulename": "future simple will",
         "value": "future simple will",
-        "pattern": [
+        "tokens": [
             { "TAG": "MD", "DEP": "aux", "OP": "+", "LOWER": "will" },
             { "TAG": "VB", "OP": "+" }
         ]
@@ -41,7 +41,7 @@
     {
         "rulename": "future simple will passive",
         "value": "future simple will passive",
-        "pattern": [
+        "tokens": [
             { "TAG": "MD", "DEP": "aux", "OP": "+", "LOWER": "will" },
             { "TAG": "VB", "DEP": "auxpass", "LEMMA": "be" },
             { "TAG": "VBN", "OP": "+" }
@@ -50,7 +50,7 @@
     {
         "rulename": "future simple be-going-to",
         "value": "future simple be-going-to",
-        "pattern": [
+        "tokens": [
             { "TAG": { "IN": ["VBP", "VBZ"] }, "DEP": "aux", "OP": "+" },
             { "TAG": "VBG", "OP": "+", "LEMMA": "go" },
             { "TAG": "TO", "DEP": "aux", "OP": "+" },
@@ -60,7 +60,7 @@
     {
         "rulename": "future simple be-going-to passive",
         "value": "future simple be-going-to passive",
-        "pattern": [
+        "tokens": [
             { "TAG": { "IN": ["VBP", "VBZ"] }, "DEP": "aux", "OP": "+" },
             { "TAG": "VBG", "OP": "+", "LEMMA": "go" },
             { "TAG": "TO", "DEP": "aux", "OP": "+" },
@@ -71,7 +71,7 @@
     {
         "rulename": "present continuous",
         "value": "present continuous",
-        "pattern": [
+        "tokens": [
             { "TAG": { "IN": ["VBP", "VBZ"] }, "DEP": "aux", "OP": "+" },
             { "TAG": "VBG", "OP": "+" }
         ]
@@ -79,7 +79,7 @@
     {
         "rulename": "present continuous passive",
         "value": "present continuous passive",
-        "pattern": [
+        "tokens": [
             {
                 "TAG": { "IN": ["VBP", "VBZ"] },
                 "DEP": "aux",
@@ -93,7 +93,7 @@
     {
         "rulename": "past continuous",
         "value": "past continuous",
-        "pattern": [
+        "tokens": [
             { "TAG": "VBD", "DEP": "aux", "OP": "+" },
             { "TAG": "VBG", "OP": "+" }
         ]
@@ -101,7 +101,7 @@
     {
         "rulename": "past continuous passive",
         "value": "past continuous passive",
-        "pattern": [
+        "tokens": [
             { "TAG": "VBD", "DEP": "aux", "OP": "+", "LEMMA": "be" },
             { "TAG": "VBG", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
             { "TAG": "VBN", "OP": "+" }
@@ -110,7 +110,7 @@
     {
         "rulename": "future continous",
         "value": "future continous",
-        "pattern": [
+        "tokens": [
             { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
             { "TAG": "VB", "DEP": "aux", "OP": "+", "LEMMA": "be" },
             { "TAG": "VBG", "OP": "+" }
@@ -119,7 +119,7 @@
     {
         "rulename": "future continuous passive",
         "value": "future continuous passive",
-        "pattern": [
+        "tokens": [
             { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
             { "TAG": "VB", "DEP": "aux", "OP": "+", "LEMMA": "be" },
             { "TAG": "VBG", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
@@ -129,7 +129,7 @@
     {
         "rulename": "present perfect",
         "value": "present perfect",
-        "pattern": [
+        "tokens": [
             {
                 "TAG": { "IN": ["VBP", "VBZ"] },
                 "DEP": "aux",
@@ -142,7 +142,7 @@
     {
         "rulename": "present perfect passive",
         "value": "present perfect passive",
-        "pattern": [
+        "tokens": [
             {
                 "TAG": { "IN": ["VBP", "VBZ"] },
                 "DEP": "aux",
@@ -156,7 +156,7 @@
     {
         "rulename": "past perfect",
         "value": "past perfect",
-        "pattern": [
+        "tokens": [
             { "TAG": "VBD", "DEP": "aux", "OP": "+", "LEMMA": "have" },
             { "TAG": "VBN", "OP": "+" }
         ]
@@ -164,7 +164,7 @@
     {
         "rulename": "past perfect passive",
         "value": "past perfect passive",
-        "pattern": [
+        "tokens": [
             { "TAG": "VBD", "DEP": "aux", "OP": "+", "LEMMA": "have" },
             { "TAG": "VBN", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
             { "TAG": "VBN", "OP": "+" }
@@ -173,7 +173,7 @@
     {
         "rulename": "future perfect",
         "value": "future perfect",
-        "pattern": [
+        "tokens": [
             { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
             { "TAG": "VB", "DEP": "aux", "OP": "+" },
             { "TAG": "VBN", "OP": "+" }
@@ -182,7 +182,7 @@
     {
         "rulename": "future perfect passive",
         "value": "future perfect passive",
-        "pattern": [
+        "tokens": [
             { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
             {
                 "TAG": { "IN": ["VBP", "VBZ"] },
@@ -197,7 +197,7 @@
     {
         "rulename": "present perfect continuous",
         "value": "present perfect continuous",
-        "pattern": [
+        "tokens": [
             {
                 "TAG": { "IN": ["VBP", "VBZ"] },
                 "DEP": "aux",
@@ -211,7 +211,7 @@
     {
         "rulename": "present perfect continuous passive",
         "value": "present perfect continuous passive",
-        "pattern": [
+        "tokens": [
             {
                 "TAG": { "IN": ["VBP", "VBZ"] },
                 "DEP": "aux",
@@ -226,7 +226,7 @@
     {
         "rulename": "past perfect continuous",
         "value": "past perfect continuous",
-        "pattern": [
+        "tokens": [
             { "TAG": "VBD", "DEP": "aux", "OP": "+", "LEMMA": "have" },
             { "TAG": "VBN", "DEP": "aux", "OP": "+", "LEMMA": "be" },
             { "TAG": "VBG", "OP": "+" }
@@ -235,7 +235,7 @@
     {
         "rulename": "past perfect continuous passive",
         "value": "past perfect continuous passive",
-        "pattern": [
+        "tokens": [
             { "TAG": "VBD", "DEP": "aux", "OP": "+", "LEMMA": "have" },
             { "TAG": "VBN", "DEP": "aux", "OP": "+", "LEMMA": "be" },
             { "TAG": "VBG", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
@@ -245,7 +245,7 @@
     {
         "rulename": "future perfect continuous",
         "value": "future perfect continuous",
-        "pattern": [
+        "tokens": [
             { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
             { "TAG": "VB", "DEP": "aux", "OP": "+", "LEMMA": "have" },
             { "TAG": "VBN", "DEP": "aux", "OP": "+", "LEMMA": "be" },
@@ -255,7 +255,7 @@
     {
         "rulename": "future perfect continuous passive",
         "value": "future perfect continuous passive",
-        "pattern": [
+        "tokens": [
             { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
             { "TAG": "VB", "DEP": "aux", "OP": "+", "LEMMA": "have" },
             { "TAG": "VBN", "DEP": "aux", "OP": "+", "LEMMA": "be" },

@@ -2,7 +2,7 @@
     {
         "rulename": "ditransitive",
         "value": "ditransitive",
-        "pattern": [
+        "tokens": [
             { "DEP": "nsubj" },
             { "OP": "*" },
             { "DEP": "ROOT" },
@@ -15,7 +15,7 @@
     {
         "rulename": "transitive",
         "value": "transitive",
-        "pattern": [
+        "tokens": [
             { "DEP": "nsubj" },
             { "OP": "*" },
             { "DEP": "ROOT" },
@@ -26,7 +26,7 @@
     {
         "rulename": "intransitive",
         "value": "intransitive",
-        "pattern": [
+        "tokens": [
             { "DEP": "nsubj", "LOWER": { "NOT_IN": ["it"] } },
             { "OP": "*" },
             { "DEP": "ROOT" }
@@ -35,7 +35,7 @@
     {
         "rulename": "impersonal",
         "value": "impersonal",
-        "pattern": [
+        "tokens": [
             { "TAG": "PRP", "DEP": "nsubj", "LOWER": "it" },
             { "OP": "*" },
             { "DEP": "ROOT" }

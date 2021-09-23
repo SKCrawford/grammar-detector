@@ -2,7 +2,7 @@
     {
         "rulename": "1st",
         "value": 1,
-        "pattern": [
+        "tokens": [
             {
                 "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
                 "OP": "+",
@@ -13,7 +13,7 @@
     {
         "rulename": "2nd",
         "value": 2,
-        "pattern": [
+        "tokens": [
             {
                 "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
                 "OP": "+",
@@ -24,7 +24,7 @@
     {
         "rulename": "3rd",
         "value": 3,
-        "pattern": [
+        "tokens": [
             {
                 "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
                 "OP": "+",
