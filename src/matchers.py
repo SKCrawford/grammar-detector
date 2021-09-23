@@ -3,7 +3,7 @@ import logging
 from spacy.matcher import Matcher
 from .extractors import get_doc
 from .nlp import nlp
-from .pattern import load_patterns
+from .pattern import load_patternset
 from .validators import is_not_type, is_truthy
 
 
@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 async def match_by_pattern(pattern_filename, maybe_tokenized):
-    ruleset = load_patterns(pattern_filename)
+    ruleset = load_patternset(patternset_filename)
     matcher = _create_matcher(ruleset)
     return await _run_matcher(matcher, maybe_tokenized)
 

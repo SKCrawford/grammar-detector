@@ -1,7 +1,6 @@
 class Pattern:
     def __init__(self, rulename, value, tokens, *args, **kwargs):
         """Accepts a string, a primitive, and a list of spaCy tokens."""
-        super().__init__(*args, **kwargs)
         self.rulename = rulename
         self.value = value
         self.tokens = tokens
@@ -10,7 +9,6 @@ class Pattern:
 class PatternSet:
     def __init__(self, name, patterns):
         """Accepts a string, a primitive, and a list of spaCy tokens."""
-        super().__init__(*args, **kwargs)
         self.name = name
         self.patterns = patterns
 
