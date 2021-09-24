@@ -7,17 +7,17 @@ from settings import PATTERNS_DIR
 logger = logging.getLogger(__name__)
 
 
-def load_patternset(patternset_filename):
+def load_pattern_set(pattern_set_filename):
     """Given a filepath ending with .json, """
-    patternset_path = join(PATTERNS_DIR, f"{patternset_filename}.json")
-    logger.debug(f"Loading {patternset_path}")
+    pattern_set_path = join(PATTERNS_DIR, f"{pattern_set_filename}.json")
+    logger.debug(f"Loading {pattern_set_path}")
 
     try:
-        with open(patternset_path, "r") as f:
+        with open(pattern_set_path, "r") as f:
             return load(f)
     except FileNotFoundError as e:
-        logger.error(f"Couldn't find {patternset_path}")
+        logger.error(f"Couldn't find {pattern_set_path}")
         raise e
     except Exception as e:
-        logger.error(f"Unknown error occurred while loading {patternset_path}")
+        logger.error(f"Unknown error occurred while loading {pattern_set_path}")
         raise e
