@@ -4,14 +4,15 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-python-language-server = "*"
 tabulate = "*"
+python-lsp-server = "*"
+black = "==21.9b0"
 
 [packages]
 spacy = "*"
-nltk = "*"
-spacy-lookups-data = "*"
 jsonschema = "*"
+spacy-lookups-data = "*"
+nltk = "*"
 
 [requires]
 python_version = "3.8"

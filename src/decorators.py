@@ -11,13 +11,16 @@ def is_in_enum(enum):
 
     Given an Enum, return a function decorator.
     """
+
     def decorator(fn):
         @wraps(fn)
         def wrapper(*w_args, **w_kwargs):
             value = w_args[0]
             validators.is_in_enum(value, enum)
             return fn(*w_args, **w_kwargs)
+
         return wrapper
+
     return decorator
 
 
@@ -26,23 +29,28 @@ def is_not_type(type_):
 
     Given a type, return a function decorator.
     """
+
     def decorator(fn):
         @wraps(fn)
         def wrapper(*w_args, **w_kwargs):
             value = w_args[0]
             validators.is_not_type(value, type_)
             return fn(*w_args, **w_kwargs)
+
         return wrapper
+
     return decorator
 
 
 def is_truthy(fn):
     """A decorator wrapping the is_truthy validators. Does not accept arguments."""
+
     @wraps(fn)
     def wrapper(*w_args, **w_kwargs):
         value = w_args[0]
         validators.is_truthy(value)
         return fn(*w_args, **w_kwargs)
+
     return wrapper
 
 
@@ -51,13 +59,16 @@ def is_type(type_):
 
     Given a type, return a function decorator.
     """
+
     def decorator(fn):
         @wraps(fn)
         def wrapper(*w_args, **w_kwargs):
             value = w_args[0]
             validators.is_type(value, type_)
             return fn(*w_args, **w_kwargs)
+
         return wrapper
+
     return decorator
 
 
@@ -65,6 +76,7 @@ def is_type(type_):
 def singleton(klass):
     """A class decorator adding singleton functionality."""
     instances = [None]
+
     def wrapper(*args, **kwargs):
         logger.debug(f"Looking for a pre-existing instance of `{klass}`")
         instance = instances[0]
@@ -75,4 +87,5 @@ def singleton(klass):
             instances[0] = instance
         logger.debug(f"Returning the instance `{instance}`")
         return instance
+
     return wrapper

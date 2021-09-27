@@ -1,6 +1,6 @@
 import logging
 from spacy.tokens import Doc, Span
-from .nlp import nlp # TODO make nlp an arg for dep inj
+from .nlp import nlp  # TODO make nlp an arg for dep inj
 
 
 logger = logging.getLogger(__name__)

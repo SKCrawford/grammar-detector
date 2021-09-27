@@ -13,13 +13,13 @@ logger = logging.getLogger(__name__)
 class Matcher:
     def __init__(self):
         self._instance = None
-        self.all_matches = [] # Output of Spacy's matcher (List<(int, int, int)>)
-        self.match = None # Preparsed (Tuple<string, Span>)
+        self.all_matches = []  # Output of Spacy's matcher (List<(int, int, int)>)
+        self.match = None  # Preparsed (Tuple<string, Span>)
 
     def match_by_pattern(self, pattern_set_filename, maybe_tokenized):
         pattern_set = load_pattern_set(pattern_set_filename)
         self._instance = self._create_matcher(pattern_set)
-        self.all_matches = self._run_matcher(maybe_tokenized) 
+        self.all_matches = self._run_matcher(maybe_tokenized)
         # <-- On-match callback has already been executed by now
         return self.match
 
@@ -34,7 +34,10 @@ class Matcher:
         logger.debug("Creating the Spacy matcher")
         matcher = SpacyMatcher(nlp.vocab, validate=True)
         logger.debug("Adding patterns to the Spacy matcher")
-        [matcher.add(p["rulename"], self._on_match, p["tokens"]) for p in pattern_set]
+        [
+            matcher.add(p["rulename"], [p["tokens"]], on_match=self._on_match)
+            for p in pattern_set
+        ]
         return matcher
 
     def _run_matcher(self, maybe_tokenized):

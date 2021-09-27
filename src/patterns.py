@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 def load_pattern_set(pattern_set_filename):
-    """Given a filepath ending with .json, """
+    """Given a filepath ending with .json,"""
     pattern_set_path = join(PATTERNS_DIR, f"{pattern_set_filename}.json")
     logger.debug(f"Loading {pattern_set_path}")
 
