@@ -12,40 +12,71 @@ logger = logging.getLogger(__name__)
 
 class Matcher:
     def __init__(self):
-        self._instance = None
-        self.all_matches = []  # Output of Spacy's matcher (List<(int, int, int)>)
-        self.match = None  # Preparsed (Tuple<string, Span>)
+        self._inner_matcher = None
+        self._pattern_set = None
+        self._doc = None
 
-    def match_by_pattern(self, pattern_set_filename, maybe_tokenized):
-        pattern_set = load_pattern_set(pattern_set_filename)
-        self._instance = self._create_matcher(pattern_set)
-        self.all_matches = self._run_matcher(maybe_tokenized)
-        # <-- On-match callback has already been executed by now
-        return self.match
+    def match_by_pattern(self, pattern_set_name, maybe_tokenized):
+        """Deprecated."""
+        return self.match_one(pattern_set_name, maybe_tokenized)
+
+    def match_one(self, pattern_set_name, maybe_tokenized):
+        logger.debug("Preparing to run matcher")
+        self._pre_match(pattern_set_name, maybe_tokenized)
+
+        logger.debug("Running matcher")
+        all_matches = self._run_matcher(self._doc)
+        best_match = all_matches[-1]
+
+        logger.debug(f"Parsing one match '{best_match}'")
+        return self._parse_match(best_match, self._doc)
+
+    def match_many(self, pattern_set_name, maybe_tokenized):
+        logger.debug("Preparing to run matcher")
+        self._pre_match(pattern_set_name, maybe_tokenized)
+
+        logger.debug("Running matcher")
+        all_matches = self._run_matcher(self._doc)
+
+        logger.debug(f"Parsing many matches '{all_matches}'")
+        return [self._parse_match(m) for m in all_matches]
+
+    def _pre_match(self, pattern_set_name, maybe_tokenized):
+        logger.debug(f"Loading pattern set '{pattern_set_name}'")
+        pattern_set = load_pattern_set(pattern_set_name)
+
+        logger.debug(f"Creating the internal spaCy matcher")
+        self._inner_matcher = self._create_matcher(pattern_set)
+
+        logger.debug(f"Tokenizing `{maybe_tokenized}`")
+        self._doc = get_doc(maybe_tokenized)
 
     def _on_match(self, matcher, doc, i, matches):
-        """Because Spacy's Matcher on-match callback returns void, an outer class is
-        required. Given a Matcher, a Doc, an int, and a List<MatchTuple>, return void.
-        """
-        # Temporary fix until upgrading to Spacy v3.0
-        self.match = self._parse_match(matches[-1], doc)
+        logger.debug(f"MATCH #{i}")
+        logger.debug("Running on_match callback")
+        logger.debug(f"Matcher: '{matcher}'")
+        logger.debug(f"Doc: '{doc}'")
+        logger.debug(f"Matches: '{matches}'")
+        parsed_matches = [self._parse_match(m, doc) for m in matches]
+        logger.debug(f"Parsed: '{parsed_matches}'")
 
     def _create_matcher(self, pattern_set):
-        logger.debug("Creating the Spacy matcher")
+        logger.debug("Creating the spaCy matcher")
         matcher = SpacyMatcher(nlp.vocab, validate=True)
-        logger.debug("Adding patterns to the Spacy matcher")
-        [
-            matcher.add(p["rulename"], [p["tokens"]], on_match=self._on_match)
-            for p in pattern_set
-        ]
+
+        logger.debug("Adding patterns to the spaCy matcher")
+        for p in pattern_set:
+            match_value = p["rulename"]
+            config = {
+                "greedy": "LONGEST",
+                "on_match": self._on_match,
+            }
+            matcher.add(match_value, [p["tokens"]], **config)
         return matcher
 
-    def _run_matcher(self, maybe_tokenized):
-        logger.debug(f"Tokenizing `{maybe_tokenized}`")
-        doc = get_doc(maybe_tokenized)
-        logger.debug("Running matcher on tokens")
-        # On-match callback happens while calling matcher instance
-        return self._instance(doc)
+    def _run_matcher(self, tokenized):
+        logger.debug(f"Running the spaCy matcher on tokenized '{tokenized}'")
+        return self._inner_matcher(tokenized)
 
     def _parse_match(self, match, doc):
         logger.debug(f"Parsing match `{match}`")
