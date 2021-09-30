@@ -13,8 +13,9 @@ logger = logging.getLogger(__name__)
 
 def create_matcher(ruleset):
     matcher = Matcher(nlp.vocab, validate=True)
-    for r in ruleset:
-        matcher.add(r["rulename"], None, r["tokens"])
+    for r in ruleset["patterns"]:
+        # matcher.add(r["rulename"], None, r["tokens"])
+        matcher.add(r["rulename"], [r["tokens"]])
     return matcher
 
 
@@ -30,7 +31,7 @@ async def run_matcher(matcher, maybe_tokenized):
     matches = matcher(doc)
 
     logger.debug(f"Grouping matches `{matches}`")
-    grouped_matches = group_matches_by_start(matches) # 2D list
+    grouped_matches = group_matches_by_start(matches)  # 2D list
 
     logger.debug(f"Getting the best matches in `{grouped_matches}`")
     best_matches = [get_best_match(grouped_match) for grouped_match in grouped_matches]

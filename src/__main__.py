@@ -37,6 +37,7 @@ async def main():
 
         logger.info("Detected features:")
         logger.info(pprint.pformat(feature_set))
+        print("Detected features:")
         pprint.pprint(feature_set)
         print(f"Sentence run time: {time.time() - sentence_start_time:.2f}s")
         print(f"####### END SENTENCE {count} #######")

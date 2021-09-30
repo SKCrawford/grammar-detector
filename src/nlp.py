@@ -2,5 +2,8 @@ import logging
 import spacy
 
 
-logging.getLogger(__name__).info("Loading the spaCy model")
-nlp = spacy.load("en_core_web_lg")
+data = "en_core_web_lg"
+
+logging.getLogger(__name__).info("Started loading the spaCy model with data '{data}'")
+nlp = spacy.load(data)
+logging.getLogger(__name__).info("Finished loading the spaCy model")

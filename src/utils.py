@@ -36,7 +36,7 @@ def to_token_table(sentence, pos=True, tag=True, dependency=True, lemma=True):
     logger.debug("Tokenizing")
     tagged_words = nlp(sentence)
 
-    logger.debug("Extracting features")
+    logger.debug("Extracting the features")
     data = []
     for word in tagged_words:
         entry = []

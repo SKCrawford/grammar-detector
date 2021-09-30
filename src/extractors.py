@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 def get_doc(phrase):
     """Given a str, a Doc, or a Span, return a Doc."""
-    logger.debug(f"Getting the Doc of `{phrase}` (`{type(phrase)}`)")
+    logger.debug(f"Getting the Doc of '{phrase}' ({type(phrase)})")
     doc = None
     if type(phrase) == str:
         doc = nlp(phrase)
@@ -17,7 +17,7 @@ def get_doc(phrase):
     elif type(phrase) == Span:
         doc = phrase.doc
     else:
-        msg = f"Cannot get Doc of `{phrase}` (`{type(phrase)}`)"
+        msg = f"Cannot get the Doc of '{phrase}' ({type(phrase)})"
         logger.error(msg)
         raise TypeError(msg)
     return doc
@@ -25,6 +25,7 @@ def get_doc(phrase):
 
 def get_span(phrase):
     """Given a str, a Doc, or a Span, return a Span."""
+    logger.debug(f"Getting the Span of '{phrase}' ({type(phrase)})")
     span = None
     if type(phrase) == str:
         span = get_doc(phrase)[:]
@@ -33,7 +34,7 @@ def get_span(phrase):
     elif type(phrase) == Span:
         span = phrase
     else:
-        msg = f"Cannot get Span of `{phrase}` (`{type(phrase)}`)"
+        msg = f"Cannot get the Span of '{phrase}' ({type(phrase)})"
         logger.error(msg)
         raise TypeError(msg)
     return span
@@ -41,7 +42,7 @@ def get_span(phrase):
 
 def extract_span_features(match_span):
     """Given a Span, return a dictionary."""
-    logging.getLogger(__name__).info(f"Parsing `{match_span}`")
+    logging.getLogger(__name__).info(f"Parsing Span '{match_span}'")
     return {
         "span": match_span,
         "phrase": match_span.text,
