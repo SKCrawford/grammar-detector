@@ -16,7 +16,7 @@ async def main():
     sentences = []
     pattern_sets = ["determiners", "persons", "tense_aspects", "transitivity", "voices"]
 
-    if len(sys.argv) > 0:
+    if len(sys.argv) > 1:
         sentences = sys.argv[1:]
     else:
         raise ValueError("No sentences were provided")
