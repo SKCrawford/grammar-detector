@@ -1,35 +1,37 @@
-[
-    {
-        "rulename": "1st",
-        "value": 1,
-        "tokens": [
-            {
-                "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
-                "OP": "+",
-                "LOWER": { "IN": ["i", "we"] }
-            }
-        ]
+{
+    "meta": {
+        "how_many_matches": "one"
     },
-    {
-        "rulename": "2nd",
-        "value": 2,
-        "tokens": [
-            {
-                "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
-                "OP": "+",
-                "LOWER": "you"
-            }
-        ]
-    },
-    {
-        "rulename": "3rd",
-        "value": 3,
-        "tokens": [
-            {
-                "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
-                "OP": "+",
-                "LOWER": { "NOT_IN": ["i", "we", "you"] }
-            }
-        ]
-    }
-]
+    "patterns": [
+        {
+            "rulename": "1st",
+            "tokens": [
+                {
+                    "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
+                    "OP": "+",
+                    "LOWER": { "IN": ["i", "we"] }
+                }
+            ]
+        },
+        {
+            "rulename": "2nd",
+            "tokens": [
+                {
+                    "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
+                    "OP": "+",
+                    "LOWER": "you"
+                }
+            ]
+        },
+        {
+            "rulename": "3rd",
+            "tokens": [
+                {
+                    "POS": { "IN": ["NOUN", "PRON", "PROPN", "NUM"] },
+                    "OP": "+",
+                    "LOWER": { "NOT_IN": ["i", "we", "you"] }
+                }
+            ]
+        }
+    ]
+}

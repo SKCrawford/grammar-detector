@@ -1,266 +1,245 @@
-[
-    {
-        "rulename": "present simple", 
-        "value": "present simple",
-        "tokens": [{ "TAG": { "IN": ["VBP", "VBZ"] }, "OP": "+" }]
-    }, 
-    {
-        "rulename": "present simple passive", 
-        "value": "present simple passive", 
-        "tokens": [
-            {
-                "TAG": { "IN": ["VBP", "VBZ"] },
-                "DEP": "auxpass",
-                "LEMMA": "be",
-                "OP": "+"
-            },
-            { "TAG": "VBN", "OP": "+" }
-        ]
+{
+    "meta": {
+        "how_many_matches": "one"
     },
-    {
-        "rulename": "past simple", 
-        "value": "past simple", 
-        "tokens": [{ "TAG": "VBD", "OP": "+" }]
-    },
-    {
-        "rulename": "past simple passive", 
-        "value": "past simple passive", 
-        "tokens": [
-            { "TAG": "VBD", "DEP": "auxpass", "LEMMA": "be", "OP": "+" },
-            { "TAG": "VBN", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "future simple will",
-        "value": "future simple will",
-        "tokens": [
-            { "TAG": "MD", "DEP": "aux", "OP": "+", "LOWER": "will" },
-            { "TAG": "VB", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "future simple will passive",
-        "value": "future simple will passive",
-        "tokens": [
-            { "TAG": "MD", "DEP": "aux", "OP": "+", "LOWER": "will" },
-            { "TAG": "VB", "DEP": "auxpass", "LEMMA": "be" },
-            { "TAG": "VBN", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "future simple be-going-to",
-        "value": "future simple be-going-to",
-        "tokens": [
-            { "TAG": { "IN": ["VBP", "VBZ"] }, "DEP": "aux", "OP": "+" },
-            { "TAG": "VBG", "OP": "+", "LEMMA": "go" },
-            { "TAG": "TO", "DEP": "aux", "OP": "+" },
-            { "TAG": "VB", "DEP": "xcomp", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "future simple be-going-to passive",
-        "value": "future simple be-going-to passive",
-        "tokens": [
-            { "TAG": { "IN": ["VBP", "VBZ"] }, "DEP": "aux", "OP": "+" },
-            { "TAG": "VBG", "OP": "+", "LEMMA": "go" },
-            { "TAG": "TO", "DEP": "aux", "OP": "+" },
-            { "TAG": "VB", "DEP": "auxpass", "LEMMA": "be" },
-            { "TAG": "VBN", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "present continuous",
-        "value": "present continuous",
-        "tokens": [
-            { "TAG": { "IN": ["VBP", "VBZ"] }, "DEP": "aux", "OP": "+" },
-            { "TAG": "VBG", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "present continuous passive",
-        "value": "present continuous passive",
-        "tokens": [
-            {
-                "TAG": { "IN": ["VBP", "VBZ"] },
-                "DEP": "aux",
-                "OP": "+",
-                "LEMMA": "be"
-            },
-            { "TAG": "VBG", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
-            { "TAG": "VBN", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "past continuous",
-        "value": "past continuous",
-        "tokens": [
-            { "TAG": "VBD", "DEP": "aux", "OP": "+" },
-            { "TAG": "VBG", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "past continuous passive",
-        "value": "past continuous passive",
-        "tokens": [
-            { "TAG": "VBD", "DEP": "aux", "OP": "+", "LEMMA": "be" },
-            { "TAG": "VBG", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
-            { "TAG": "VBN", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "future continous",
-        "value": "future continous",
-        "tokens": [
-            { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
-            { "TAG": "VB", "DEP": "aux", "OP": "+", "LEMMA": "be" },
-            { "TAG": "VBG", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "future continuous passive",
-        "value": "future continuous passive",
-        "tokens": [
-            { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
-            { "TAG": "VB", "DEP": "aux", "OP": "+", "LEMMA": "be" },
-            { "TAG": "VBG", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
-            { "TAG": "VBN", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "present perfect",
-        "value": "present perfect",
-        "tokens": [
-            {
-                "TAG": { "IN": ["VBP", "VBZ"] },
-                "DEP": "aux",
-                "OP": "+",
-                "LEMMA": "have"
-            },
-            { "TAG": "VBN", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "present perfect passive",
-        "value": "present perfect passive",
-        "tokens": [
-            {
-                "TAG": { "IN": ["VBP", "VBZ"] },
-                "DEP": "aux",
-                "OP": "+",
-                "LEMMA": "have"
-            },
-            { "TAG": "VBN", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
-            { "TAG": "VBN", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "past perfect",
-        "value": "past perfect",
-        "tokens": [
-            { "TAG": "VBD", "DEP": "aux", "OP": "+", "LEMMA": "have" },
-            { "TAG": "VBN", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "past perfect passive",
-        "value": "past perfect passive",
-        "tokens": [
-            { "TAG": "VBD", "DEP": "aux", "OP": "+", "LEMMA": "have" },
-            { "TAG": "VBN", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
-            { "TAG": "VBN", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "future perfect",
-        "value": "future perfect",
-        "tokens": [
-            { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
-            { "TAG": "VB", "DEP": "aux", "OP": "+" },
-            { "TAG": "VBN", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "future perfect passive",
-        "value": "future perfect passive",
-        "tokens": [
-            { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
-            {
-                "TAG": { "IN": ["VBP", "VBZ"] },
-                "DEP": "aux",
-                "OP": "+",
-                "LEMMA": "have"
-            },
-            { "TAG": "VBN", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
-            { "TAG": "VBN", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "present perfect continuous",
-        "value": "present perfect continuous",
-        "tokens": [
-            {
-                "TAG": { "IN": ["VBP", "VBZ"] },
-                "DEP": "aux",
-                "OP": "+",
-                "LEMMA": "have"
-            },
-            { "TAG": "VBN", "DEP": "aux", "OP": "+", "LEMMA": "be" },
-            { "TAG": "VBG", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "present perfect continuous passive",
-        "value": "present perfect continuous passive",
-        "tokens": [
-            {
-                "TAG": { "IN": ["VBP", "VBZ"] },
-                "DEP": "aux",
-                "OP": "+",
-                "LEMMA": "have"
-            },
-            { "TAG": "VBN", "DEP": "aux", "OP": "+", "LEMMA": "be" },
-            { "TAG": "VBG", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
-            { "TAG": "VBN", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "past perfect continuous",
-        "value": "past perfect continuous",
-        "tokens": [
-            { "TAG": "VBD", "DEP": "aux", "OP": "+", "LEMMA": "have" },
-            { "TAG": "VBN", "DEP": "aux", "OP": "+", "LEMMA": "be" },
-            { "TAG": "VBG", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "past perfect continuous passive",
-        "value": "past perfect continuous passive",
-        "tokens": [
-            { "TAG": "VBD", "DEP": "aux", "OP": "+", "LEMMA": "have" },
-            { "TAG": "VBN", "DEP": "aux", "OP": "+", "LEMMA": "be" },
-            { "TAG": "VBG", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
-            { "TAG": "VBN", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "future perfect continuous",
-        "value": "future perfect continuous",
-        "tokens": [
-            { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
-            { "TAG": "VB", "DEP": "aux", "OP": "+", "LEMMA": "have" },
-            { "TAG": "VBN", "DEP": "aux", "OP": "+", "LEMMA": "be" },
-            { "TAG": "VBG", "OP": "+" }
-        ]
-    },
-    {
-        "rulename": "future perfect continuous passive",
-        "value": "future perfect continuous passive",
-        "tokens": [
-            { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
-            { "TAG": "VB", "DEP": "aux", "OP": "+", "LEMMA": "have" },
-            { "TAG": "VBN", "DEP": "aux", "OP": "+", "LEMMA": "be" },
-            { "TAG": "VBG", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
-            { "TAG": "VBN", "OP": "+" }
-        ]
-    }
-]
+    "patterns": [
+        {
+            "rulename": "present simple", 
+            "tokens": [{ "TAG": { "IN": ["VBP", "VBZ"] }, "OP": "+" }]
+        }, 
+        {
+            "rulename": "present simple passive", 
+            "tokens": [
+                {
+                    "TAG": { "IN": ["VBP", "VBZ"] },
+                    "DEP": "auxpass",
+                    "LEMMA": "be",
+                    "OP": "+"
+                },
+                { "TAG": "VBN", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "past simple", 
+            "tokens": [{ "TAG": "VBD", "OP": "+" }]
+        },
+        {
+            "rulename": "past simple passive", 
+            "tokens": [
+                { "TAG": "VBD", "DEP": "auxpass", "LEMMA": "be", "OP": "+" },
+                { "TAG": "VBN", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "future simple will",
+            "tokens": [
+                { "TAG": "MD", "DEP": "aux", "OP": "+", "LOWER": "will" },
+                { "TAG": "VB", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "future simple will passive",
+            "tokens": [
+                { "TAG": "MD", "DEP": "aux", "OP": "+", "LOWER": "will" },
+                { "TAG": "VB", "DEP": "auxpass", "LEMMA": "be" },
+                { "TAG": "VBN", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "future simple be-going-to",
+            "tokens": [
+                { "TAG": { "IN": ["VBP", "VBZ"] }, "DEP": "aux", "OP": "+" },
+                { "TAG": "VBG", "OP": "+", "LEMMA": "go" },
+                { "TAG": "TO", "DEP": "aux", "OP": "+" },
+                { "TAG": "VB", "DEP": "xcomp", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "future simple be-going-to passive",
+            "tokens": [
+                { "TAG": { "IN": ["VBP", "VBZ"] }, "DEP": "aux", "OP": "+" },
+                { "TAG": "VBG", "OP": "+", "LEMMA": "go" },
+                { "TAG": "TO", "DEP": "aux", "OP": "+" },
+                { "TAG": "VB", "DEP": "auxpass", "LEMMA": "be" },
+                { "TAG": "VBN", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "present continuous",
+            "tokens": [
+                { "TAG": { "IN": ["VBP", "VBZ"] }, "DEP": "aux", "OP": "+" },
+                { "TAG": "VBG", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "present continuous passive",
+            "tokens": [
+                {
+                    "TAG": { "IN": ["VBP", "VBZ"] },
+                    "DEP": "aux",
+                    "OP": "+",
+                    "LEMMA": "be"
+                },
+                { "TAG": "VBG", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
+                { "TAG": "VBN", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "past continuous",
+            "tokens": [
+                { "TAG": "VBD", "DEP": "aux", "OP": "+" },
+                { "TAG": "VBG", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "past continuous passive",
+            "tokens": [
+                { "TAG": "VBD", "DEP": "aux", "OP": "+", "LEMMA": "be" },
+                { "TAG": "VBG", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
+                { "TAG": "VBN", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "future continous",
+            "tokens": [
+                { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
+                { "TAG": "VB", "DEP": "aux", "OP": "+", "LEMMA": "be" },
+                { "TAG": "VBG", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "future continuous passive",
+            "tokens": [
+                { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
+                { "TAG": "VB", "DEP": "aux", "OP": "+", "LEMMA": "be" },
+                { "TAG": "VBG", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
+                { "TAG": "VBN", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "present perfect",
+            "tokens": [
+                {
+                    "TAG": { "IN": ["VBP", "VBZ"] },
+                    "DEP": "aux",
+                    "OP": "+",
+                    "LEMMA": "have"
+                },
+                { "TAG": "VBN", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "present perfect passive",
+            "tokens": [
+                {
+                    "TAG": { "IN": ["VBP", "VBZ"] },
+                    "DEP": "aux",
+                    "OP": "+",
+                    "LEMMA": "have"
+                },
+                { "TAG": "VBN", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
+                { "TAG": "VBN", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "past perfect",
+            "tokens": [
+                { "TAG": "VBD", "DEP": "aux", "OP": "+", "LEMMA": "have" },
+                { "TAG": "VBN", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "past perfect passive",
+            "tokens": [
+                { "TAG": "VBD", "DEP": "aux", "OP": "+", "LEMMA": "have" },
+                { "TAG": "VBN", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
+                { "TAG": "VBN", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "future perfect",
+            "tokens": [
+                { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
+                { "TAG": "VB", "DEP": "aux", "OP": "+" },
+                { "TAG": "VBN", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "future perfect passive",
+            "tokens": [
+                { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
+                {
+                    "TAG": { "IN": ["VBP", "VBZ"] },
+                    "DEP": "aux",
+                    "OP": "+",
+                    "LEMMA": "have"
+                },
+                { "TAG": "VBN", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
+                { "TAG": "VBN", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "present perfect continuous",
+            "tokens": [
+                {
+                    "TAG": { "IN": ["VBP", "VBZ"] },
+                    "DEP": "aux",
+                    "OP": "+",
+                    "LEMMA": "have"
+                },
+                { "TAG": "VBN", "DEP": "aux", "OP": "+", "LEMMA": "be" },
+                { "TAG": "VBG", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "present perfect continuous passive",
+            "tokens": [
+                {
+                    "TAG": { "IN": ["VBP", "VBZ"] },
+                    "DEP": "aux",
+                    "OP": "+",
+                    "LEMMA": "have"
+                },
+                { "TAG": "VBN", "DEP": "aux", "OP": "+", "LEMMA": "be" },
+                { "TAG": "VBG", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
+                { "TAG": "VBN", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "past perfect continuous",
+            "tokens": [
+                { "TAG": "VBD", "DEP": "aux", "OP": "+", "LEMMA": "have" },
+                { "TAG": "VBN", "DEP": "aux", "OP": "+", "LEMMA": "be" },
+                { "TAG": "VBG", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "past perfect continuous passive",
+            "tokens": [
+                { "TAG": "VBD", "DEP": "aux", "OP": "+", "LEMMA": "have" },
+                { "TAG": "VBN", "DEP": "aux", "OP": "+", "LEMMA": "be" },
+                { "TAG": "VBG", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
+                { "TAG": "VBN", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "future perfect continuous",
+            "tokens": [
+                { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
+                { "TAG": "VB", "DEP": "aux", "OP": "+", "LEMMA": "have" },
+                { "TAG": "VBN", "DEP": "aux", "OP": "+", "LEMMA": "be" },
+                { "TAG": "VBG", "OP": "+" }
+            ]
+        },
+        {
+            "rulename": "future perfect continuous passive",
+            "tokens": [
+                { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
+                { "TAG": "VB", "DEP": "aux", "OP": "+", "LEMMA": "have" },
+                { "TAG": "VBN", "DEP": "aux", "OP": "+", "LEMMA": "be" },
+                { "TAG": "VBG", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
+                { "TAG": "VBN", "OP": "+" }
+            ]
+        }
+    ]
+}

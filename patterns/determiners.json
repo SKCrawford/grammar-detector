@@ -1,37 +1,38 @@
-[
-    {
-        "rulename": "indefinite",
-        "value": "indefinite",
-        "tokens": [
-            { "POS": "DET", "LOWER": { "IN": ["a", "an"] } },
-            { "OP": "*" },
-            { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
-        ]
+{
+    "meta": {
+        "how_many_matches": "many"
     },
-    {
-        "rulename": "definite",
-        "value": "definite",
-        "tokens": [
-            { "POS": "DET", "LOWER": "the" },
-            { "OP": "*" },
-            { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
-        ]
-    },
-    {
-        "rulename": "other",
-        "value": "other",
-        "tokens": [
-            { "POS": "DET", "LOWER": { "NOT_IN": ["a", "an", "the"] } },
-            { "OP": "*" },
-            { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
-        ]
-    },
-    {
-        "rulename": "none",
-        "value": null,
-        "tokens": [
-            { "POS": { "NOT_IN": ["DET"] }, "OP": "?" },
-            { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
-        ]
-    }
-]
+    "patterns": [
+        {
+            "rulename": "indefinite",
+            "tokens": [
+                { "POS": "DET", "LOWER": { "IN": ["a", "an"] } },
+                { "OP": "*" },
+                { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
+            ]
+        },
+        {
+            "rulename": "definite",
+            "tokens": [
+                { "POS": "DET", "LOWER": "the" },
+                { "OP": "*" },
+                { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
+            ]
+        },
+        {
+            "rulename": "other",
+            "tokens": [
+                { "POS": "DET", "LOWER": { "NOT_IN": ["a", "an", "the"] } },
+                { "OP": "*" },
+                { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
+            ]
+        },
+        {
+            "rulename": "none",
+            "tokens": [
+                { "POS": { "NOT_IN": ["DET"] }, "OP": "?" },
+                { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
+            ]
+        }
+    ]
+}

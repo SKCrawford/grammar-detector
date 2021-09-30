@@ -1,44 +1,45 @@
-[
-    {
-        "rulename": "ditransitive",
-        "value": "ditransitive",
-        "tokens": [
-            { "DEP": "nsubj" },
-            { "OP": "*" },
-            { "DEP": "ROOT" },
-            { "OP": "*" },
-            { "DEP": { "IN": ["dobj", "iobj", "pobj", "dative"] } },
-            { "OP": "*" },
-            { "DEP": { "IN": ["dobj", "iobj", "pobj", "dative"] } }
-        ]
+{
+    "meta": {
+        "how_many_matches": "one"
     },
-    {
-        "rulename": "transitive",
-        "value": "transitive",
-        "tokens": [
-            { "DEP": "nsubj" },
-            { "OP": "*" },
-            { "DEP": "ROOT" },
-            { "OP": "*" },
-            { "DEP": "dobj" }
-        ]
-    },
-    {
-        "rulename": "intransitive",
-        "value": "intransitive",
-        "tokens": [
-            { "DEP": "nsubj", "LOWER": { "NOT_IN": ["it"] } },
-            { "OP": "*" },
-            { "DEP": "ROOT" }
-        ]
-    },
-    {
-        "rulename": "impersonal",
-        "value": "impersonal",
-        "tokens": [
-            { "TAG": "PRP", "DEP": "nsubj", "LOWER": "it" },
-            { "OP": "*" },
-            { "DEP": "ROOT" }
-        ]
-    }
-]
+    "patterns": [
+        {
+            "rulename": "ditransitive",
+            "tokens": [
+                { "DEP": "nsubj" },
+                { "OP": "*" },
+                { "DEP": "ROOT" },
+                { "OP": "*" },
+                { "DEP": { "IN": ["dobj", "iobj", "pobj", "dative"] } },
+                { "OP": "*" },
+                { "DEP": { "IN": ["dobj", "iobj", "pobj", "dative"] } }
+            ]
+        },
+        {
+            "rulename": "transitive",
+            "tokens": [
+                { "DEP": "nsubj" },
+                { "OP": "*" },
+                { "DEP": "ROOT" },
+                { "OP": "*" },
+                { "DEP": "dobj" }
+            ]
+        },
+        {
+            "rulename": "intransitive",
+            "tokens": [
+                { "DEP": "nsubj", "LOWER": { "NOT_IN": ["it"] } },
+                { "OP": "*" },
+                { "DEP": "ROOT" }
+            ]
+        },
+        {
+            "rulename": "impersonal",
+            "tokens": [
+                { "TAG": "PRP", "DEP": "nsubj", "LOWER": "it" },
+                { "OP": "*" },
+                { "DEP": "ROOT" }
+            ]
+        }
+    ]
+}

@@ -1,19 +1,19 @@
-[
-    {
-        "rulename": "active",
-        "value": "active",
-        "tokens": [
-            { "DEP": "aux", "OP": "*" }, 
-            { "DEP": "ROOT" }
-        ]
-    },
-    {
-        "rulename": "passive",
-        "value": "passive",
-        "tokens": [
-            { "DEP": "aux", "OP": "*" },
-            { "DEP": "auxpass", "OP": "+" },
-            { "TAG": "VBN", "DEP": "ROOT" }
-        ]
-    }
-]
+{
+    "patterns": [
+        {
+            "rulename": "active",
+            "tokens": [
+                { "DEP": "aux", "OP": "*" }, 
+                { "DEP": "ROOT" }
+            ]
+        },
+        {
+            "rulename": "passive",
+            "tokens": [
+                { "DEP": "aux", "OP": "*" },
+                { "DEP": "auxpass", "OP": "+" },
+                { "TAG": "VBN", "DEP": "ROOT" }
+            ]
+        }
+    ]
+}

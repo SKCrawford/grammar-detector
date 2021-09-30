@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 async def main():
     start_time = time.time()
     sentences = []
-    pattern_sets = ["transitivity", "voices"]
+    pattern_sets = ["determiners", "persons", "tense_aspects", "transitivity", "voices"]
 
     if len(sys.argv) > 0:
         sentences = sys.argv[1:]

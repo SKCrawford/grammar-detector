@@ -4,7 +4,6 @@ from spacy.matcher import Matcher as SpacyMatcher
 from . import validators
 from .extractors import get_doc
 from .nlp import nlp
-from .patterns import load_pattern_set
 
 
 logger = logging.getLogger(__name__)
@@ -16,35 +15,28 @@ class Matcher:
         self._pattern_set = None
         self._doc = None
 
-    def match_by_pattern(self, pattern_set_name, maybe_tokenized):
-        """Deprecated."""
-        return self.match_one(pattern_set_name, maybe_tokenized)
-
-    def match_one(self, pattern_set_name, maybe_tokenized):
+    def match_one(self, pattern_set, maybe_tokenized):
         logger.debug("Preparing to run matcher")
-        self._pre_match(pattern_set_name, maybe_tokenized)
+        self._pre_match(pattern_set, maybe_tokenized)
 
         logger.debug("Running matcher")
         all_matches = self._run_matcher(self._doc)
-        best_match = all_matches[-1]
+        best_match = self._get_best_match(all_matches)
 
         logger.debug(f"Parsing one match '{best_match}'")
         return self._parse_match(best_match, self._doc)
 
-    def match_many(self, pattern_set_name, maybe_tokenized):
+    def match_many(self, pattern_set, maybe_tokenized):
         logger.debug("Preparing to run matcher")
-        self._pre_match(pattern_set_name, maybe_tokenized)
+        self._pre_match(pattern_set, maybe_tokenized)
 
         logger.debug("Running matcher")
         all_matches = self._run_matcher(self._doc)
 
         logger.debug(f"Parsing many matches '{all_matches}'")
-        return [self._parse_match(m) for m in all_matches]
+        return [self._parse_match(m, self._doc) for m in all_matches]
 
-    def _pre_match(self, pattern_set_name, maybe_tokenized):
-        logger.debug(f"Loading pattern set '{pattern_set_name}'")
-        pattern_set = load_pattern_set(pattern_set_name)
-
+    def _pre_match(self, pattern_set, maybe_tokenized):
         logger.debug(f"Creating the internal spaCy matcher")
         self._inner_matcher = self._create_matcher(pattern_set)
 
@@ -58,14 +50,14 @@ class Matcher:
         logger.debug(f"Doc: '{doc}'")
         logger.debug(f"Matches: '{matches}'")
         parsed_matches = [self._parse_match(m, doc) for m in matches]
-        logger.debug(f"Parsed: '{parsed_matches}'")
+        logger.debug(f"Parsed matches: '{parsed_matches}'")
 
     def _create_matcher(self, pattern_set):
         logger.debug("Creating the spaCy matcher")
         matcher = SpacyMatcher(nlp.vocab, validate=True)
 
         logger.debug("Adding patterns to the spaCy matcher")
-        for p in pattern_set:
+        for p in pattern_set["patterns"]:
             match_value = p["rulename"]
             config = {
                 "greedy": "LONGEST",
@@ -84,3 +76,6 @@ class Matcher:
         rulename = nlp.vocab.strings[match_id]
         span = doc[start:end]
         return (rulename, span)
+
+    def _get_best_match(self, matches):
+        return matches[-1]
