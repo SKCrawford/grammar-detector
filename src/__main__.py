@@ -6,6 +6,7 @@ import time
 import src.logger
 from .detectors import detect_features
 from .utils import to_token_table
+from settings import PATTERN_SETS
 
 
 logger = logging.getLogger(__name__)
@@ -14,7 +15,6 @@ logger = logging.getLogger(__name__)
 async def main():
     start_time = time.time()
     sentences = []
-    pattern_sets = ["determiners", "persons", "tense_aspects", "transitivity", "voices"]
 
     if len(sys.argv) > 1:
         sentences = sys.argv[1:]
@@ -33,7 +33,7 @@ async def main():
         logger.info(f"Token table:\n{token_table}")
         print(token_table, "\n")
 
-        feature_set = await detect_features(sentence, pattern_sets)
+        feature_set = await detect_features(sentence, PATTERN_SETS)
 
         logger.info("Detected features:")
         logger.info(pprint.pformat(feature_set))
