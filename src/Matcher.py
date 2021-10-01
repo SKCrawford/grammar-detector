@@ -2,7 +2,8 @@ import asyncio
 import logging
 from spacy.matcher import Matcher as SpacyMatcher
 from . import validators
-from .extractors import get_doc
+from .extractors import get_doc, extract_span_features
+from .extractors import extract_span_features, get_doc
 from .nlp import nlp
 
 
@@ -87,7 +88,7 @@ class Matcher:
         rulename = nlp.vocab.strings[match_id]
         span = doc[start:end]
         logger.debug(f"Parsed ('{rulename}', '{span}') from match '{match}'")
-        return (rulename, span)
+        return (rulename, span, extract_span_features(span))
 
     def _get_best_match(self, matches):
         return matches[-1]
