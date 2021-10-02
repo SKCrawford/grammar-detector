@@ -1,5 +1,6 @@
 {
     "meta": {
+        "extract_noun_chunks": false,
         "how_many_matches": "one"
     },
     "patterns": [
