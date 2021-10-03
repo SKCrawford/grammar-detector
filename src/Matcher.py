@@ -83,10 +83,11 @@ class Matcher:
         return (rulename, span, extract_span_features(span))
 
     def _get_best_match(self, matches):
-        # TODO get longest match
-        try:
-            return matches[-1]
-        except IndexError:
-            msg = f"No matches were found"
-            logger.error(msg)
-            raise Exception(msg)
+        logger.debug(f"Getting the best match from {matches}")
+        return self._get_longest_match(matches)
+
+    def _get_longest_match(self, matches):
+        logger.debug(f"Getting the longest match from {matches}")
+        distances = [end - start for (_, start, end) in matches]
+        largest_distance_i = distances.index(max(distances))
+        return matches[largest_distance_i]
