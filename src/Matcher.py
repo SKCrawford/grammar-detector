@@ -24,7 +24,7 @@ class Matcher:
                 "greedy": "LONGEST",
                 "on_match": self._on_match,
             }
-            logger.debug(f"Adding pattern '{rulename}' to the internal matcher")
+            logger.debug(f"Adding the pattern '{rulename}' to the internal matcher")
             self._inner_matcher.add(rulename, [tokens], **config)
 
     def match(self, doc):
