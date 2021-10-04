@@ -34,11 +34,12 @@ class Pattern:
 class PatternSet:
     def __init__(self, pattern_set_name):
         self.name = pattern_set_name
-        self.meta = None
         self.patterns = {}
 
         data = load_pattern_set(self.name)
-        self.meta = data["meta"]
+        self.meta = data["meta"] if "meta" in data else None
+        self.tests = data["tests"] if "tests" in data else []
+
         for pattern_entry in data["patterns"]:
             rulename = pattern_entry["rulename"]
             tokens = pattern_entry["tokens"]
@@ -46,22 +47,16 @@ class PatternSet:
 
     @property
     def how_many_matches(self):
-        setting = None
-        try:
-            setting = self.meta["how_many_matches"]
-        except KeyError:
-            setting = "one"  # TODO refactor
-        assert type(setting) == str
+        key = "how_many_matches"
+        setting = self.meta[key] if key in self.meta else "one"
+        assert type(setting) == str, f"Expected a str but got {type(setting)}"
         return setting.upper()
 
     @property
     def should_extract_noun_chunks(self):
-        setting = None
-        try:
-            setting = self.meta["extract_noun_chunks"]
-        except KeyError:
-            setting = False  # TODO refactor
-        assert type(setting) == bool
+        key = "should_extract_noun_chunks"
+        setting = self.meta[key] if key in self.meta else "one"
+        assert type(setting) == bool, f"Expected a bool but got {type(setting)}"
         return setting
 
     def get_all_patterns(self):

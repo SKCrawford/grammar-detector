@@ -1,6 +1,6 @@
 {
     "meta": {
-        "extract_noun_chunks": false,
+        "extract_noun_chunks": "many",
         "how_many_matches": "one"
     },
     "patterns": [
@@ -241,6 +241,48 @@
                 { "TAG": "VBG", "DEP": "auxpass", "OP": "+", "LEMMA": "be" },
                 { "TAG": "VBN", "OP": "+" }
             ]
+        }
+    ],
+    "tests": [
+        {
+            "input": "I run.",
+            "rulename": "present simple",
+            "span": "run"
+        },
+        {
+            "input": "He runs.",
+            "rulename": "present simple",
+            "span": "runs"
+        },
+        {
+            "input": "She runs.",
+            "rulename": "present simple",
+            "span": "runs"
+        },
+        {
+            "input": "They run.",
+            "rulename": "present simple",
+            "span": "run"
+        },
+        {
+            "input": "I ran.",
+            "rulename": "past simple",
+            "span": "ran"
+        },
+        {
+            "input": "He ran.",
+            "rulename": "past simple",
+            "span": "ran"
+        },
+        {
+            "input": "She ran.",
+            "rulename": "past simple",
+            "span": "ran"
+        },
+        {
+            "input": "They ran.",
+            "rulename": "past simple",
+            "span": "ran"
         }
     ]
 }
