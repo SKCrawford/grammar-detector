@@ -1,7 +1,7 @@
 {
     "meta": {
         "extract_noun_chunks": false,
-        "how_many_matches": "one"
+        "how_many_matches": "many"
     },
     "patterns": [
         {
@@ -41,6 +41,13 @@
                 { "OP": "*" },
                 { "DEP": "ROOT" }
             ]
+        }
+    ],
+    "tests": [
+        {
+            "input": "The dog chased the cat.",
+            "rulenames": ["intransitive", "transitive"],
+            "spans": ["dog chased", "dog chased the cat"]
         }
     ]
 }

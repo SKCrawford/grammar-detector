@@ -246,43 +246,43 @@
     "tests": [
         {
             "input": "I run.",
-            "rulename": "present simple",
-            "span": "run"
+            "rulenames": ["present simple"],
+            "spans": ["run"]
         },
         {
             "input": "He runs.",
-            "rulename": "present simple",
-            "span": "runs"
+            "rulenames": ["present simple"],
+            "spans": ["runs"]
         },
         {
             "input": "She runs.",
-            "rulename": "present simple",
-            "span": "runs"
+            "rulenames": ["present simple"],
+            "spans": ["runs"]
         },
         {
             "input": "They run.",
-            "rulename": "present simple",
-            "span": "run"
+            "rulenames": ["present simple"],
+            "spans": ["run"]
         },
         {
             "input": "I ran.",
-            "rulename": "past simple",
-            "span": "ran"
+            "rulenames": ["past simple"],
+            "spans": ["ran"]
         },
         {
             "input": "He ran.",
-            "rulename": "past simple",
-            "span": "ran"
+            "rulenames": ["past simple"],
+            "spans": ["ran"]
         },
         {
             "input": "She ran.",
-            "rulename": "past simple",
-            "span": "ran"
+            "rulenames": ["past simple"],
+            "spans": ["ran"]
         },
         {
             "input": "They ran.",
-            "rulename": "past simple",
-            "span": "ran"
+            "rulenames": ["past simple"],
+            "spans": ["ran"]
         }
     ]
 }
