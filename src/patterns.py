@@ -55,7 +55,7 @@ class PatternSet:
     @property
     def should_extract_noun_chunks(self):
         key = "should_extract_noun_chunks"
-        setting = self.meta[key] if key in self.meta else "one"
+        setting = self.meta[key] if key in self.meta else False
         assert type(setting) == bool, f"Expected a bool but got {type(setting)}"
         return setting
 
