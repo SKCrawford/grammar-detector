@@ -29,23 +29,32 @@ class TestPatternSetJsonTests(unittest.TestCase):
                 with self.subTest(pset.name):
                     for t in pset.tests:
                         input = get_doc(t["input"])
-                        expected_rulename = t["rulename"] if "rulename" in t else None
-                        expected_span = t["span"] if "span" in t else None
+                        expected_rulenames = t["rulenames"] if "rulenames" in t else []
+                        expected_spans = t["spans"] if "spans" in t else []
 
-                        if not expected_rulename and not expected_span:
-                            err_msg = "The test entry must have at least one of these keys: expected_rulename and/or expected_span"
+                        if not expected_rulenames and not expected_spans:
+                            err_msg = "The test entry must have at least one of these keys: rulenames, spans"
                             raise KeyError(err_msg)
 
-                        (rulename, span1, features) = matcher.match(input)
-                        span1 = str(span1)
-                        span2 = str(features["span"])
+                        input_type = type(input)
+                        if input_type != str:
+                            err_msg = f"Expected a string but got a {input_type}"
+                            raise TypeError(err_msg)
 
-                        if expected_rulename:
-                            err_msg = f"'{input}': expected rulename '{expected_rulename}' but got '{rulename}'"
-                            self.assertEqual(rulename, expected_rulename, err_msg)
+                        has_many_rulenames = bool(len(expected_rulenames) > 1)
+                        has_many_spans = bool(len(expected_spans) > 1)
+                        if has_many_rulenames or has_many_spans:
+                            if pset.how_many_matches == "ONE":
+                                err_msg = f"The pattern set expects only one match, but the test contains multiple rulenames and/or spans"
+                                raise ValueError(err_msg)
 
-                        if expected_span:
-                            err_msg = f"'{input}': expected span '{expected_span}' but got '{span1}'"
-                            self.assertEqual(span1, expected_span, err_msg)
-                            err_msg = f"'{input}': expected span '{expected_span}' but got '{span2}'"
-                            self.assertEqual(span2, expected_span, err_msg)
+                        rulenames = []
+                        spans = []
+                        for (rulename, span, features) in matcher.match(input):
+                            rulenames.append(rulename)
+                            spans.append(str(span))
+
+                        if expected_rulenames:
+                            self.assertListEqual(rulenames, expected_rulenames)
+                        if expected_spans:
+                            self.assertListEqual(spans, expected_spans)
