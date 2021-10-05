@@ -53,7 +53,7 @@ class Matcher:
         parsed_match = self._parse_match(best_match, doc)
 
         logger.debug(f"Parsed the best match: {parsed_match}")
-        return parsed_match
+        return [parsed_match]
 
     def _match_all(self, doc):
         logger.debug("Matching for all results")
