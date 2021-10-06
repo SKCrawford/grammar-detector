@@ -14,15 +14,17 @@ class SettingValues(Enum):
 
 
 class SettingKeys(Enum):
+    PATTERN_SET_FILE_META = "meta"
     PATTERN_SET_FILE_META_BEST_MATCH = "best_match"
     PATTERN_SET_FILE_META_EXTRACT_NOUN_CHUNKS = "extract_noun_chunks"
     PATTERN_SET_FILE_META_HOW_MANY_MATCHES = "how_many_matches"
-    PATTERN_SET_FILE_META = "meta"
     PATTERN_SET_FILE_PATTERNS = "patterns"
     PATTERN_SET_FILE_PATTERNS_RULENAME = "rulename"
     PATTERN_SET_FILE_PATTERNS_TOKENS = "tokens"
-    PATTERN_SET_FILE_TESTS_INPUT = "input"
     PATTERN_SET_FILE_TESTS = "tests"
+    PATTERN_SET_FILE_TESTS_IGNORE = "ignore"
+    PATTERN_SET_FILE_TESTS_IGNORE_REASON = "ignore_reason"
+    PATTERN_SET_FILE_TESTS_INPUT = "input"
     PATTERN_SET_FILE_TESTS_RULENAMES = "rulenames"
     PATTERN_SET_FILE_TESTS_SPANS = "spans"
 

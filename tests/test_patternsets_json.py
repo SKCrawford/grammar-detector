@@ -20,6 +20,7 @@ class TestPatternSetJsonTests(unittest.TestCase):
             self.pattern_sets[pset_name] = pattern_set
             self.matchers[pset_name] = Matcher(pattern_set)
 
+    # Refactor this horrid mess!!
     def test_pattern_set_json_tests(self):
         for pset_key in self.pattern_sets:
             pset = self.pattern_sets[pset_key]
@@ -28,40 +29,57 @@ class TestPatternSetJsonTests(unittest.TestCase):
             if pset.tests:
                 with self.subTest(pset.name):
                     for t in pset.tests:
-                        key = SettingKeys.PATTERN_SET_FILE_TESTS_INPUT.value
-                        input = get_doc(t[key])
+                        should_ignore = None
+                        ignore_reason = None
+                        try:
+                            key = SettingKeys.PATTERN_SET_FILE_TESTS_IGNORE.value
+                            should_ignore = bool(t[key])
+                            key = SettingKeys.PATTERN_SET_FILE_TESTS_IGNORE_REASON.value
+                            ignore_reason = str(t[key])
+                        except KeyError:
+                            should_ignore = False
+                        except Exception as e:
+                            raise e
 
-                        key = SettingKeys.PATTERN_SET_FILE_TESTS_RULENAMES.value
-                        expected_rulenames = t[key] if key in t else []
+                        if not should_ignore:  # Early exit is impossible
+                            key = SettingKeys.PATTERN_SET_FILE_TESTS_INPUT.value
+                            input = get_doc(t[key])
 
-                        key = SettingKeys.PATTERN_SET_FILE_TESTS_SPANS.value
-                        expected_spans = t[key] if key in t else []
+                            key = SettingKeys.PATTERN_SET_FILE_TESTS_RULENAMES.value
+                            expected_rulenames = t[key] if key in t else []
 
-                        if not expected_rulenames and not expected_spans:
-                            valid_keys = [
-                                SettingKeys.PATTERN_SET_FILE_TESTS_RULENAMES,
-                                SettingKeys.PATTERN_SET_FILE_TESTS_SPANS,
-                            ]
-                            err_msg = f"The test entry must have at least one of these keys: {valid_keys}"
-                            raise KeyError(err_msg)
+                            key = SettingKeys.PATTERN_SET_FILE_TESTS_SPANS.value
+                            expected_spans = t[key] if key in t else []
 
-                        has_many_rulenames = bool(len(expected_rulenames) > 1)
-                        has_many_spans = bool(len(expected_spans) > 1)
-                        if has_many_rulenames or has_many_spans:
-                            if (
-                                pset.how_many_matches
-                                == SettingValues.HOW_MANY_MATCHES_ONE_MATCH.value
-                            ):
-                                err_msg = f"The pattern set expects only one match, but the test contains multiple rulenames and/or spans"
-                                raise ValueError(err_msg)
+                            if not expected_rulenames and not expected_spans:
+                                valid_keys = [
+                                    SettingKeys.PATTERN_SET_FILE_TESTS_RULENAMES.value,
+                                    SettingKeys.PATTERN_SET_FILE_TESTS_SPANS.value,
+                                ]
+                                err_msg = f"The test entry must have at least one of these keys: {valid_keys}"
+                                raise KeyError(err_msg)
 
-                        rulenames = []
-                        spans = []
-                        for (rulename, span, features) in matcher.match(input):
-                            rulenames.append(rulename)
-                            spans.append(str(span))
+                            has_many_rulenames = bool(len(expected_rulenames) > 1)
+                            has_many_spans = bool(len(expected_spans) > 1)
+                            if has_many_rulenames or has_many_spans:
+                                if (
+                                    pset.how_many_matches
+                                    == SettingValues.HOW_MANY_MATCHES_ONE_MATCH.value
+                                ):
+                                    err_msg = f"The pattern set expects only one match, but the test contains multiple rulenames and/or spans"
+                                    raise ValueError(err_msg)
 
-                        if expected_rulenames:
-                            self.assertListEqual(rulenames, expected_rulenames)
-                        if expected_spans:
-                            self.assertListEqual(spans, expected_spans)
+                            rulenames = []
+                            spans = []
+                            for (rulename, span, features) in matcher.match(input):
+                                rulenames.append(rulename)
+                                spans.append(str(span))
+
+                            if expected_rulenames:
+                                self.assertListEqual(rulenames, expected_rulenames)
+                            if expected_spans:
+                                self.assertListEqual(spans, expected_spans)
+                        else:
+                            msg = f"Skipping '{input}': {ignore_reason}"
+                            print(msg)
+                            logger.debug(msg)
