@@ -35,5 +35,83 @@
                 { "POS": { "IN": ["NOUN", "PRON", "PROPN"] } }
             ]
         }
+    ],
+    "tests": [
+        {
+            "input": "the book",
+            "rulenames": ["definite"],
+            "spans": ["the"]
+        },
+        {
+            "input": "the green book",
+            "rulenames": ["definite"],
+            "spans": ["the"]
+        },
+        {
+            "input": "the incredibly green book",
+            "rulenames": ["definite"],
+            "spans": ["the"]
+        },
+        {
+            "input": "the book that was on a shelf",
+            "rulenames": ["definite"],
+            "spans": ["the"]
+        },
+        {
+            "input": "a book",
+            "rulenames": ["indefinite"],
+            "spans": ["a"]
+        },
+        {
+            "input": "a green book",
+            "rulenames": ["indefinite"],
+            "spans": ["a"]
+        },
+        {
+            "input": "a hideously green book",
+            "rulenames": ["indefinite"],
+            "spans": ["a"]
+        },
+        {
+            "input": "a book that was on the shelf",
+            "rulenames": ["indefinite"],
+            "spans": ["a"]
+        },
+        {
+            "input": "an apple",
+            "rulenames": ["indefinite"],
+            "spans": ["an"]
+        },
+        {
+            "input": "an ugly apple",
+            "rulenames": ["indefinite"],
+            "spans": ["an"]
+        },
+        {
+            "input": "an incredibly green apple",
+            "rulenames": ["indefinite"],
+            "spans": ["an"]
+        },
+        {
+            "input": "an apple that was on a shelf",
+            "rulenames": ["indefinite", "indefinite"],
+            "spans": ["an", "a"]
+        },
+        {
+            "input": "apple",
+            "rulenames": ["none"]
+        },
+        {
+            "input": "ugly apple",
+            "rulenames": ["none"]
+        },
+        {
+            "input": "incredibly green apple",
+            "rulenames": ["none"]
+        },
+        {
+            "input": "apple that was on a shelf",
+            "rulenames": ["none", "indefinite"]
+        }
     ]
 }
