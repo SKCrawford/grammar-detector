@@ -1,9 +1,10 @@
 import logging
 import spacy
+from settings import SPACY_DATASET
 
 
-data = "en_core_web_lg"
-
-logging.getLogger(__name__).info(f"Started loading the spaCy model with data '{data}'")
-nlp = spacy.load(data)
+logging.getLogger(__name__).info(
+    f"Started loading the spaCy model with the dataset '{SPACY_DATASET}'"
+)
+nlp = spacy.load(SPACY_DATASET)
 logging.getLogger(__name__).info("Finished loading the spaCy model")

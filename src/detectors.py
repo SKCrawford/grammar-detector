@@ -1,17 +1,12 @@
 import asyncio
 import logging
 import os
-from json import load
-from settings import PATTERNS_DIR
 from .extractors import get_doc
 from .Matcher import Matcher
-from .patterns import load_pattern_set, PatternSet
+from .patterns import PatternSet
 
 
 logger = logging.getLogger(__name__)
-
-
-DEFAULT_HOW_MANY_MATCHES = "one"
 
 
 async def detect_features(sentence, pattern_set_names):
@@ -31,12 +26,12 @@ async def detect_features(sentence, pattern_set_names):
         matcher = Matcher(pattern_set)
 
         # Noun chunks
+        # TODO rewrite to use pattern_set.meta
         logger.debug("Determining if the noun chunks should be extracted from the doc")
         should_extract_noun_chunks = pattern_set.should_extract_noun_chunks
         logger.debug(f"Extracting the noun chunks: {should_extract_noun_chunks}")
         inputs = doc.noun_chunks if should_extract_noun_chunks else [doc]
 
-        # Deciding the appropriate matcher function
         logger.debug(f"Running the external matcher")
         feature_set[pattern_set_name] = [matcher.match(input) for input in inputs]
         logger.debug(f"Finished detecting for the feature '{pattern_set_name}'")

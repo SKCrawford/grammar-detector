@@ -2,7 +2,7 @@ import logging
 import unittest
 from src.patterns import load_pattern_set, PatternSet
 from src.Matcher import Matcher
-from settings import PATTERN_SETS_NAMES
+from settings import PATTERN_SETS_NAMES, SettingKeys, SettingValues
 from src.extractors import get_doc
 
 
@@ -28,23 +28,30 @@ class TestPatternSetJsonTests(unittest.TestCase):
             if pset.tests:
                 with self.subTest(pset.name):
                     for t in pset.tests:
-                        input = get_doc(t["input"])
-                        expected_rulenames = t["rulenames"] if "rulenames" in t else []
-                        expected_spans = t["spans"] if "spans" in t else []
+                        key = SettingKeys.PATTERN_SET_FILE_TESTS_INPUT.value
+                        input = get_doc(t[key])
+
+                        key = SettingKeys.PATTERN_SET_FILE_TESTS_RULENAMES.value
+                        expected_rulenames = t[key] if key in t else []
+
+                        key = SettingKeys.PATTERN_SET_FILE_TESTS_SPANS.value
+                        expected_spans = t[key] if key in t else []
 
                         if not expected_rulenames and not expected_spans:
-                            err_msg = "The test entry must have at least one of these keys: rulenames, spans"
+                            valid_keys = [
+                                SettingKeys.PATTERN_SET_FILE_TESTS_RULENAMES,
+                                SettingKeys.PATTERN_SET_FILE_TESTS_SPANS,
+                            ]
+                            err_msg = f"The test entry must have at least one of these keys: {valid_keys}"
                             raise KeyError(err_msg)
-
-                        input_type = type(input)
-                        if input_type != str:
-                            err_msg = f"Expected a string but got a {input_type}"
-                            raise TypeError(err_msg)
 
                         has_many_rulenames = bool(len(expected_rulenames) > 1)
                         has_many_spans = bool(len(expected_spans) > 1)
                         if has_many_rulenames or has_many_spans:
-                            if pset.how_many_matches == "ONE":
+                            if (
+                                pset.how_many_matches
+                                == SettingValues.HOW_MANY_MATCHES_ONE_MATCH.value
+                            ):
                                 err_msg = f"The pattern set expects only one match, but the test contains multiple rulenames and/or spans"
                                 raise ValueError(err_msg)
 

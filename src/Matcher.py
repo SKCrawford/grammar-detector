@@ -1,6 +1,7 @@
 import asyncio
 import logging
 from spacy.matcher import Matcher as SpacyMatcher
+from settings import Defaults, SettingValues
 from . import validators
 from .extractors import extract_span_features
 from .nlp import nlp
@@ -21,7 +22,7 @@ class Matcher:
             rulename = pattern.rulename
             tokens = pattern.tokens
             config = {
-                "greedy": "LONGEST",
+                "greedy": "LONGEST",  # Not the same as the settings.py value
                 "on_match": self._on_match,
             }
             logger.debug(f"Adding the pattern '{rulename}' to the internal matcher")
@@ -31,14 +32,17 @@ class Matcher:
         """The entry point for running the matcher. Using the pattern set provided
         during construction, the appropriate matcher method will be returned.
         All usable matcher methods should be included here."""
-        how_many_matches = self.pattern_set.how_many_matches
+        # Maybe handle default in PatternSet
+        how_many_matches = (
+            self.pattern_set.how_many_matches or Defaults.HOW_MANY_MATCHES.value
+        )
         logger.debug(f"Running the matcher method for '{how_many_matches}' result(s)")
-        if how_many_matches == "ONE":  # Refactor
+        if how_many_matches == SettingValues.HOW_MANY_MATCHES_ONE_MATCH.value:
             return self._match_one(doc)
-        elif how_many_matches == "MANY":  # Refactor
+        elif how_many_matches == SettingValues.HOW_MANY_MATCHES_ALL_MATCHES.value:
             return self._match_all(doc)
         else:
-            return self._match_one(doc)
+            raise ValueError(f"Invalid how_many_matches setting: {how_many_matches}")
 
     def _match_one(self, doc):
         logger.debug("Matching for one result")
@@ -83,6 +87,7 @@ class Matcher:
         return (rulename, span, extract_span_features(span))
 
     def _get_best_match(self, matches):
+        # TODO
         logger.debug(f"Getting the best match from {matches}")
         return self._get_longest_match(matches)
 

@@ -1,12 +1,10 @@
 import logging
+from settings import LOG_FILE_DEBUG, LOG_FILE_LAST, LOG_FORMAT, LOG_LEVEL
 
 
-FORMAT = "[%(asctime)s][%(module)s:%(funcName)s:%(lineno)d][%(levelname)s] %(message)s"
-LEVEL = logging.DEBUG
-
-last_filehandler = logging.FileHandler("last.log", mode="w")
-debug_filehandler = logging.FileHandler("debug.log")
+last_filehandler = logging.FileHandler(LOG_FILE_LAST, mode="w")
+debug_filehandler = logging.FileHandler(LOG_FILE_DEBUG)
 
 logging.basicConfig(
-    format=FORMAT, level=LEVEL, handlers=[last_filehandler, debug_filehandler]
+    format=LOG_FORMAT, level=LOG_LEVEL, handlers=[last_filehandler, debug_filehandler]
 )
