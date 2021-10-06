@@ -69,17 +69,20 @@ class TestPatternSetJsonTests(unittest.TestCase):
                                     err_msg = f"The pattern set expects only one match, but the test contains multiple rulenames and/or spans"
                                     raise ValueError(err_msg)
 
-                            rulenames = []
-                            spans = []
-                            for (rulename, span, features) in matcher.match(input):
-                                rulenames.append(rulename)
-                                spans.append(str(span))
+                            with self.subTest(f"{pset.name}:{input}"):
+                                rulenames = []
+                                spans = []
+                                for (rulename, span, features) in matcher.match(input):
+                                    rulenames.append(rulename)
+                                    spans.append(str(span))
 
-                            if expected_rulenames:
-                                self.assertListEqual(rulenames, expected_rulenames)
-                            if expected_spans:
-                                self.assertListEqual(spans, expected_spans)
+                                if expected_rulenames:
+                                    self.assertListEqual(rulenames, expected_rulenames)
+                                if expected_spans:
+                                    self.assertListEqual(spans, expected_spans)
                         else:
-                            msg = f"Skipping '{input}': {ignore_reason}"
+                            msg = (
+                                f"Skipping {pset.name} test '{input}': {ignore_reason}"
+                            )
                             print(msg)
                             logger.debug(msg)
