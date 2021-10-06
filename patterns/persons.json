@@ -34,5 +34,42 @@
                 }
             ]
         }
+    ],
+    "tests": [
+        {
+            "input": "I am running for President.",
+            "rulenames": ["1st"],
+            "spans": ["I"]
+        },
+        {
+            "input": "We are running for President.",
+            "rulenames": ["1st"],
+            "spans": ["We"]
+        },
+        {
+            "input": "You are running for President.",
+            "rulenames": ["2nd"],
+            "spans": ["You"]
+        },
+        {
+            "input": "She is running for President.",
+            "rulenames": ["3rd"],
+            "spans": ["She"]
+        },
+        {
+            "input": "They are running for President.",
+            "rulenames": ["3rd"],
+            "spans": ["They"]
+        },
+        {
+            "input": "Biden is running for President.",
+            "rulenames": ["3rd"],
+            "spans": ["Biden"]
+        },
+        {
+            "input": "Biden and Harris are running for President and Vice-President.",
+            "rulenames": ["3rd"],
+            "spans": ["Biden and Harris"]
+        }
     ]
 }
