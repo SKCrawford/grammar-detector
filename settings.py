@@ -14,19 +14,19 @@ class SettingValues(Enum):
 
 
 class SettingKeys(Enum):
-    PATTERN_SET_FILE_META = "meta"
-    PATTERN_SET_FILE_META_BEST_MATCH = "best_match"
-    PATTERN_SET_FILE_META_EXTRACT_NOUN_CHUNKS = "extract_noun_chunks"
-    PATTERN_SET_FILE_META_HOW_MANY_MATCHES = "how_many_matches"
-    PATTERN_SET_FILE_PATTERNS = "patterns"
-    PATTERN_SET_FILE_PATTERNS_RULENAME = "rulename"
-    PATTERN_SET_FILE_PATTERNS_TOKENS = "tokens"
-    PATTERN_SET_FILE_TESTS = "tests"
-    PATTERN_SET_FILE_TESTS_IGNORE = "ignore"
-    PATTERN_SET_FILE_TESTS_IGNORE_REASON = "ignore_reason"
-    PATTERN_SET_FILE_TESTS_INPUT = "input"
-    PATTERN_SET_FILE_TESTS_RULENAMES = "rulenames"
-    PATTERN_SET_FILE_TESTS_SPANS = "spans"
+    PSET_META = "meta"
+    PSET_META_BEST_MATCH = "best_match"
+    PSET_META_EXTRACT_NOUN_CHUNKS = "extract_noun_chunks"
+    PSET_META_HOW_MANY_MATCHES = "how_many_matches"
+    PSET_PATTERNS = "patterns"
+    PSET_PATTERNS_RULENAME = "rulename"
+    PSET_PATTERNS_TOKENS = "tokens"
+    PSET_TESTS = "tests"
+    PSET_TESTS_SKIP = "skip"
+    PSET_TESTS_SKIP_REASON = "skip_reason"
+    PSET_TESTS_INPUT = "input"
+    PSET_TESTS_RULENAMES = "rulenames"
+    PSET_TESTS_SPANS = "spans"
 
 
 class Defaults(Enum):

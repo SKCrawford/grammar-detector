@@ -44,24 +44,22 @@ class PatternSet:
         self.patterns = {}
         data = load_pattern_set(self.name)
 
-        key = SettingKeys.PATTERN_SET_FILE_META.value
+        key = SettingKeys.PSET_META.value
         self.meta = data[key] if key in data else None
 
-        key = SettingKeys.PATTERN_SET_FILE_TESTS.value
+        key = SettingKeys.PSET_TESTS.value
         self.tests = data[key] if key in data else []
 
-        key = SettingKeys.PATTERN_SET_FILE_PATTERNS.value
+        key = SettingKeys.PSET_PATTERNS.value
         for pattern_entry in data[key]:
-            rulename = pattern_entry[
-                SettingKeys.PATTERN_SET_FILE_PATTERNS_RULENAME.value
-            ]
-            tokens = pattern_entry[SettingKeys.PATTERN_SET_FILE_PATTERNS_TOKENS.value]
+            rulename = pattern_entry[SettingKeys.PSET_PATTERNS_RULENAME.value]
+            tokens = pattern_entry[SettingKeys.PSET_PATTERNS_TOKENS.value]
             self.patterns[rulename] = Pattern(rulename, tokens)
 
     # TODO Get rid of these (unsustainable)
     @property
     def how_many_matches(self):
-        key = SettingKeys.PATTERN_SET_FILE_META_HOW_MANY_MATCHES.value
+        key = SettingKeys.PSET_META_HOW_MANY_MATCHES.value
         setting = (
             self.meta[key].upper()
             if key in self.meta
@@ -73,7 +71,7 @@ class PatternSet:
     # TODO Get rid of these (unsustainable)
     @property
     def should_extract_noun_chunks(self):
-        key = SettingKeys.PATTERN_SET_FILE_META_EXTRACT_NOUN_CHUNKS.value
+        key = SettingKeys.PSET_META_EXTRACT_NOUN_CHUNKS.value
         setting = (
             self.meta[key]
             if key in self.meta

@@ -29,32 +29,31 @@ class TestPatternSetJsonTests(unittest.TestCase):
             if pset.tests:
                 with self.subTest(pset.name):
                     for t in pset.tests:
-                        should_ignore = None
-                        ignore_reason = None
+                        should_skip = None
+                        skip_reason = None
                         try:
-                            key = SettingKeys.PATTERN_SET_FILE_TESTS_IGNORE.value
-                            should_ignore = bool(t[key])
-                            key = SettingKeys.PATTERN_SET_FILE_TESTS_IGNORE_REASON.value
-                            ignore_reason = str(t[key])
+                            key = SettingKeys.PSET_TESTS_SKIP.value
+                            should_skip = bool(t[key])
+                            key = SettingKeys.PSET_TESTS_SKIP_REASON.value
+                            skip_reason = str(t[key])
                         except KeyError:
-                            should_ignore = False
+                            should_skip = False
                         except Exception as e:
                             raise e
 
-                        if not should_ignore:  # Early exit is impossible
-                            key = SettingKeys.PATTERN_SET_FILE_TESTS_INPUT.value
-                            input = get_doc(t[key])
+                        if not should_skip:  # Early exit is impossible
+                            input = get_doc(t[SettingKeys.PSET_TESTS_INPUT.value])
 
-                            key = SettingKeys.PATTERN_SET_FILE_TESTS_RULENAMES.value
+                            key = SettingKeys.PSET_TESTS_RULENAMES.value
                             expected_rulenames = t[key] if key in t else []
 
-                            key = SettingKeys.PATTERN_SET_FILE_TESTS_SPANS.value
+                            key = SettingKeys.PSET_TESTS_SPANS.value
                             expected_spans = t[key] if key in t else []
 
                             if not expected_rulenames and not expected_spans:
                                 valid_keys = [
-                                    SettingKeys.PATTERN_SET_FILE_TESTS_RULENAMES.value,
-                                    SettingKeys.PATTERN_SET_FILE_TESTS_SPANS.value,
+                                    SettingKeys.PSET_TESTS_RULENAMES.value,
+                                    SettingKeys.PSET_TESTS_SPANS.value,
                                 ]
                                 err_msg = f"The test entry must have at least one of these keys: {valid_keys}"
                                 raise KeyError(err_msg)
@@ -81,8 +80,6 @@ class TestPatternSetJsonTests(unittest.TestCase):
                                 if expected_spans:
                                     self.assertListEqual(spans, expected_spans)
                         else:
-                            msg = (
-                                f"Skipping {pset.name} test '{input}': {ignore_reason}"
-                            )
+                            msg = f"Skipping {pset.name} test '{input}': {skip_reason}"
                             print(msg)
                             logger.debug(msg)
