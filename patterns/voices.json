@@ -19,5 +19,17 @@
                 { "TAG": "VBN", "DEP": "ROOT" }
             ]
         }
+    ],
+    "tests": [
+        {
+            "input": "The cat was chased by the dog.",
+            "rulenames": ["passive"],
+            "spans": ["was chased"]
+        },
+        {
+            "input": "The dog chased the cat.",
+            "rulenames": ["active"],
+            "spans": ["chased"]
+        }
     ]
 }
