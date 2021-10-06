@@ -101,7 +101,7 @@
             ]
         },
         {
-            "rulename": "future continous",
+            "rulename": "future continuous",
             "tokens": [
                 { "TAG": "MD", "DEP": "aux", "OP": "+", "LEMMA": "will" },
                 { "TAG": "VB", "DEP": "aux", "OP": "+", "LEMMA": "be" },
@@ -283,6 +283,76 @@
             "input": "They ran.",
             "rulenames": ["past simple"],
             "spans": ["ran"]
+        },
+        {
+            "input": " I run.",
+            "rulenames": ["present simple"],
+            "spans": ["run"]
+        },
+        {
+            "input": " I ran.",
+            "rulenames": ["past simple"],
+            "spans": ["ran"]
+        },
+        {
+            "input": " I will run.",
+            "rulenames": ["future simple will"],
+            "spans": ["will run"]
+        },
+        {
+            "input": " I am going to run.",
+            "rulenames": ["future simple be-going-to"],
+            "spans": ["am going to run"]
+        },
+        {
+            "input": " I have run.",
+            "rulenames": ["present perfect"],
+            "spans": ["have run"]
+        },
+        {
+            "input": " I had run.",
+            "rulenames": ["past perfect"],
+            "spans": ["had run"]
+        },
+        {
+            "input": " I will have run.",
+            "rulenames": ["future perfect"],
+            "spans": ["will have run"]
+        },
+        {
+            "input": " I am going to have run.",
+            "rulenames": ["future perfect continuous"],
+            "spans": ["am going to have run"]
+        },
+        {
+            "input": " I am running.",
+            "rulenames": ["present continuous"],
+            "spans": ["am running"]
+        },
+        {
+            "input": " I was running.",
+            "rulenames": ["past continuous"],
+            "spans": ["was running"]
+        },
+        {
+            "input": " I will be running.",
+            "rulenames": ["future continuous"],
+            "spans": ["will be running"]
+        },
+        {
+            "input": " I have been running.",
+            "rulenames": ["present perfect continuous"],
+            "spans": ["have been running"]
+        },
+        {
+            "input": " I had been running.",
+            "rulenames": ["past perfect continuous"],
+            "spans": ["had been running"]
+        },
+        {
+            "input": " I will have been running.",
+            "rulenames": ["future perfect continuous"],
+            "spans": ["will have been running"]
         }
     ]
 }
