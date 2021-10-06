@@ -1,7 +1,7 @@
 import asyncio
 import logging
 from spacy.matcher import Matcher as SpacyMatcher
-from settings import Defaults, SettingValues
+from settings import Defaults, SettingKeys, SettingValues
 from . import validators
 from .extractors import extract_span_features
 from .nlp import nlp
@@ -33,9 +33,9 @@ class Matcher:
         during construction, the appropriate matcher method will be returned.
         All usable matcher methods should be included here."""
         # Maybe handle default in PatternSet
-        how_many_matches = (
-            self.pattern_set.how_many_matches or Defaults.HOW_MANY_MATCHES.value
-        )
+        key = SettingKeys.PSET_META_HOW_MANY_MATCHES
+        how_many_matches = self.pattern_set.meta[key] or Defaults.HOW_MANY_MATCHES.value
+
         logger.debug(f"Running the matcher method for '{how_many_matches}' result(s)")
         if how_many_matches == SettingValues.HOW_MANY_MATCHES_ONE_MATCH.value:
             return self._match_one(doc)

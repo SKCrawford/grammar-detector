@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import os
+from settings import SettingKeys
 from .extractors import get_doc
 from .Matcher import Matcher
 from .patterns import PatternSet
@@ -26,9 +27,10 @@ async def detect_features(sentence, pattern_set_names):
         matcher = Matcher(pattern_set)
 
         # Noun chunks
-        # TODO rewrite to use pattern_set.meta
         logger.debug("Determining if the noun chunks should be extracted from the doc")
-        should_extract_noun_chunks = pattern_set.should_extract_noun_chunks
+        key = SettingKeys.PSET_META_EXTRACT_NOUN_CHUNKS
+        should_extract_noun_chunks = pattern_set.meta[key]
+
         logger.debug(f"Extracting the noun chunks: {should_extract_noun_chunks}")
         inputs = doc.noun_chunks if should_extract_noun_chunks else [doc]
 

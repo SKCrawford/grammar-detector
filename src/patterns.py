@@ -50,40 +50,10 @@ class PatternSet:
         key = SettingKeys.PSET_TESTS.value
         self.tests = data[key] if key in data else []
 
-        key = SettingKeys.PSET_PATTERNS.value
-        for pattern_entry in data[key]:
+        for pattern_entry in data[SettingKeys.PSET_PATTERNS.value]:
             rulename = pattern_entry[SettingKeys.PSET_PATTERNS_RULENAME.value]
             tokens = pattern_entry[SettingKeys.PSET_PATTERNS_TOKENS.value]
             self.patterns[rulename] = Pattern(rulename, tokens)
 
-    # TODO Get rid of these (unsustainable)
-    @property
-    def how_many_matches(self):
-        key = SettingKeys.PSET_META_HOW_MANY_MATCHES.value
-        setting = (
-            self.meta[key].upper()
-            if key in self.meta
-            else Defaults.HOW_MANY_MATCHES.value
-        )
-        assert type(setting) == str, f"Expected a str but got {type(setting)}"
-        return setting
-
-    # TODO Get rid of these (unsustainable)
-    @property
-    def should_extract_noun_chunks(self):
-        key = SettingKeys.PSET_META_EXTRACT_NOUN_CHUNKS.value
-        setting = (
-            self.meta[key]
-            if key in self.meta
-            else Defaults.SHOULD_EXTRACT_NOUN_CHUNKS.value
-        )
-        assert type(setting) == bool, f"Expected a bool but got {type(setting)}"
-        return setting
-
-    # TODO Get rid of these (unused)
     def get_all_patterns(self):
         return [self.patterns[k] for k in self.patterns]
-
-    # TODO Get rid of these (unused)
-    def get_pattern(self, rulename):
-        return self.patterns[rulename]
