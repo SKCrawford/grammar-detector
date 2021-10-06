@@ -48,6 +48,86 @@
             "input": "The dog chased the cat.",
             "rulenames": ["intransitive", "transitive"],
             "spans": ["dog chased", "dog chased the cat"]
+        },
+        {
+            "input": "It rains.",
+            "rulenames": ["impersonal"],
+            "spans": ["It rains"]
+        },
+        {
+            "input": "It rained.",
+            "rulenames": ["impersonal"],
+            "spans": ["It rained"]
+        },
+        {
+            "input": "It will rain.",
+            "rulenames": ["impersonal"],
+            "spans": ["It will rain"]
+        },
+        {
+            "input": "It is going to rain.",
+            "rulenames": ["impersonal"],
+            "spans": ["It is going to rain"]
+        },
+        {
+            "input": "It is raining.",
+            "rulenames": ["impersonal"],
+            "spans": ["It is raining"]
+        },
+        {
+            "input": "It was raining.",
+            "rulenames": ["impersonal"],
+            "spans": ["It was raining"]
+        },
+        {
+            "input": "It will be raining.",
+            "rulenames": ["impersonal"],
+            "spans": ["It will be raining"]
+        },
+        {
+            "input": "It is going to rain.",
+            "rulenames": ["impersonal"],
+            "spans": ["It is going to rain"]
+        },
+        {
+            "input": "It has rained.",
+            "rulenames": ["impersonal"],
+            "spans": ["It has rained"]
+        },
+        {
+            "input": "It had rained.",
+            "rulenames": ["impersonal"],
+            "spans": ["It had rained"]
+        },
+        {
+            "input": "It will have rained.",
+            "rulenames": ["impersonal"],
+            "spans": ["It will have rained"]
+        },
+        {
+            "input": "It is going to have rained.",
+            "rulenames": ["impersonal"],
+            "spans": ["It is going to have rained"]
+        },
+        {
+            "input": "It has been raining.",
+            "rulenames": ["impersonal"],
+            "spans": ["It has been raining"]
+        },
+        {
+            "input": "It had been raining.",
+            "rulenames": ["impersonal"],
+            "spans": ["It had been raining"]
+        },
+        {
+            "input": "It will have been raining.",
+            "rulenames": ["impersonal"],
+            "spans": ["It will have been raining"]
+        },
+        {
+            "input": "It is going to have been raining.",
+            "rulenames": ["impersonal"],
+            "spans": ["It is going to have been raining"]
         }
     ]
 }
