@@ -40,62 +40,71 @@
         {
             "input": "the book",
             "rulenames": ["definite"],
-            "spans": ["the"]
+            "spans": ["the book"]
         },
         {
             "input": "the green book",
             "rulenames": ["definite"],
-            "spans": ["the"]
+            "spans": ["the green book"]
         },
         {
             "input": "the incredibly green book",
             "rulenames": ["definite"],
-            "spans": ["the"]
+            "spans": ["the incredibly green book"]
         },
         {
             "input": "the book that was on a shelf",
             "rulenames": ["definite"],
-            "spans": ["the"]
+            "spans": ["the book that was on a shelf"]
         },
         {
             "input": "a book",
             "rulenames": ["indefinite"],
-            "spans": ["a"]
+            "spans": ["a book"]
         },
         {
             "input": "a green book",
             "rulenames": ["indefinite"],
-            "spans": ["a"]
+            "spans": ["a green book"]
         },
         {
             "input": "a hideously green book",
             "rulenames": ["indefinite"],
-            "spans": ["a"]
+            "spans": ["a hideously green book"]
         },
         {
-            "input": "a book that was on the shelf",
-            "rulenames": ["indefinite"],
-            "spans": ["a"]
+            "input": "a book that was on a shelf",
+            "rulenames": ["indefinite", "indefinite"],
+            "spans": ["a book that was on a shelf", "a shelf"],
+            "ignore": true,
+            "ignore_reason": "not yet implemented"
         },
         {
             "input": "an apple",
             "rulenames": ["indefinite"],
-            "spans": ["an"]
+            "spans": ["an apple"]
         },
         {
             "input": "an ugly apple",
             "rulenames": ["indefinite"],
-            "spans": ["an"]
+            "spans": ["an ugly apple"]
         },
         {
             "input": "an incredibly green apple",
             "rulenames": ["indefinite"],
-            "spans": ["an"]
+            "spans": ["an incredibly green apple"]
         },
         {
             "input": "an apple that was on a shelf",
             "rulenames": ["indefinite", "indefinite"],
-            "spans": ["an", "a"]
+            "spans": ["an apple that was on a shelf", "a shelf"],
+            "ignore": true,
+            "ignore_reason": "not yet implemented"
+        },
+        {
+            "input": "an apple that was on a shelf",
+            "rulenames": ["indefinite"],
+            "spans": ["an apple that was on a shelf"]
         },
         {
             "input": "apple",
@@ -111,7 +120,13 @@
         },
         {
             "input": "apple that was on a shelf",
-            "rulenames": ["none", "indefinite"]
+            "rulenames": ["other", "indefinite"],
+            "ignore": true,
+            "ignore_reason": "not yet implemented"
+        },
+        {
+            "input": "apple that was on a shelf",
+            "rulenames": ["other"]
         }
     ]
 }
