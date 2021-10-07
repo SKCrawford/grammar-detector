@@ -33,13 +33,16 @@ class Matcher:
         during construction, the appropriate matcher method will be returned.
         All usable matcher methods should be included here."""
         # Maybe handle default in PatternSet
-        key = SettingKeys.PSET_META_HOW_MANY_MATCHES
+        key = SettingKeys.PSET_META_HOW_MANY_MATCHES.value
         how_many_matches = self.pattern_set.meta[key] or Defaults.HOW_MANY_MATCHES.value
 
         logger.debug(f"Running the matcher method for '{how_many_matches}' result(s)")
-        if how_many_matches == SettingValues.HOW_MANY_MATCHES_ONE_MATCH.value:
+        one_match = SettingValues.HOW_MANY_MATCHES_ONE_MATCH.value
+        all_matches = SettingValues.HOW_MANY_MATCHES_ALL_MATCHES.value
+
+        if how_many_matches.upper() == one_match.upper():
             return self._match_one(doc)
-        elif how_many_matches == SettingValues.HOW_MANY_MATCHES_ALL_MATCHES.value:
+        elif how_many_matches.upper() == all_matches.upper():
             return self._match_all(doc)
         else:
             raise ValueError(f"Invalid how_many_matches setting: {how_many_matches}")
