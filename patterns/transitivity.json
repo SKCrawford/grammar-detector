@@ -128,6 +128,198 @@
             "input": "It is going to have been raining.",
             "rulenames": ["impersonal"],
             "spans": ["It is going to have been raining"]
+        },
+        {
+            "input": "She runs.",
+            "rulenames": ["intransitive"]
+        },
+        {
+            "input": "She ran.",
+            "rulenames": ["intransitive"]
+        },
+        {
+            "input": "She will run.",
+            "rulenames": ["intransitive"]
+        },
+        {
+            "input": "She is running.",
+            "rulenames": ["intransitive"]
+        },
+        {
+            "input": "She was running.",
+            "rulenames": ["intransitive"]
+        },
+        {
+            "input": "She will be running.",
+            "rulenames": ["intransitive"]
+        },
+        {
+            "input": "She has run.",
+            "rulenames": ["intransitive"]
+        },
+        {
+            "input": "She had run",
+            "rulenames": ["intransitive"]
+        },
+        {
+            "input": "She will have run.",
+            "rulenames": ["intransitive"]
+        },
+        {
+            "input": "She has been running.",
+            "rulenames":  ["intransitive"] 
+        },
+        {
+            "input": "She had been running.",
+            "rulenames": ["intransitive"]
+        },
+        {
+            "input": "She will have been running.",
+            "rulenames": ["intransitive"]
+        },
+        {
+            "input": "She plays tennis.",
+            "rulenames": ["transitive"]
+        },
+        {
+            "input": "She played tennis.",
+            "rulenames": ["transitive"]
+        },
+        {
+            "input": "She will play tennis.",
+            "rulenames": ["transitive"]
+        },
+        {
+            "input": "She is playing tennis.",
+            "rulenames": ["transitive"]
+        },
+        {
+            "input": "She was playing tennis.",
+            "rulenames": ["transitive"]
+        },
+        {
+            "input": "She will be playing tennis.",
+            "rulenames": ["transitive"]
+        },
+        {
+            "input": "She has played tennis.",
+            "rulenames": ["transitive"]
+        },
+        {
+            "input": "She had played tennis.",
+            "rulenames": ["transitive"]
+        },
+        {
+            "input": "She will have played tennis.",
+            "rulenames": ["transitive"]
+        },
+        {
+            "input": "She has been playing tennis.",
+            "rulenames": ["transitive"]
+        },
+        {
+            "input": "She had been playing tennis.",
+            "rulenames": ["transitive"]
+        },
+        {
+            "input": "She will have been playing tennis.",
+            "rulenames": ["transitive"]
+        },
+        { 
+            "input": "He gives the rose to her.",
+            "rulenames": ["ditransitive"]
+        },
+        {
+            "input": "He gave the rose to her.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He will give the rose to her.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He is giving the rose to her.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He was giving the rose to her.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He will be giving the rose to her.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He has given the rose to her.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He had given the rose to her.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He will have given the rose to her.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He has been giving the rose to her.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He had been giving the rose to her.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He will have been giving the rose to her.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He gives her the rose.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He gave her the rose.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He will give her the rose.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He is giving her the rose.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He was giving her the rose.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He will be giving her the rose.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He has given her the rose.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He had given her the rose.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He will have given her the rose.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He has been giving her the rose.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He had been giving her the rose.",
+            "rulenames": ["ditransitive"]
+        },
+        { 
+            "input": "He will have been giving her the rose.",
+            "rulenames": ["ditransitive"]
         }
     ]
 }
