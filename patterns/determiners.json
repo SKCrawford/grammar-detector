@@ -76,8 +76,7 @@
             "input": "a book that was on a shelf",
             "rulenames": ["indefinite", "indefinite"],
             "spans": ["a book that was on a shelf", "a shelf"],
-            "skip": true,
-            "skip_reason": "not yet implemented"
+            "skip": true
         },
         {
             "input": "an apple",
@@ -98,8 +97,7 @@
             "input": "an apple that was on a shelf",
             "rulenames": ["indefinite", "indefinite"],
             "spans": ["an apple that was on a shelf", "a shelf"],
-            "skip": true,
-            "skip_reason": "not yet implemented"
+            "skip": true
         },
         {
             "input": "an apple that was on a shelf",
@@ -121,8 +119,7 @@
         {
             "input": "apple that was on a shelf",
             "rulenames": ["other", "indefinite"],
-            "skip": true,
-            "skip_reason": "not yet implemented"
+            "skip": true
         },
         {
             "input": "apple that was on a shelf",

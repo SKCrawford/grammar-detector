@@ -20,17 +20,56 @@ class TestPatternSetJsonTests(unittest.TestCase):
             self.pattern_sets[pset_name] = pattern_set
             self.matchers[pset_name] = Matcher(pattern_set)
 
+    def should_skip_pset(self, pset):
+        should_skip = None
+        skip_reason = None
+
+        try:
+            skip_setting = pset.meta[SettingKeys.PSET_META_SKIP.value]
+            if type(skip_setting) == bool:
+                should_skip = skip_setting
+                skip_reason = ""
+            elif type(skip_setting) == str:
+                should_skip = bool(len(skip_setting))
+                skip_reason = skip_setting
+            else:
+                msg = f"Expected a bool or str but got '{type(skip_setting)}'"
+                logger.error(msg)
+                raise TypeError(msg)
+        except KeyError:
+            should_skip = False
+            skip_reason = ""
+        except Exception as e:
+            logger.error(e)
+            raise e
+        finally:
+            return (should_skip, skip_reason)
+
     def should_skip_test(self, test):
         should_skip = None
         skip_reason = None
+
         try:
-            should_skip = bool(test[SettingKeys.PSET_TESTS_SKIP.value])
-            skip_reason = str(test[SettingKeys.PSET_TESTS_SKIP_REASON.value])
+            skip_setting = test[SettingKeys.PSET_TESTS_SKIP.value]
+            if type(skip_setting) == bool:
+                should_skip = skip_setting
+                skip_reason = ""
+            elif type(skip_setting) == str:
+                should_skip = bool(len(skip_setting))
+                skip_reason = skip_setting
+            else:
+                msg = f"Expected a bool or str but got '{type(skip_setting)}'"
+                logger.error(msg)
+                raise TypeError(msg)
+            return (should_skip, skip_reason)
         except KeyError:
             should_skip = False
+            skip_reason = ""
         except Exception as e:
+            logger.error(e)
             raise e
-        return (should_skip, skip_reason)
+        finally:
+            return (should_skip, skip_reason)
 
     def get_input(self, test):
         return get_doc(test[SettingKeys.PSET_TESTS_INPUT.value])
@@ -65,9 +104,11 @@ class TestPatternSetJsonTests(unittest.TestCase):
 
         (should_skip, skip_reason) = self.should_skip_test(test)
         if should_skip:
-            msg = f"Skipping {pset.name} test '{input}': {skip_reason}"
-            print(msg)
-            logger.debug(msg)
+            msg = f"Skipping patternset '{pset.name}': '{input}'"
+            if bool(len(skip_reason)):
+                msg = msg + f"({skip_reason})"
+                print(msg)
+                logger.debug(msg)
             return
 
         with self.subTest(f"{pset.name}:{input}"):
@@ -84,12 +125,23 @@ class TestPatternSetJsonTests(unittest.TestCase):
             if exp_spans:
                 self.assertListEqual(spans, exp_spans)
 
+    def run_pset(self, pset, matcher):
+        (should_skip, skip_reason) = self.should_skip_pset(pset)
+        if should_skip:
+            msg = f"Skipping patternset '{pset.name}'"
+            if bool(len(skip_reason)):
+                msg = msg + f": {skip_reason}"
+                print(msg)
+                logger.debug(msg)
+            return
+
+        if pset.tests:
+            with self.subTest(pset.name):
+                [self.run_test(test, matcher, pset) for test in pset.tests]
+
     # Refactor this horrid mess!!
     def test_pattern_set_json_tests(self):
         for pset_key in self.pattern_sets:
             pset = self.pattern_sets[pset_key]
             matcher = self.matchers[pset_key]
-
-            if pset.tests:
-                with self.subTest(pset.name):
-                    [self.run_test(test, matcher, pset) for test in pset.tests]
+            self.run_pset(pset, matcher)

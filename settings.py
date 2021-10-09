@@ -18,6 +18,7 @@ class SettingKeys(Enum):
     PSET_META_BEST_MATCH = "best_match"
     PSET_META_EXTRACT_NOUN_CHUNKS = "extract_noun_chunks"
     PSET_META_HOW_MANY_MATCHES = "how_many_matches"
+    PSET_META_SKIP = "skip"
     PSET_PATTERNS = "patterns"
     PSET_PATTERNS_RULENAME = "rulename"
     PSET_PATTERNS_TOKENS = "tokens"
