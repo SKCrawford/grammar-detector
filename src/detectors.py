@@ -28,9 +28,8 @@ async def detect_features(sentence, pattern_set_names):
 
         # Noun chunks
         logger.debug("Determining if the noun chunks should be extracted from the doc")
-        key = SettingKeys.PSET_META_EXTRACT_NOUN_CHUNKS
-        # should_extract_noun_chunks = pattern_set.meta[key]
-        should_extract_noun_chunks = pattern_set.get_meta(key)
+        key = SettingKeys.PSET_META_EXTRACT_NOUN_CHUNKS.value
+        should_extract_noun_chunks = pattern_set.meta.get_key(key)
 
         logger.debug(f"Extracting the noun chunks: {should_extract_noun_chunks}")
         inputs = doc.noun_chunks if should_extract_noun_chunks else [doc]

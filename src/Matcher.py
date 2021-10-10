@@ -34,9 +34,8 @@ class Matcher:
         All usable matcher methods should be included here."""
         # Maybe handle default in PatternSet
         key = SettingKeys.PSET_META_HOW_MANY_MATCHES.value
-        # how_many_matches = self.pattern_set.meta[key] or Defaults.HOW_MANY_MATCHES.value
         how_many_matches = (
-            self.pattern_set.get_meta(key) or Defaults.HOW_MANY_MATCHES.value
+            self.pattern_set.meta.get_key(key) or Defaults.HOW_MANY_MATCHES.value
         )
 
         logger.debug(f"Running the matcher method for '{how_many_matches}' result(s)")

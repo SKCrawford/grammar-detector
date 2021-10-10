@@ -25,7 +25,8 @@ class TestPatternSetJsonTests(unittest.TestCase):
         skip_reason = None
 
         try:
-            skip_setting = pset.meta[SettingKeys.PSET_META_SKIP.value]
+            key = SettingKeys.PSET_META_SKIP.value
+            skip_setting = pset.meta.get_key(key)
             if type(skip_setting) == bool:
                 should_skip = skip_setting
                 skip_reason = ""
@@ -91,7 +92,8 @@ class TestPatternSetJsonTests(unittest.TestCase):
         expects_many_rulenames = bool(len(expected_rulenames) > 1)
         expects_many_spans = bool(len(expected_spans) > 1)
         if expects_many_rulenames or expects_many_spans:
-            how_many_matches = pset.meta[SettingKeys.PSET_META_HOW_MANY_MATCHES.value]
+            key = SettingKeys.PSET_META_HOW_MANY_MATCHES.value
+            how_many_matches = pset.meta.get_key(key)
             one_match = SettingValues.HOW_MANY_MATCHES_ONE_MATCH.value
             if how_many_matches.upper() == one_match.upper():
                 err_msg = "The pattern set expects only one match, but the test expects multiple matches"

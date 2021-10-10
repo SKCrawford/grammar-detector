@@ -1,6 +1,7 @@
 import logging
 from settings import SettingKeys
 from .load import load_pattern_set
+from .Meta import Meta
 from .Pattern import Pattern
 
 
@@ -14,7 +15,8 @@ class PatternSet:
         data = load_pattern_set(self.name)
 
         key = SettingKeys.PSET_META.value
-        self.meta = data[key] if key in data else None
+        meta_data = data[key] if key in data else {}
+        self.meta = Meta(**meta_data)
 
         key = SettingKeys.PSET_TESTS.value
         self.tests = data[key] if key in data else []
@@ -26,10 +28,3 @@ class PatternSet:
 
     def get_all_patterns(self):
         return [self.patterns[k] for k in self.patterns]
-
-    def get_meta(self, meta_key):
-        if meta_key not in self.meta:
-            msg = f"Key '{meta_key}' does not exist in meta"
-            logger.error(msg)
-            raise KeyError(msg)
-        return self.meta[meta_key]
