@@ -1,13 +1,12 @@
 import asyncio
-import logging
+from logging import getLogger
 from spacy.matcher import Matcher as SpacyMatcher
 from settings import Defaults, SettingKeys, SettingValues
-from . import validators
 from .extractors import extract_span_features
 from .nlp import nlp
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 class Matcher:

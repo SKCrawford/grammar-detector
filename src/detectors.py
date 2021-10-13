@@ -1,16 +1,15 @@
 import asyncio
-import logging
-import os
+from logging import getLogger
 from settings import SettingKeys
 from .extractors import get_doc
 from .Matcher import Matcher
 from .patterns import PatternSetLoader
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
-async def detect_features(sentence, pattern_set_names):
+async def detect_features(sentence: str, pattern_set_names: list[str]):
     """The main entry point for the feature detector."""
     logger.debug(f"Started detecting for the features '{pattern_set_names}'")
     feature_set = {}

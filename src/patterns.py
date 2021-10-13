@@ -1,10 +1,10 @@
-import logging
+from logging import getLogger
 from json import load
 from os.path import join
 from settings import PATTERNS_DIR_FILE_EXTENSION, PATTERNS_DIR_PATH, SettingKeys
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 class Pattern:

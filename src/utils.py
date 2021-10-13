@@ -1,10 +1,10 @@
-import logging
-from tabulate import tabulate
+from logging import getLogger
 from spacy import explain
+from tabulate import tabulate
 from .nlp import nlp
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 def to_token_table(sentence, pos=True, tag=True, dependency=True, lemma=True):

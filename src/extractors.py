@@ -1,9 +1,9 @@
-import logging
+from logging import getLogger
 from spacy import explain
 from .nlp import nlp
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 def get_doc(phrase):
@@ -23,26 +23,9 @@ def get_doc(phrase):
     return doc
 
 
-def get_span(phrase):
-    """Given a str, a Doc, or a Span, return a Span."""
-    logger.debug(f"Getting the Span of '{phrase}' ({type(phrase)})")
-    span = None
-    if type(phrase) == str:
-        span = get_doc(phrase)[:]
-    elif type(phrase) == Doc:
-        span = phrase[:]
-    elif type(phrase) == Span:
-        span = phrase
-    else:
-        msg = f"Cannot get the Span of '{phrase}' ({type(phrase)})"
-        logger.error(msg)
-        raise TypeError(msg)
-    return span
-
-
 def extract_span_features(match_span):
     """Given a Span, return a dictionary."""
-    logging.getLogger(__name__).info(f"Parsing Span '{match_span}'")
+    logger.debug(f"Parsing Span '{match_span}'")
     return {
         "span": match_span,
         "phrase": match_span.text,

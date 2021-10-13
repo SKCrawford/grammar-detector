@@ -1,4 +1,4 @@
-import logging
+from logging import getLogger
 import unittest
 from src.patterns import PatternSetLoader
 from src.Matcher import Matcher
@@ -6,7 +6,7 @@ from settings import PATTERN_SETS_NAMES, SettingKeys, SettingValues
 from src.extractors import get_doc
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 class TestPatternSetJsonTests(unittest.TestCase):

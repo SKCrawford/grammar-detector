@@ -1,15 +1,15 @@
 import asyncio
-import logging
 import pprint
 import sys
 import time
 import src.logger
+from logging import getLogger
+from settings import PATTERN_SETS_NAMES
 from .detectors import detect_features
 from .utils import to_token_table
-from settings import PATTERN_SETS_NAMES
 
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
 
 async def main():
