@@ -11,7 +11,7 @@ from .patterns import PatternSet
 logger = getLogger(__name__)
 
 
-class Matcher:
+class PatternSetMatcher:
     def __init__(self, pattern_set: PatternSet):
         self.pattern_set: PatternSet = pattern_set
 

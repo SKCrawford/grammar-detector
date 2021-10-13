@@ -3,7 +3,7 @@ from logging import getLogger
 from spacy.tokens import Doc
 from settings import SettingKeys
 from .extractors import get_doc
-from .Matcher import Matcher
+from .matchers import PatternSetMatcher as Matcher
 from .patterns import PatternSetLoader
 
 
