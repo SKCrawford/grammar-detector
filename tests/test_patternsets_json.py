@@ -115,7 +115,7 @@ class TestPatternSetJsonTests(unittest.TestCase):
             return
 
         with self.subTest(f"{pset.name}:{input}"):
-            (exp_rulenames, exp_spans) = self.get_expected_results(test, pset)
+            (expected_rulenames, expected_spans) = self.get_expected_results(test, pset)
 
             rulenames = []
             spans = []
@@ -123,10 +123,10 @@ class TestPatternSetJsonTests(unittest.TestCase):
                 rulenames.append(rulename)
                 spans.append(str(span))
 
-            if exp_rulenames:
-                self.assertListEqual(rulenames, exp_rulenames)
-            if exp_spans:
-                self.assertListEqual(spans, exp_spans)
+            if expected_rulenames:
+                self.assertListEqual(rulenames, expected_rulenames)
+            if expected_spans:
+                self.assertListEqual(spans, expected_spans)
 
     def run_pset(self, pset, matcher):
         (should_skip, skip_reason) = self.should_skip_pset(pset)
