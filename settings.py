@@ -42,7 +42,7 @@ LOG_FORMAT: str = (
     "[%(asctime)s][%(module)s:%(funcName)s:%(lineno)d][%(levelname)s] %(message)s"
 )
 
-LOG_LEVEL: str = logging.DEBUG
+LOG_LEVEL: int = logging.DEBUG
 
 LOG_FILE_DEBUG: str = "debug.log"
 

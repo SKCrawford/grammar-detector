@@ -1,31 +1,34 @@
 from logging import getLogger
 from spacy import explain
 from spacy.tokens import Doc, Span
+from typing import Any, cast, Union
 from .nlp import nlp
 
 
 logger = getLogger(__name__)
 
 
-def get_doc(phrase: any) -> Doc:
-    """Given a str, a Doc, or a Span, return a Doc."""
+def get_doc(phrase: Union[str, Doc, Span]) -> Doc:
     logger.debug(f"Getting the Doc of '{phrase}' ({type(phrase)})")
     doc: Doc = None
-    if type(phrase) == str:
+    phrase_type = type(phrase)
+    if phrase_type == str:
+        phrase = cast(str, phrase)
         doc = nlp(phrase)
-    elif type(phrase) == Doc:
+    elif phrase_type == Doc:
+        phrase = cast(Doc, phrase)
         doc = phrase
-    elif type(phrase) == Span:
+    elif phrase_type == Span:
+        phrase = cast(Span, phrase)
         doc = phrase.doc
     else:
-        msg = f"Cannot get the Doc of '{phrase}' ({type(phrase)})"
+        msg = f"Cannot get the Doc of '{phrase}' ({phrase_type})"
         logger.error(msg)
         raise TypeError(msg)
     return doc
 
 
-def extract_span_features(match_span: Span) -> dict:
-    """Given a Span, return a dictionary."""
+def extract_span_features(match_span: Span) -> dict[str, str]:
     logger.debug(f"Parsing Span '{match_span}'")
     return {
         "span": match_span,
@@ -37,7 +40,7 @@ def extract_span_features(match_span: Span) -> dict:
         "dep": match_span.root.dep_,
         "phrase_lemma": match_span.lemma_,
         "root_lemma": match_span.root.lemma_,
-        "pos_desc": explain(match_span.root.pos_),
-        "tag_desc": explain(match_span.root.tag_),
-        "dep_desc": explain(match_span.root.dep_),
+        "pos_desc": explain(match_span.root.pos_),  # type: ignore # explain is untyped
+        "tag_desc": explain(match_span.root.tag_),  # type: ignore # explain is untyped
+        "dep_desc": explain(match_span.root.dep_),  # type: ignore # explain is untyped
     }

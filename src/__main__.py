@@ -12,7 +12,7 @@ from .utils import to_token_table
 logger = getLogger(__name__)
 
 
-async def main():
+async def main() -> None:
     start_time: float = time.time()
     sentences: list[str] = []
 
@@ -21,7 +21,7 @@ async def main():
     else:
         raise ValueError("No sentences were provided")
 
-    count = 0
+    count: int = 0
     for sentence in sentences:
         sentence_start_time: float = time.time()
         logger.info(f"Sentences ({len(sentences)}): `{sentences}`")

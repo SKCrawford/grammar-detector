@@ -1,16 +1,20 @@
 import asyncio
 from logging import getLogger
-from spacy.tokens import Doc
+from spacy.tokens import Doc, Span
+from typing import Any, Union
 from settings import SettingKeys
 from .extractors import get_doc
 from .matchers import PatternSetMatcher as Matcher
-from .patterns import PatternSetLoader
+from .matchers import ParsedMatch
+from .patterns import PatternSet, PatternSetLoader
 
 
 logger = getLogger(__name__)
 
 
-async def detect_features(sentence: str, pattern_set_names: list[str]) -> dict:
+async def detect_features(
+    sentence: str, pattern_set_names: list[str]
+) -> dict[str, Any]:
     """The main entry point for the feature detector."""
     logger.debug(f"Started detecting for the features '{pattern_set_names}'")
     feature_set = {}
@@ -32,13 +36,18 @@ async def detect_features(sentence: str, pattern_set_names: list[str]) -> dict:
         # Noun chunks
         logger.debug("Determining if the noun chunks should be extracted from the doc")
         key: str = SettingKeys.PSET_META_EXTRACT_NOUN_CHUNKS.value
-        should_extract_noun_chunks: bool = pattern_set.meta[key]
+        should_extract_noun_chunks: bool = bool(pattern_set.meta[key])
 
-        logger.debug(f"Extracting the noun chunks: {should_extract_noun_chunks}")
-        inputs = doc.noun_chunks if should_extract_noun_chunks else [doc]
+        inputs: list[Union[Doc, Span]] = []
+        if should_extract_noun_chunks:
+            logger.debug("Extracting the noun chunks")
+            inputs = doc.noun_chunks
+        else:
+            inputs = [doc]
 
         logger.debug(f"Running the external matcher")
-        feature_set[pattern_set_name] = [matcher.match(input) for input in inputs]
+        matches: list[list[ParsedMatch]] = [matcher.match(input) for input in inputs]
+        feature_set[pattern_set_name] = matches
         logger.debug(f"Finished detecting for the feature '{pattern_set_name}'")
 
     logger.debug(f"Finished detecting for the features '{pattern_set_names}'")

@@ -7,14 +7,18 @@ from .nlp import nlp
 logger = getLogger(__name__)
 
 
-def to_token_table(sentence, pos=True, tag=True, dependency=True, lemma=True):
+def to_token_table(
+    sentence: str,
+    pos: bool = True,
+    tag: bool = True,
+    dependency: bool = True,
+    lemma: bool = True,
+) -> str:
     """Print the linguistics features of each word in a sentence.
     If pos is True, then print the part-of-speech (POS). Defaults to True.
     If tag is True, then print the tag. Defaults to True.
     If dependency is True, then print the dependencices. Defaults to True.
     If lemma is True, then print the lemma. Defaults to True.
-
-    Given a string, return None.
     """
     logger.debug(f"Creating the token table for `{sentence}`")
 
@@ -43,13 +47,13 @@ def to_token_table(sentence, pos=True, tag=True, dependency=True, lemma=True):
         entry.append(word.text)
         if pos:
             entry.append(word.pos_)
-            entry.append(explain(word.pos_))
+            entry.append(explain(word.pos_))  # type: ignore # explain is untyped
         if tag:
             entry.append(word.tag_)
-            entry.append(explain(word.tag_))
+            entry.append(explain(word.tag_))  # type: ignore # explain is untyped
         if dependency:
             entry.append(word.dep_)
-            entry.append(explain(word.dep_))
+            entry.append(explain(word.dep_))  # type: ignore # explain is untyped
         if lemma:
             entry.append(word.lemma_)
         data.append(entry)
