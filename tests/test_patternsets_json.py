@@ -1,7 +1,7 @@
 from logging import getLogger
 import unittest
 from src.patterns import PatternSetLoader
-from src.Matcher import Matcher
+from src.matchers import PatternSetMatcher as Matcher
 from settings import PATTERN_SETS_NAMES, SettingKeys, SettingValues
 from src.extractors import get_doc
 
