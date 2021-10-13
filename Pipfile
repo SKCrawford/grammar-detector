@@ -11,9 +11,7 @@ mypy = "*"
 
 [packages]
 spacy = "*"
-jsonschema = "*"
 spacy-lookups-data = "*"
-nltk = "*"
 
 [requires]
 python_version = "3.9"
