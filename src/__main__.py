@@ -13,8 +13,8 @@ logger = getLogger(__name__)
 
 
 async def main():
-    start_time = time.time()
-    sentences = []
+    start_time: float = time.time()
+    sentences: list[str] = []
 
     if len(sys.argv) > 1:
         sentences = sys.argv[1:]
@@ -23,7 +23,7 @@ async def main():
 
     count = 0
     for sentence in sentences:
-        sentence_start_time = time.time()
+        sentence_start_time: float = time.time()
         logger.info(f"Sentences ({len(sentences)}): `{sentences}`")
         print(f"####### START SENTENCE {count} #######")
         logger.info(f"Sentence {count}: `{sentence}`")

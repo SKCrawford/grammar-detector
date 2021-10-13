@@ -1,43 +1,47 @@
 import asyncio
 from logging import getLogger
 from spacy.matcher import Matcher as SpacyMatcher
+from spacy.tokens import Doc
 from settings import Defaults, SettingKeys, SettingValues
 from .extractors import extract_span_features
 from .nlp import nlp
+from .patterns import PatternSet
 
 
 logger = getLogger(__name__)
 
 
 class Matcher:
-    def __init__(self, pattern_set):
-        self.pattern_set = pattern_set
+    def __init__(self, pattern_set: PatternSet):
+        self.pattern_set: PatternSet = pattern_set
 
         logger.debug("Constructing the internal spaCy matcher")
         self._inner_matcher = SpacyMatcher(nlp.vocab, validate=True)
 
         logger.debug("Adding the patterns to the internal matcher")
         for pattern in self.pattern_set.get_all_patterns():
-            rulename = pattern.rulename
-            tokens = pattern.tokens
-            config = {
+            rulename: str = pattern.rulename
+            tokens: list[dict] = pattern.tokens
+            config: dict = {
                 "greedy": "LONGEST",  # Not the same as the settings.py value
                 "on_match": self._on_match,
             }
             logger.debug(f"Adding the pattern '{rulename}' to the internal matcher")
             self._inner_matcher.add(rulename, [tokens], **config)
 
-    def match(self, doc):
+    def match(self, doc: Doc):
         """The entry point for running the matcher. Using the pattern set provided
         during construction, the appropriate matcher method will be returned.
         All usable matcher methods should be included here."""
         # Maybe handle default in PatternSet
-        key = SettingKeys.PSET_META_HOW_MANY_MATCHES.value
-        how_many_matches = self.pattern_set.meta[key] or Defaults.HOW_MANY_MATCHES.value
+        key: str = SettingKeys.PSET_META_HOW_MANY_MATCHES.value
+        how_many_matches: str = (
+            self.pattern_set.meta[key] or Defaults.HOW_MANY_MATCHES.value
+        )
 
         logger.debug(f"Running the matcher method for '{how_many_matches}' result(s)")
-        one_match = SettingValues.HOW_MANY_MATCHES_ONE_MATCH.value
-        all_matches = SettingValues.HOW_MANY_MATCHES_ALL_MATCHES.value
+        one_match: str = SettingValues.HOW_MANY_MATCHES_ONE_MATCH.value
+        all_matches: str = SettingValues.HOW_MANY_MATCHES_ALL_MATCHES.value
 
         if how_many_matches.upper() == one_match.upper():
             return self._match_one(doc)
@@ -73,7 +77,7 @@ class Matcher:
         logger.debug(f"Parsed many matches: {parsed_matches}")
         return parsed_matches
 
-    def _on_match(self, matcher, doc, i, matches):
+    def _on_match(self, matcher: SpacyMatcher, doc: Doc, i: int, matches) -> None:
         logger.debug(f"MATCH #{i}")
         logger.debug("Running the on_match callback")
         logger.debug(f"External matcher: {self}")
@@ -81,7 +85,7 @@ class Matcher:
         logger.debug(f"Doc: {doc}")
         logger.debug(f"Matches: {matches}")
 
-    def _parse_match(self, match, doc):
+    def _parse_match(self, match, doc: Doc):
         (match_id, start, end) = match
         rulename = nlp.vocab.strings[match_id]
         span = doc[start:end]
@@ -95,6 +99,6 @@ class Matcher:
 
     def _get_longest_match(self, matches):
         logger.debug(f"Getting the longest match from {matches}")
-        distances = [end - start for (_, start, end) in matches]
-        largest_distance_i = distances.index(max(distances))
+        distances: list[int] = [end - start for (_, start, end) in matches]
+        largest_distance_i: int = distances.index(max(distances))
         return matches[largest_distance_i]

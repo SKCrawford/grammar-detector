@@ -36,30 +36,32 @@ class Defaults(Enum):
     SHOULD_EXTRACT_NOUN_CHUNKS = False
 
 
-ROOT_DIR_PATH = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR_PATH: str = os.path.dirname(os.path.abspath(__file__))
 
-LOG_FORMAT = (
+LOG_FORMAT: str = (
     "[%(asctime)s][%(module)s:%(funcName)s:%(lineno)d][%(levelname)s] %(message)s"
 )
 
-LOG_LEVEL = logging.DEBUG
+LOG_LEVEL: str = logging.DEBUG
 
-LOG_FILE_DEBUG = "debug.log"
+LOG_FILE_DEBUG: str = "debug.log"
 
-LOG_FILE_LAST = "last.log"
+LOG_FILE_LAST: str = "last.log"
 
-LOG_FILE_TEST = "test.log"
+LOG_FILE_TEST: str = "test.log"
 
-PATTERNS_DIR_FILE_EXTENSION = "json"
+PATTERNS_DIR_FILE_EXTENSION: str = "json"
 
-PATTERNS_DIR_NAME = "patterns/"
+PATTERNS_DIR_NAME: str = "patterns/"
 
-PATTERNS_DIR_PATH = os.path.join(ROOT_DIR_PATH, PATTERNS_DIR_NAME)
+PATTERNS_DIR_PATH: str = os.path.join(ROOT_DIR_PATH, PATTERNS_DIR_NAME)
 
-PATTERN_SETS_PATHS = [f for f in os.listdir(PATTERNS_DIR_PATH) if not f.startswith(".")]
+PATTERN_SETS_PATHS: list[str] = [
+    f for f in os.listdir(PATTERNS_DIR_PATH) if not f.startswith(".")
+]
 
-PATTERN_SETS_NAMES = [
+PATTERN_SETS_NAMES: list[str] = [
     p.replace(f".{PATTERNS_DIR_FILE_EXTENSION}", "") for p in PATTERN_SETS_PATHS
 ]
 
-SPACY_DATASET = "en_core_web_lg"
+SPACY_DATASET: str = "en_core_web_lg"

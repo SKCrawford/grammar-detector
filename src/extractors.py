@@ -1,15 +1,16 @@
 from logging import getLogger
 from spacy import explain
+from spacy.tokens import Doc, Span
 from .nlp import nlp
 
 
 logger = getLogger(__name__)
 
 
-def get_doc(phrase):
+def get_doc(phrase: any) -> Doc:
     """Given a str, a Doc, or a Span, return a Doc."""
     logger.debug(f"Getting the Doc of '{phrase}' ({type(phrase)})")
-    doc = None
+    doc: Doc = None
     if type(phrase) == str:
         doc = nlp(phrase)
     elif type(phrase) == Doc:
@@ -23,7 +24,7 @@ def get_doc(phrase):
     return doc
 
 
-def extract_span_features(match_span):
+def extract_span_features(match_span: Span) -> dict:
     """Given a Span, return a dictionary."""
     logger.debug(f"Parsing Span '{match_span}'")
     return {
