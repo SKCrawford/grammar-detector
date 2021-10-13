@@ -1,6 +1,6 @@
 import logging
 import unittest
-from src.patterns import load_pattern_set, PatternSet
+from src.patterns import PatternSetLoader
 from src.Matcher import Matcher
 from settings import PATTERN_SETS_NAMES, SettingKeys, SettingValues
 from src.extractors import get_doc
@@ -14,9 +14,10 @@ class TestPatternSetJsonTests(unittest.TestCase):
     def setUpClass(self):
         self.pattern_sets = {}
         self.matchers = {}
+        loader = PatternSetLoader()
 
         for pset_name in PATTERN_SETS_NAMES:
-            pattern_set = PatternSet(pset_name)
+            pattern_set = loader.load(pset_name)
             self.pattern_sets[pset_name] = pattern_set
             self.matchers[pset_name] = Matcher(pattern_set)
 
@@ -26,7 +27,7 @@ class TestPatternSetJsonTests(unittest.TestCase):
 
         try:
             key = SettingKeys.PSET_META_SKIP.value
-            skip_setting = pset.meta.get_key(key)
+            skip_setting = pset.meta[key]
             if type(skip_setting) == bool:
                 should_skip = skip_setting
                 skip_reason = ""
@@ -93,7 +94,7 @@ class TestPatternSetJsonTests(unittest.TestCase):
         expects_many_spans = bool(len(expected_spans) > 1)
         if expects_many_rulenames or expects_many_spans:
             key = SettingKeys.PSET_META_HOW_MANY_MATCHES.value
-            how_many_matches = pset.meta.get_key(key)
+            how_many_matches = pset.meta[key]
             one_match = SettingValues.HOW_MANY_MATCHES_ONE_MATCH.value
             if how_many_matches.upper() == one_match.upper():
                 err_msg = "The pattern set expects only one match, but the test expects multiple matches"
@@ -141,7 +142,6 @@ class TestPatternSetJsonTests(unittest.TestCase):
             with self.subTest(pset.name):
                 [self.run_test(test, matcher, pset) for test in pset.tests]
 
-    # Refactor this horrid mess!!
     def test_pattern_set_json_tests(self):
         for pset_key in self.pattern_sets:
             pset = self.pattern_sets[pset_key]
