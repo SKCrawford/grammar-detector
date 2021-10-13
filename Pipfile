@@ -8,6 +8,7 @@ tabulate = "*"
 python-lsp-server = "*"
 black = "==21.9b0"
 mypy = "*"
+types-tabulate = "*"
 
 [packages]
 spacy = "*"
