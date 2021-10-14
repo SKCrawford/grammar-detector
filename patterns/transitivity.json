@@ -1,7 +1,7 @@
 {
     "meta": {
         "extract_noun_chunks": false,
-        "how_many_matches": "all"
+        "how_many_matches": "one"
     },
     "patterns": [
         {
@@ -46,8 +46,8 @@
     "tests": [
         {
             "input": "The dog chased the cat.",
-            "rulenames": ["intransitive", "transitive"],
-            "spans": ["dog chased", "dog chased the cat"]
+            "rulenames": ["transitive"],
+            "spans": ["dog chased the cat"]
         },
         {
             "input": "It rains.",
