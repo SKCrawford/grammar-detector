@@ -1,0 +1,280 @@
+---
+meta:
+    extract_noun_chunks: false
+    how_many_matches: one
+patterns:
+    - rulename: present simple
+      tokens:
+          - {TAG: {IN: ["VBP", "VBZ"]}, OP: "+"}
+    - rulename: present simple passive
+      tokens:
+          - {
+              TAG: {IN: ["VBP", "VBZ"]},
+              DEP: "auxpass",
+              LEMMA: "be",
+              OP: "+"
+          }
+          - {TAG: "VBN", OP: "+"}
+    - rulename: past simple
+      tokens:
+          - {TAG: "VBD", OP: "+"}
+    - rulename: past simple passive
+      tokens:
+          - {TAG: "VBD", DEP: "auxpass", LEMMA: "be", OP: "+"}
+          - {TAG: "VBN", OP: "+"}
+    - rulename: future simple will
+      tokens:
+          - {TAG: "MD", DEP: "aux", OP: "+", LOWER: "will"}
+          - {TAG: "VB", OP: "+"}
+    - rulename: future simple will passive
+      tokens:
+          - {TAG: "MD", DEP: "aux", OP: "+", LOWER: "will"}
+          - {TAG: "VB", DEP: "auxpass", LEMMA: "be"}
+          - {TAG: "VBN", OP: "+"}
+    - rulename: future simple be-going-to
+      tokens:
+          - {TAG: {IN: ["VBP", "VBZ"]}, DEP: "aux", OP: "+"}
+          - {TAG: "VBG", OP: "+", LEMMA: "go"}
+          - {TAG: "TO", DEP: "aux", OP: "+"}
+          - {TAG: "VB", DEP: "xcomp", OP: "+"}
+    - rulename: future simple be-going-to passive
+      tokens:
+          - {TAG: {IN: ["VBP", "VBZ"]}, DEP: "aux", OP: "+"}
+          - {TAG: "VBG", OP: "+", LEMMA: "go"}
+          - {TAG: "TO", DEP: "aux", OP: "+"}
+          - {TAG: "VB", DEP: "auxpass", LEMMA: "be"}
+          - {TAG: "VBN", OP: "+"}
+    - rulename: present continuous
+      tokens:
+          - {TAG: {IN: ["VBP", "VBZ"]}, DEP: "aux", OP: "+"}
+          - {TAG: "VBG", OP: "+"}
+    - rulename: present continuous passive
+      tokens:
+          - {
+              TAG: {IN: ["VBP", "VBZ"]},
+              DEP: "aux",
+              OP: "+",
+              LEMMA: "be"
+          }
+          - {TAG: "VBG", DEP: "auxpass", OP: "+", LEMMA: "be"}
+          - {TAG: "VBN", OP: "+"}
+    - rulename: past continuous
+      tokens:
+          - {TAG: "VBD", DEP: "aux", OP: "+"}
+          - {TAG: "VBG", OP: "+"}
+    - rulename: past continuous passive
+      tokens:
+          - {TAG: "VBD", DEP: "aux", OP: "+", LEMMA: "be"}
+          - {TAG: "VBG", DEP: "auxpass", OP: "+", LEMMA: "be"}
+          - {TAG: "VBN", OP: "+"}
+    - rulename: future continuous
+      tokens:
+          - {TAG: "MD", DEP: "aux", OP: "+", LEMMA: "will"}
+          - {TAG: "VB", DEP: "aux", OP: "+", LEMMA: "be"}
+          - {TAG: "VBG", OP: "+"}
+    - rulename: future continuous passive
+      tokens:
+          - {TAG: "MD", DEP: "aux", OP: "+", LEMMA: "will"}
+          - {TAG: "VB", DEP: "aux", OP: "+", LEMMA: "be"}
+          - {TAG: "VBG", DEP: "auxpass", OP: "+", LEMMA: "be"}
+          - {TAG: "VBN", OP: "+"}
+    - rulename: present perfect
+      tokens:
+          - {
+              TAG: {IN: ["VBP", "VBZ"]},
+              DEP: "aux",
+              OP: "+",
+              LEMMA: "have"
+          }
+          - {TAG: "VBN", OP: "+"}
+    - rulename: present perfect passive
+      tokens:
+          - {
+              TAG: {IN: ["VBP", "VBZ"]},
+              DEP: "aux",
+              OP: "+",
+              LEMMA: "have"
+          }
+          - {TAG: "VBN", DEP: "auxpass", OP: "+", LEMMA: "be"}
+          - {TAG: "VBN", OP: "+"}
+    - rulename: past perfect
+      tokens:
+          - {TAG: "VBD", DEP: "aux", OP: "+", LEMMA: "have"}
+          - {TAG: "VBN", OP: "+"}
+    - rulename: past perfect passive
+      tokens:
+          - {TAG: "VBD", DEP: "aux", OP: "+", LEMMA: "have"}
+          - {TAG: "VBN", DEP: "auxpass", OP: "+", LEMMA: "be"}
+          - {TAG: "VBN", OP: "+"}
+    - rulename: future perfect
+      tokens:
+          - {TAG: "MD", DEP: "aux", OP: "+", LEMMA: "will"}
+          - {TAG: "VB", DEP: "aux", OP: "+"}
+          - {TAG: "VBN", OP: "+"}
+    - rulename: future perfect passive
+      tokens:
+          - {TAG: "MD", DEP: "aux", OP: "+", LEMMA: "will"}
+          - {
+              TAG: {IN: ["VBP", "VBZ"]},
+              DEP: "aux",
+              OP: "+",
+              LEMMA: "have"
+          }
+          - {TAG: "VBN", DEP: "auxpass", OP: "+", LEMMA: "be"}
+          - {TAG: "VBN", OP: "+"}
+    - rulename: present perfect continuous
+      tokens:
+          - {
+              TAG: {IN: ["VBP", "VBZ"]},
+              DEP: "aux",
+              OP: "+",
+              LEMMA: "have"
+          }
+          - {TAG: "VBN", DEP: "aux", OP: "+", LEMMA: "be"}
+          - {TAG: "VBG", OP: "+"}
+    - rulename: present perfect continuous passive
+      tokens:
+          - {
+              TAG: {IN: ["VBP", "VBZ"]},
+              DEP: "aux",
+              OP: "+",
+              LEMMA: "have"
+          }
+          - {TAG: "VBN", DEP: "aux", OP: "+", LEMMA: "be"}
+          - {TAG: "VBG", DEP: "auxpass", OP: "+", LEMMA: "be"}
+          - {TAG: "VBN", OP: "+"}
+    - rulename: past perfect continuous
+      tokens:
+          - {TAG: "VBD", DEP: "aux", OP: "+", LEMMA: "have"}
+          - {TAG: "VBN", DEP: "aux", OP: "+", LEMMA: "be"}
+          - {TAG: "VBG", OP: "+"}
+    - rulename: past perfect continuous passive
+      tokens:
+          - {TAG: "VBD", DEP: "aux", OP: "+", LEMMA: "have"}
+          - {TAG: "VBN", DEP: "aux", OP: "+", LEMMA: "be"}
+          - {TAG: "VBG", DEP: "auxpass", OP: "+", LEMMA: "be"}
+          - {TAG: "VBN", OP: "+"}
+    - rulename: future perfect continuous
+      tokens:
+          - {TAG: "MD", DEP: "aux", OP: "+", LEMMA: "will"}
+          - {TAG: "VB", DEP: "aux", OP: "+", LEMMA: "have"}
+          - {TAG: "VBN", DEP: "aux", OP: "+", LEMMA: "be"}
+          - {TAG: "VBG", OP: "+"}
+    - rulename: future perfect continuous passive
+      tokens:
+          - {TAG: "MD", DEP: "aux", OP: "+", LEMMA: "will"}
+          - {TAG: "VB", DEP: "aux", OP: "+", LEMMA: "have"}
+          - {TAG: "VBN", DEP: "aux", OP: "+", LEMMA: "be"}
+          - {TAG: "VBG", DEP: "auxpass", OP: "+", LEMMA: "be"}
+          - {TAG: "VBN", OP: "+"}
+tests:
+    - input: I run.
+      rulenames:
+          - present simple
+      spans:
+          - run
+    - input: He runs.
+      rulenames:
+          - present simple
+      spans:
+          - runs
+    - input: She runs.
+      rulenames:
+          - present simple
+      spans:
+          - runs
+    - input: They run.
+      rulenames:
+          - present simple
+      spans:
+          - run
+    - input: I ran.
+      rulenames:
+          - past simple
+      spans:
+          - ran
+    - input: He ran.
+      rulenames:
+          - past simple
+      spans:
+          - ran
+    - input: She ran.
+      rulenames:
+          - past simple
+      spans:
+          - ran
+    - input: They ran.
+      rulenames:
+          - past simple
+      spans:
+          - ran
+    - input: I run.
+      rulenames:
+          - present simple
+      spans:
+          - run
+    - input: I ran.
+      rulenames:
+          - past simple
+      spans:
+          - ran
+    - input: I will run.
+      rulenames:
+          - future simple will
+      spans:
+          - will run
+    - input: I am going to run.
+      rulenames:
+          - future simple be-going-to
+      spans:
+          - am going to run
+    - input: I have run.
+      rulenames:
+          - present perfect
+      spans:
+          - have run
+    - input: I had run.
+      rulenames:
+          - past perfect
+      spans:
+          - had run
+    - input: I will have run.
+      rulenames:
+          - future perfect
+      spans:
+          - will have run
+    - input: I am going to have run.
+      rulenames:
+          - future perfect continuous
+      spans:
+          - am going to have run
+    - input: I am running.
+      rulenames:
+          - present continuous
+      spans:
+          - am running
+    - input: I was running.
+      rulenames:
+          - past continuous
+      spans:
+          - was running
+    - input: I will be running.
+      rulenames:
+          - future continuous
+      spans:
+          - will be running
+    - input: I have been running.
+      rulenames:
+          - present perfect continuous
+      spans:
+          - have been running
+    - input: I had been running.
+      rulenames:
+          - past perfect continuous
+      spans:
+          - had been running
+    - input: I will have been running.
+      rulenames:
+          - future perfect continuous
+      spans:
+          - will have been running

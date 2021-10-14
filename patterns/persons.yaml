@@ -1,0 +1,65 @@
+---
+meta:
+    extract_noun_chunks: true
+    how_many_matches: one
+patterns:
+    - rulename: 1st
+      tokens:
+          # one token
+          - {
+              POS: {IN: ["NOUN", "PRON", "PROPN", "NUM"]},
+              OP: "+",
+              LOWER: {IN: ["i", "we"]},
+          }
+    - rulename: 2nd
+      tokens:
+          # one token
+          - {
+              POS: {IN: ["NOUN", "PRON", "PROPN", "NUM"]},
+              OP: "+",
+              LOWER: "you"
+          }
+    - rulename: 3rd
+      tokens:
+          # one token
+          - {
+              POS: {IN: ["NOUN", "PRON", "PROPN", "NUM"]},
+              OP: "+",
+              LOWER: {NOT_IN: ["i", "we", "you"]}
+          }
+tests:
+    - input: I am running for President.
+      rulenames:
+          - 1st
+      spans:
+          - I
+    - input: We are running for President.
+      rulenames:
+          - 1st
+      spans:
+          - We
+    - input: You are running for President.
+      rulenames:
+          - 2nd
+      spans:
+          - You
+    - input: She is running for President.
+      rulenames:
+          - 3rd
+      spans:
+          - She
+    - input: They are running for President.
+      rulenames:
+          - 3rd
+      spans:
+          - They
+    - input: Biden is running for President.
+      rulenames:
+          - 3rd
+      spans:
+          - Biden
+    - input: Biden and Harris are running for President and Vice-President.
+      rulenames:
+          - 3rd
+      spans:
+          - Biden and Harris

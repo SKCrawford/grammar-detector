@@ -1,0 +1,25 @@
+---
+meta:
+    extract_noun_chunks: false
+    how_many_matches: one
+patterns:
+    - rulename: active
+      tokens:
+          - {DEP: "aux", OP: "*"}
+          - {DEP: "ROOT"}
+    - rulename: passive
+      tokens:
+          - {DEP: "aux", OP: "*"}
+          - {DEP: "auxpass", OP: "+"}
+          - {TAG: "VBN", DEP: "ROOT"}
+tests:
+    - input: The cat was chased by the dog.
+      rulenames:
+          - passive
+      spans:
+          - was chased
+    - input: The dog chased the cat.
+      rulenames:
+          - active
+      spans:
+          - chased

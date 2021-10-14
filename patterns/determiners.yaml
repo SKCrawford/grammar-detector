@@ -1,0 +1,113 @@
+---
+meta:
+    extract_noun_chunks: true
+    how_many_matches: one
+patterns:
+    - rulename: indefinite
+      tokens:
+          - {POS: "DET", LOWER: {IN: ["a", "an"]}}
+          - {OP: "*"}
+          - {POS: {IN: ["NOUN", "PRON", "PROPN"]}}
+    - rulename: definite
+      tokens:
+          - {POS: "DET", LOWER: "the"}
+          - {OP: "*"}
+          - {POS: {IN: ["NOUN", "PRON", "PROPN"]}}
+    - rulename: other
+      tokens:
+          - {POS: "DET", LOWER: {NOT_IN: ["a", "an", "the"]}}
+          - {OP: "*"}
+          - {POS: {IN: ["NOUN", "PRON", "PROPN"]}}
+    - rulename: none
+      tokens:
+          - {POS: {NOT_IN: ["DET"]}, OP: "?"}
+          - {POS: {IN: ["NOUN", "PRON", "PROPN"]}}
+tests:
+    - input: the book
+      rulenames:
+          - definite
+      spans:
+          - the book
+    - input: the green book
+      rulenames:
+          - definite
+      spans:
+          - the green book
+    - input: the incredibly green book
+      rulenames:
+          - definite
+      spans:
+          - the incredibly green book
+    - input: the book that was on a shelf
+      rulenames:
+          - definite
+      spans:
+          - the book that was on a shelf
+    - input: a book
+      rulenames:
+          - indefinite
+      spans:
+          - a book
+    - input: a green book
+      rulenames:
+          - indefinite
+      spans:
+          - a green book
+    - input: a hideously green book
+      rulenames:
+          - indefinite
+      spans:
+          - a hideously green book
+    - input: a book that was on a shelf
+      skip: true
+      rulenames:
+          - indefinite
+          - indefinite
+      spans:
+          - a book that was on a shelf
+          - a shelf
+    - input: an apple
+      rulenames:
+          - indefinite
+      spans:
+          - an apple
+    - input: an ugly apple
+      rulenames:
+          - indefinite
+      spans:
+          - an ugly apple
+    - input: an incredibly green apple
+      rulenames:
+          - indefinite
+      spans:
+          - an incredibly green apple
+    - input: an apple that was on a shelf
+      skip: true
+      rulenames:
+          - indefinite
+          - indefinite
+      spans:
+          - an apple that was on a shelf
+          - a shelf
+    - input: an apple that was on a shelf
+      rulenames:
+          - indefinite
+      spans:
+          - an apple that was on a shelf
+    - input: apple
+      rulenames:
+          - none
+    - input: ugly apple
+      rulenames:
+          - none
+    - input: incredibly green apple
+      rulenames:
+          - none
+    - input: apple that was on a shelf
+      skip: true
+      rulenames:
+          - other
+          - indefinite
+    - input: apple that was on a shelf
+      rulenames:
+          - other
