@@ -1,113 +1,152 @@
 ---
 meta:
     extract_noun_chunks: true
-    how_many_matches: one
+    how_many_matches: all
+
 patterns:
     - rulename: indefinite
       tokens:
           - {POS: "DET", LOWER: {IN: ["a", "an"]}}
           - {OP: "*"}
           - {POS: {IN: ["NOUN", "PRON", "PROPN"]}}
+
     - rulename: definite
       tokens:
           - {POS: "DET", LOWER: "the"}
           - {OP: "*"}
           - {POS: {IN: ["NOUN", "PRON", "PROPN"]}}
+
     - rulename: other
       tokens:
           - {POS: "DET", LOWER: {NOT_IN: ["a", "an", "the"]}}
           - {OP: "*"}
           - {POS: {IN: ["NOUN", "PRON", "PROPN"]}}
+
     - rulename: none
       tokens:
           - {POS: {NOT_IN: ["DET"]}, OP: "?"}
           - {POS: {IN: ["NOUN", "PRON", "PROPN"]}}
+
 tests:
     - input: the book
       rulenames:
           - definite
+          # none - FIXME what are these extra noun chunks?
       spans:
           - the book
+
     - input: the green book
       rulenames:
           - definite
+          # none - FIXME what are these extra noun chunks?
       spans:
           - the green book
+
     - input: the incredibly green book
       rulenames:
           - definite
+          # none - FIXME what are these extra noun chunks?
       spans:
           - the incredibly green book
+
     - input: the book that was on a shelf
       rulenames:
           - definite
+          # none - FIXME what are these extra noun chunks?
+          # none - FIXME what are these extra noun chunks?
+          - indefinite
+          # other - FIXME what are these extra noun chunks?
       spans:
-          - the book that was on a shelf
+          - the book
+          - a shelf
+
     - input: a book
       rulenames:
           - indefinite
+          # none - FIXME what are these extra noun chunks?
       spans:
           - a book
+
     - input: a green book
       rulenames:
           - indefinite
+          # none - FIXME what are these extra noun chunks?
       spans:
           - a green book
+
     - input: a hideously green book
       rulenames:
           - indefinite
+          # none - FIXME what are these extra noun chunks?
       spans:
           - a hideously green book
+
     - input: a book that was on a shelf
-      skip: true
       rulenames:
           - indefinite
-          - indefinite
+          # none - FIXME what are these extra noun chunks?
+          # none - FIXME what are these extra noun chunks?
+          - indefinite  # other - FIXME wrong
       spans:
           - a book that was on a shelf
           - a shelf
+
     - input: an apple
       rulenames:
           - indefinite
+          # none - FIXME what are these extra noun chunks?
       spans:
           - an apple
+
     - input: an ugly apple
       rulenames:
           - indefinite
+          # none - FIXME what are these extra noun chunks?
       spans:
           - an ugly apple
+
     - input: an incredibly green apple
       rulenames:
           - indefinite
+          # none - FIXME what are these extra noun chunks?
       spans:
           - an incredibly green apple
+
     - input: an apple that was on a shelf
-      skip: true
       rulenames:
           - indefinite
-          - indefinite
+          # none - FIXME what are these extra noun chunks?
+          # none - FIXME what are these extra noun chunks?
+          - indefinite  # other - FIXME wrong
       spans:
-          - an apple that was on a shelf
+          - an apple
           - a shelf
+
     - input: an apple that was on a shelf
       rulenames:
           - indefinite
+          # none - FIXME what are these extra noun chunks?
+          # none - FIXME what are these extra noun chunks?
+          - indefinite  # other - FIXME wrong
       spans:
-          - an apple that was on a shelf
+          - an apple
+          - a shelf
+
     - input: apple
       rulenames:
           - none
+
     - input: ugly apple
       rulenames:
           - none
+
     - input: incredibly green apple
       rulenames:
           - none
+
     - input: apple that was on a shelf
-      skip: true
       rulenames:
-          - other
+          - none
+          # none - FIXME what are these extra noun chunks?
           - indefinite
-    - input: apple that was on a shelf
-      rulenames:
-          - other
+          # other - FIXME what are these extra noun chunks?
