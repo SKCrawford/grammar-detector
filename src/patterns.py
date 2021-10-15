@@ -1,8 +1,9 @@
+from json import load as load_json
 from logging import getLogger
-from json import load
 from os.path import join
 from spacy.tokens import Token
 from typing import Any, Union
+from yaml import FullLoader, load as load_yaml
 from settings import PATTERNS_DIR_FILE_EXTENSION, PATTERNS_DIR_PATH, SettingKeys
 
 
@@ -54,12 +55,23 @@ class PatternSetLoader:
             return self.pattern_sets[pset_name]
 
         pset_data: dict[str, Any] = {}
-        with open(self._get_path(pset_name), "r") as f:
-            pset_data = load(f)
+        filepath = self._get_path(pset_name)
+        logger.debug(f"Reading file at '{filepath}'")
+        with open(filepath, "r") as f:
+            logger.debug(f"Loading '{filepath}' as a {self.file_ext} file")
+            pset_data = self._load_file(f)
 
         pset = PatternSet(pset_name, pset_data)
         self.pattern_sets[pset.name] = pset
         return pset
+
+    def _load_file(self, file):
+        if self.file_ext == "yaml" or self.file_ext == "yml":
+            return load_yaml(file, Loader=FullLoader)
+        elif self.file_ext == "json":
+            return load_json(file)
+        else:
+            raise ValueError(f"Invalid file extension '{self.file_ext}'")
 
     def _get_path(self, pset_name: str) -> str:
         filename = f"{pset_name}.{self.file_ext}"

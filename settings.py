@@ -50,14 +50,16 @@ LOG_FILE_LAST: str = "last.log"
 
 LOG_FILE_TEST: str = "test.log"
 
-PATTERNS_DIR_FILE_EXTENSION: str = "json"
+PATTERNS_DIR_FILE_EXTENSION: str = "yaml"
 
 PATTERNS_DIR_NAME: str = "patterns/"
 
 PATTERNS_DIR_PATH: str = os.path.join(ROOT_DIR_PATH, PATTERNS_DIR_NAME)
 
 PATTERN_SETS_PATHS: list[str] = [
-    f for f in os.listdir(PATTERNS_DIR_PATH) if not f.startswith(".")
+    f
+    for f in os.listdir(PATTERNS_DIR_PATH)
+    if not f.startswith(".") and f.endswith(PATTERNS_DIR_FILE_EXTENSION)
 ]
 
 PATTERN_SETS_NAMES: list[str] = [
