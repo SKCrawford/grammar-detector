@@ -13,6 +13,7 @@ types-tabulate = "*"
 [packages]
 spacy = "*"
 spacy-lookups-data = "*"
+pyyaml = "*"
 
 [requires]
 python_version = "3.9"
