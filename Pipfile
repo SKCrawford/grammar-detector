@@ -4,16 +4,16 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-tabulate = "*"
-python-lsp-server = "*"
 black = "==21.9b0"
 mypy = "*"
+python-lsp-server = "*"
+tabulate = "*"
 types-tabulate = "*"
 
 [packages]
+pyyaml = "*"
 spacy = "*"
 spacy-lookups-data = "*"
-pyyaml = "*"
 
 [requires]
 python_version = "3.9"
