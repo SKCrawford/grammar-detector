@@ -2,11 +2,11 @@ import asyncio
 from logging import getLogger
 from spacy.tokens import Doc, Span
 from typing import Any, Union
-from settings import SettingKeys
+from settings import PATTERNS_DIR_PATH, SettingKeys
 from .extractors import get_doc
-from .matchers import PatternSetMatcher as Matcher
-from .matchers import ParsedMatch
-from .patterns import PatternSet, PatternSetLoader
+from .matchers import ParsedMatch, PatternSetMatcher as Matcher
+from .patterns import PatternSet
+from .loaders import PatternSetLoader, YamlLoader
 
 
 logger = getLogger(__name__)
@@ -20,7 +20,9 @@ async def detect_features(
     feature_set = {}
 
     logger.debug("Creating the PatternSetLoader instance")
-    loader = PatternSetLoader()
+    pattern_sets_dir_path = PATTERNS_DIR_PATH
+    file_loader = YamlLoader(pattern_sets_dir_path)
+    pset_loader = PatternSetLoader(file_loader)
 
     logger.debug(f"Tokenizing '{sentence}'")
     doc: Doc = get_doc(sentence)
@@ -28,7 +30,7 @@ async def detect_features(
     for pattern_set_name in pattern_set_names:
         logger.debug(f"Detecting for the feature '{pattern_set_name}'")
         logger.debug(f"Loading the pattern set '{pattern_set_name}'")
-        pattern_set: PatternSet = loader.load(pattern_set_name)
+        pattern_set: PatternSet = pset_loader(pattern_set_name)
 
         logger.debug("Constructing the external matcher")
         matcher = Matcher(pattern_set)
