@@ -34,7 +34,7 @@ class PatternSetMatcher:
             logger.debug(f"Adding the pattern '{rulename}' to the internal matcher")
             self._inner_matcher.add(rulename, [tokens], **config)
 
-    def match(self, doc: Doc) -> list[ParsedMatch]:
+    def __call__(self, doc: Doc) -> list[ParsedMatch]:
         """The entry point for running the matcher. Using the pattern set provided
         during construction, the appropriate matcher method will be returned.
         All usable matcher methods should be included here."""

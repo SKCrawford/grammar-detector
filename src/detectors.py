@@ -20,7 +20,7 @@ async def detect_features(
     feature_set = {}
 
     logger.debug("Creating the PatternSetLoader instance")
-    pattern_sets_dir_path = PATTERNS_DIR_PATH
+    pattern_sets_dir_path: str = PATTERNS_DIR_PATH
     file_loader = YamlLoader(pattern_sets_dir_path)
     pset_loader = PatternSetLoader(file_loader)
 
@@ -48,7 +48,7 @@ async def detect_features(
             inputs = [doc]
 
         logger.debug(f"Running the external matcher")
-        matches: list[list[ParsedMatch]] = [matcher.match(input) for input in inputs]
+        matches: list[list[ParsedMatch]] = [matcher(input) for input in inputs]
         feature_set[pattern_set_name] = matches
         logger.debug(f"Finished detecting for the feature '{pattern_set_name}'")
 
