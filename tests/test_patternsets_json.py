@@ -2,8 +2,8 @@ from logging import getLogger
 import unittest
 from settings import config, PatternSetConfigKeys, PatternSetConfigValues
 from src.extractors import get_doc
+from src.loaders import PatternSetLoader, YamlLoader
 from src.matchers import PatternSetMatcher
-from src.patterns import PatternSetLoader
 
 logger = getLogger(__name__)
 
@@ -119,7 +119,7 @@ class TestPatternSetJsonTests(unittest.TestCase):
 
             rulenames = []
             spans = []
-            for (rulename, span, features) in matcher.match(input):
+            for (rulename, span, features) in matcher(input):
                 rulenames.append(rulename)
                 spans.append(str(span))
 
