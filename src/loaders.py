@@ -1,5 +1,5 @@
-from logging import getLogger
 from io import IOBase
+from logging import getLogger
 from os.path import join
 from typing import Any
 from yaml import FullLoader, load as load_yaml

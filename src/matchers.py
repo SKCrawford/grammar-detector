@@ -1,9 +1,9 @@
 import asyncio
 from logging import getLogger
+from settings import Defaults, SettingKeys, SettingValues
 from spacy.matcher import Matcher as SpacyMatcher
 from spacy.tokens import Doc, Span, Token
 from typing import Any
-from settings import Defaults, SettingKeys, SettingValues
 from .extractors import extract_span_features
 from .nlp import nlp
 from .patterns import PatternSet

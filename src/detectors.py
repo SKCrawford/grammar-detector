@@ -1,12 +1,12 @@
 import asyncio
 from logging import getLogger
+from settings import PATTERNS_DIR_PATH, SettingKeys
 from spacy.tokens import Doc, Span
 from typing import Any, Union
-from settings import PATTERNS_DIR_PATH, SettingKeys
 from .extractors import get_doc
+from .loaders import PatternSetLoader, YamlLoader
 from .matchers import ParsedMatch, PatternSetMatcher as Matcher
 from .patterns import PatternSet
-from .loaders import PatternSetLoader, YamlLoader
 
 
 logger = getLogger(__name__)
