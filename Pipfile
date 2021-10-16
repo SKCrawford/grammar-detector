@@ -8,6 +8,7 @@ black = "==21.9b0"
 mypy = "*"
 python-lsp-server = "*"
 tabulate = "*"
+types-pyyaml = "*"
 types-tabulate = "*"
 
 [packages]

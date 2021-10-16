@@ -1,7 +1,6 @@
-from io import IOBase
 from logging import getLogger
 from os.path import join
-from typing import Any
+from typing import Any, TextIO
 from yaml import FullLoader, load as load_yaml
 from .patterns import PatternSet
 
@@ -10,7 +9,7 @@ logger = getLogger(__name__)
 
 
 class FileLoader:
-    def __init__(self, file_ext: str, dir_path: str):
+    def __init__(self, file_ext: str, dir_path: str) -> None:
         if not file_ext:
             msg = f"argument 'file_ext' is missing"
             logger.error(msg)
@@ -31,17 +30,19 @@ class FileLoader:
     def generate_path(self, filename_base: str) -> str:
         return join(self.dir_path, f"{filename_base}.{self.file_ext}")
 
-    def load(self, file: IOBase) -> dict[str, Any]:
+    def load(self, file: TextIO) -> dict[str, Any]:
         msg = f"FileLoader.load was not implemented"
         logger.error(msg)
         raise NotImplementedError(msg)
 
 
 class YamlLoader(FileLoader):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: str, **kwargs: str) -> None:
+        # type(*args) == the type of one of the values in its list
+        # type(**kwargs) == the type of one of the values of its key-value pairs
         super().__init__("yaml", *args, **kwargs)
 
-    def load(self, file: IOBase) -> dict[str, Any]:
+    def load(self, file: TextIO) -> Any:
         return load_yaml(file, Loader=FullLoader)
 
 
