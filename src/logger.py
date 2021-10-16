@@ -1,10 +1,12 @@
 import logging
-from settings import LOG_FILE_DEBUG, LOG_FILE_LAST, LOG_FORMAT, LOG_LEVEL
+from settings import LoggerConfig
 
 
-last_filehandler = logging.FileHandler(LOG_FILE_LAST, mode="w")
-debug_filehandler = logging.FileHandler(LOG_FILE_DEBUG)
+last_filehandler = logging.FileHandler(LoggerConfig.FILE_LAST.value, mode="w")
+debug_filehandler = logging.FileHandler(LoggerConfig.FILE_DEBUG.value)
 
 logging.basicConfig(
-    format=LOG_FORMAT, level=LOG_LEVEL, handlers=[last_filehandler, debug_filehandler]
+    format=LoggerConfig.FORMAT.value,
+    level=LoggerConfig.LEVEL.value,
+    handlers=[last_filehandler, debug_filehandler],
 )

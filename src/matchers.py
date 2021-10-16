@@ -1,9 +1,13 @@
 import asyncio
 from logging import getLogger
-from settings import Defaults, SettingKeys, SettingValues
 from spacy.matcher import Matcher as SpacyMatcher
 from spacy.tokens import Doc, Span, Token
 from typing import Any
+from settings import (
+    PatternSetConfigDefaults,
+    PatternSetConfigKeys,
+    PatternSetConfigValues,
+)
 from .extractors import extract_span_features
 from .nlp import nlp
 from .patterns import PatternSet
@@ -39,17 +43,17 @@ class PatternSetMatcher:
         during construction, the appropriate matcher method will be returned.
         All usable matcher methods should be included here."""
         # Maybe handle default in PatternSet
-        how_many_matches: str = str(Defaults.HOW_MANY_MATCHES.value).upper()
-        key: str = SettingKeys.PSET_META_HOW_MANY_MATCHES.value
-        if key in self.pattern_set.meta:
-            how_many_matches = str(self.pattern_set.meta[key]).upper()
+        how_many_matches: str = PatternSetConfigDefaults.HOW_MANY_MATCHES.value
+        how_many_key: str = PatternSetConfigKeys.META_HOW_MANY_MATCHES.value
+        if how_many_key in self.pattern_set.meta:
+            how_many_matches = str(self.pattern_set.meta[how_many_key])
 
         logger.debug(f"Running the matcher method for '{how_many_matches}' result(s)")
-        one_match: str = SettingValues.HOW_MANY_MATCHES_ONE_MATCH.value.upper()
-        all_matches: str = SettingValues.HOW_MANY_MATCHES_ALL_MATCHES.value.upper()
-        if how_many_matches == one_match:
+        one_match: str = PatternSetConfigValues.HOW_MANY_MATCHES_ONE_MATCH.value
+        all_matches: str = PatternSetConfigValues.HOW_MANY_MATCHES_ALL_MATCHES.value
+        if how_many_matches.upper() == one_match.upper():
             return self._match_one(doc)
-        elif how_many_matches == all_matches:
+        elif how_many_matches.upper() == all_matches.upper():
             return self._match_all(doc)
         else:
             raise ValueError(f"Invalid how_many_matches setting: {how_many_matches}")

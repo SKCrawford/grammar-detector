@@ -1,10 +1,10 @@
-import logging
-from settings import LOG_FILE_TEST
+from logging import basicConfig
+from settings import LoggerConfig
 
 
-logging.basicConfig(
-    filename=LOG_FILE_TEST,
+basicConfig(
+    filename=LoggerConfig.FILE_TEST.value,
     filemode="w",
-    format="[%(asctime)s][%(module)s:%(funcName)s:%(lineno)d][%(levelname)s] %(message)s",
-    level=logging.DEBUG,
+    format=LoggerConfig.FORMAT.value,
+    level=LoggerConfig.LEVEL.value,
 )

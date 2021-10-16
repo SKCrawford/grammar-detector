@@ -1,10 +1,9 @@
 from logging import getLogger
 import unittest
-from src.patterns import PatternSetLoader
-from src.matchers import PatternSetMatcher as Matcher
-from settings import PATTERN_SETS_NAMES, SettingKeys, SettingValues
+from settings import config, PatternSetConfigKeys, PatternSetConfigValues
 from src.extractors import get_doc
-
+from src.matchers import PatternSetMatcher
+from src.patterns import PatternSetLoader
 
 logger = getLogger(__name__)
 
@@ -14,20 +13,21 @@ class TestPatternSetJsonTests(unittest.TestCase):
     def setUpClass(self):
         self.pattern_sets = {}
         self.matchers = {}
-        loader = PatternSetLoader()
+        file_loader = YamlLoader(config.pattern_set_dir_path)
+        pattern_set_loader = PatternSetLoader(file_loader)
 
-        for pset_name in PATTERN_SETS_NAMES:
-            pattern_set = loader.load(pset_name)
-            self.pattern_sets[pset_name] = pattern_set
-            self.matchers[pset_name] = Matcher(pattern_set)
+        for pset_name in config.pattern_set_names:
+            pattern_set = pattern_set_loader(pset_name)
+            self.pattern_sets[pattern_set.name] = pattern_set
+            self.matchers[pattern_set.name] = PatternSetMatcher(pattern_set)
 
     def should_skip_pset(self, pset):
         should_skip = None
         skip_reason = None
 
         try:
-            key = SettingKeys.PSET_META_SKIP.value
-            skip_setting = pset.meta[key]
+            skip_key = PatternSetConfigKeys.META_SKIP.value
+            skip_setting = pset.meta[skip_key]
             if type(skip_setting) == bool:
                 should_skip = skip_setting
                 skip_reason = ""
@@ -52,7 +52,7 @@ class TestPatternSetJsonTests(unittest.TestCase):
         skip_reason = None
 
         try:
-            skip_setting = test[SettingKeys.PSET_TESTS_SKIP.value]
+            skip_setting = test[PatternSetConfigKeys.TESTS_SKIP.value]
             if type(skip_setting) == bool:
                 should_skip = skip_setting
                 skip_reason = ""
@@ -74,11 +74,11 @@ class TestPatternSetJsonTests(unittest.TestCase):
             return (should_skip, skip_reason)
 
     def get_input(self, test):
-        return get_doc(test[SettingKeys.PSET_TESTS_INPUT.value])
+        return get_doc(test[PatternSetConfigKeys.TESTS_INPUT.value])
 
     def get_expected_results(self, test, pset):
-        rulenames_key = SettingKeys.PSET_TESTS_RULENAMES.value
-        spans_key = SettingKeys.PSET_TESTS_SPANS.value
+        rulenames_key = PatternSetConfigKeys.TESTS_RULENAMES.value
+        spans_key = PatternSetConfigKeys.TESTS_SPANS.value
         expected_rulenames = test[rulenames_key] if rulenames_key in test else []
         expected_spans = test[spans_key] if spans_key in test else []
 
@@ -93,9 +93,9 @@ class TestPatternSetJsonTests(unittest.TestCase):
         expects_many_rulenames = bool(len(expected_rulenames) > 1)
         expects_many_spans = bool(len(expected_spans) > 1)
         if expects_many_rulenames or expects_many_spans:
-            key = SettingKeys.PSET_META_HOW_MANY_MATCHES.value
-            how_many_matches = pset.meta[key]
-            one_match = SettingValues.HOW_MANY_MATCHES_ONE_MATCH.value
+            how_many_key = PatternSetConfigKeys.META_HOW_MANY_MATCHES.value
+            how_many_matches = pset.meta[how_many_key]
+            one_match = PatternSetConfigValues.HOW_MANY_MATCHES_ONE_MATCH.value
             if how_many_matches.upper() == one_match.upper():
                 err_msg = "The pattern set expects only one match, but the test expects multiple matches"
                 logger.error(err_msg)
