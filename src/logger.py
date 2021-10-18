@@ -1,9 +1,13 @@
 import logging
+from os.path import join
 from settings import LoggerConfig
 
 
-last_filehandler = logging.FileHandler(LoggerConfig.FILE_LAST.value, mode="w")
-debug_filehandler = logging.FileHandler(LoggerConfig.FILE_DEBUG.value)
+last_filepath = join(LoggerConfig.DIR.value, LoggerConfig.FILE_LAST.value)
+last_filehandler = logging.FileHandler(last_filepath, mode="w+")
+
+debug_filepath = join(LoggerConfig.DIR.value, LoggerConfig.FILE_DEBUG.value)
+debug_filehandler = logging.FileHandler(debug_filepath, mode="a+")
 
 logging.basicConfig(
     format=LoggerConfig.FORMAT.value,

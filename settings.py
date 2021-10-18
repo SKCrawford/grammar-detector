@@ -1,5 +1,5 @@
 import os
-import logging
+from logging import DEBUG
 from enum import Enum
 
 
@@ -66,13 +66,14 @@ class Config:
 class LoggerConfig(Enum):
     """Project-wide logging configuration settings."""
 
+    DIR = ".logs"
     FILE_DEBUG = "debug.log"
     FILE_LAST = "last.log"
     FILE_TEST = "test.log"
     FORMAT = (
         "[%(asctime)s][%(module)s:%(funcName)s:%(lineno)d][%(levelname)s] %(message)s"
     )
-    LEVEL = logging.DEBUG
+    LEVEL = DEBUG
 
 
 class PatternSetConfigKeys(Enum):
