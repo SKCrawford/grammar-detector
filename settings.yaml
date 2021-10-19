@@ -1,96 +1,95 @@
 ---
-# # DataConfig.prop setting. The spaCy dataset from which the NLP model is derived. Be sure to download the dataset beforehand by `$ python -m spacy download name_of_the_dataset`. `The default is "en_core_web_lg".
+# DataConfig.prop setting. The spaCy dataset from which the NLP model is derived. Be sure to download the dataset beforehand by `$ python -m spacy download name_of_the_dataset`. `The default is "en_core_web_lg".
 DATA_DATASET: "en_core_web_lg"
 
-# # LoggerConfig.prop setting. The directory containing the log files, relevant to the project's root. The default is ".logs".
+# LoggerConfig.prop setting. The directory containing the log files, relevant to the project's root. The default is ".logs".
 LOGGER_DIR: ".logs"
 
-# # LoggerConfig.prop setting. The filename of the accumulated debug log. The default is "debug.log".
+# LoggerConfig.prop setting. The filename of the accumulated debug log. The default is "debug.log".
 LOGGER_FILE_DEBUG: "debug.log"
 
-# # LoggerConfig.prop setting. The filename of the last run's log. The default is "last.log".
+# LoggerConfig.prop setting. The filename of the last run's log. The default is "last.log".
 LOGGER_FILE_LAST: "last.log"
 
-# # LoggerConfig.prop setting. The filename of the test-driven log. The default is "test.log".
+# LoggerConfig.prop setting. The filename of the test-driven log. The default is "test.log".
 LOGGER_FILE_TEST: "test.log"
 
-# # LoggerConfig.prop setting. The format of the logger. The default is:
-# # [%(asctime)s][%(module)s:%(funcName)s:%(lineno)d][%(levelname)s] %(message)s
+# LoggerConfig.prop setting. The format of the logger. The default is:
+# [%(asctime)s][%(module)s:%(funcName)s:%(lineno)d][%(levelname)s] %(message)s
 LOGGER_FORMAT: "[%(asctime)s][%(module)s:%(funcName)s:%(lineno)d][%(levelname)s] %(message)s"
 
-# # LoggerConfig.prop setting. The level of the logger. The default is 10.
-# # DEBUG=10, INFO=20, WARN=30, ERROR=40, CRITICAL=50
+# LoggerConfig.prop setting. The level of the logger. The default is 10.
+# DEBUG=10, INFO=20, WARN=30, ERROR=40, CRITICAL=50
 LOGGER_LEVEL: 10
 
-# # PatternSetConfig.prop setting. The file extension of the patternsets. The default is "yaml".
+# PatternSetConfig.prop setting. The file extension of the patternsets. The default is "yaml".
 PATTERN_SET_FILE_EXTENSION: "yaml"
 
-# # PatternSetConfig.prop setting . The name of the directory containing the patternset files. The default is "patterns".
+# PatternSetConfig.prop setting . The name of the directory containing the patternset files. The default is "patterns".
 PATTERN_SET_HOST_DIR: "patterns"
 
-# # PatternSetConfig.host_dir_path setting. The full path of the patternset host directory. The default is the path according to the other settings in this file. Overriding this setting is not recommended. Uncomment to override.
-# PATTERN_SET_HOST_DIR_PATH: ""
+# PatternSetConfig.host_dir_path setting. The full path of the patternset host directory. The default is the path according to the other settings in this file. Overriding this setting is not recommended. The default is "".
+PATTERN_SET_HOST_DIR_PATH: ""
 
-# # PatternSetConfig.names setting. A list of the filenames of the valid patternsets in the patternset host directory. The file extension is not included. Overriding this setting is not recommended. Uncomment to override.
-# PATTERN_SET_NAMES: ""
+# PatternSetConfig.names setting. A list of the filenames of the valid patternsets in the patternset host directory. The file extension is not included. Overriding this setting is not recommended. The default is "".
+PATTERN_SET_NAMES: ""
 
+# PatternSetConfig.paths setting. The filenames of the valid patternsets in the patternset host directory. The file extension is included. Overriding this setting is not recommended. The default is "".
+PATTERN_SET_PATHS: ""
 
-# # PatternSetConfig.paths setting. The filenames of the valid patternsets in the patternset host directory. The file extension is included. Overriding this setting is not recommended. Uncomment to override.
-# PATTERN_SET_PATHS: ""
-
-# # PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
+# PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
 PATTERN_SET_KEY_BEST_MATCH: "best_match"
 
-# # PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
+# PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
 PATTERN_SET_KEY_HOW_MANY_MATCHES: "how_many_matches"
 
-# # PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
+# PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
 PATTERN_SET_KEY_META: "meta"
 
-# # PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
+# PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
 PATTERN_SET_KEY_PATTERNS: "patterns"
 
-# # PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
+# PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
 PATTERN_SET_KEY_RULENAME: "rulename"
 
-# # PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
+# PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
 PATTERN_SET_KEY_SHOULD_EXTRACT_NOUN_CHUNKS: "extract_noun_chunks"
 
-# # PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
+# PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
 PATTERN_SET_KEY_SKIP_TESTS: "skip_tests"
 
-# # PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
+# PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
 PATTERN_SET_KEY_TESTS: "tests"
 
-# # PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
+# PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
 PATTERN_SET_KEY_TESTS_INPUT: "input"
 
-# # PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
+# PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
 PATTERN_SET_KEY_TESTS_RULENAMES: "rulenames"
 
-# # PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
+# PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
 PATTERN_SET_KEY_TESTS_SKIP: "skip"
 
-# # PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
+# PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
 PATTERN_SET_KEY_TESTS_SPANS: "spans"
 
-# # PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
+# PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
 PATTERN_SET_KEY_TOKENS: "tokens"
 
-# # PatternSetConfigVal.prop setting. The value of the `how_many_matches` setting representing all matches. Changing this setting changes the corresponding value of the setting in the patternset files.
+# PatternSetConfigVal.prop setting. The value of the `how_many_matches` setting representing all matches. Changing this setting changes the corresponding value of the setting in the patternset files.
 PATTERN_SET_VAL_ALL_MATCHES: "all"
 
-# # PatternSetConfigVal.prop setting. The value of the `how_many_matches` setting representing one match. Changing this setting changes the corresponding value of the setting in the patternset files.
+# PatternSetConfigVal.prop setting. The value of the `how_many_matches` setting representing one match. Changing this setting changes the corresponding value of the setting in the patternset files.
 PATTERN_SET_VAL_ONE_MATCH: "one"
 
-# # NYI. PatternSetConfigVal.prop setting. The value of the `best_match` setting representing the last match. Changing this setting changes the corresponding value of the setting in the patternset files.
+# NYI. PatternSetConfigVal.prop setting. The value of the `best_match` setting representing the last match. Changing this setting changes the corresponding value of the setting in the patternset files.
 PATTERN_SET_VAL_FIRST_MATCH: "last"
 
-# # NYI. PatternSetConfigVal.prop setting. The value of the `best_match` setting representing the first match. Changing this setting changes the corresponding value of the setting in the patternset files.
+# NYI. PatternSetConfigVal.prop setting. The value of the `best_match` setting representing the first match. Changing this setting changes the corresponding value of the setting in the patternset files.
 PATTERN_SET_VAL_LAST_MATCH: "first"
 
-# # PatternSetConfigVal.prop setting. The value of the `best_match` setting representing the longest match. Changing this setting changes the corresponding value of the setting in the patternset files.
+# PatternSetConfigVal.prop setting. The value of the `best_match` setting representing the longest match. Changing this setting changes the corresponding value of the setting in the patternset files.
 PATTERN_SET_VAL_LONGEST_MATCH: "longest"
 
-# # NYI. PatternSetConfigVal.prop setting. The value of the `best_match` setting representing the shortest match. Changing this setting changes the corresponding value of the setting in the patternset files.
+# NYI. PatternSetConfigVal.prop setting. The value of the `best_match` setting representing the shortest match. Changing this setting changes the corresponding value of the setting in the patternset files.
 PATTERN_SET_VAL_SHORTEST_MATCH: "shortest"
