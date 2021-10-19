@@ -1,71 +1,34 @@
 from logging import DEBUG
 from os import listdir, path
-from typing import TextIO, Union
+from typing import Optional, TextIO, Union
+from yaml import FullLoader, load as load_yaml
 
 
-# source: https://www.hackerearth.com/practice/notes/samarthbhargav/a-design-pattern-for-configuration-management-in-python/
+# Adopted from: https://www.hackerearth.com/practice/notes/samarthbhargav/a-design-pattern-for-configuration-management-in-python/
 
 
-ConfigDict = dict[str, Union[str, bool, int, float]]
+ConfigSetting = Union[str, bool, int, float]
+ConfigDict = dict[str, ConfigSetting]
+
+
+# TODO refactor this out
+config_file_path: str = "settings.yaml"
 
 
 # The values are easily configurable whereas the keys themselves are not configurable.
-_config_dict: ConfigDict = {
-    # # Configurations for the language data
-    "DATA_DATASET": "en_core_web_lg",
-    # #
-    # # Configurations for the logger
-    "LOGGER_DIR": ".logs",
-    "LOGGER_FILE_DEBUG": "debug.log",
-    "LOGGER_FILE_LAST": "last.log",
-    "LOGGER_FILE_TEST": "test.log",
-    "LOGGER_FORMAT": "[%(asctime)s][%(module)s:%(funcName)s:%(lineno)d][%(levelname)s] %(message)s",
-    "LOGGER_LEVEL": DEBUG,
-    # #
-    # # Base configurations for the pattern sets outside of the patternset file
-    "PATTERN_SET_FILE_EXTENSION": "yaml",
-    "PATTERN_SET_HOST_DIR": "patterns",
-    # "PATTERN_SET_HOST_DIR_PATH": manually override the setting for pset_config.host_dir_path
-    # "PATTERN_SET_NAMES": manually override the setting for pset_config.names
-    # "PATTERN_SET_PATHS": manually override the setting for pset_config.paths
-    # #
-    # # Acceptable keys for configuring patternset files (see the template for the structure)
-    "PATTERN_SET_KEY_BEST_MATCH": "best_match",
-    "PATTERN_SET_KEY_HOW_MANY_MATCHES": "how_many_matches",
-    "PATTERN_SET_KEY_META": "meta",
-    "PATTERN_SET_KEY_PATTERNS": "patterns",
-    "PATTERN_SET_KEY_RULENAME": "rulename",
-    "PATTERN_SET_KEY_SHOULD_EXTRACT_NOUN_CHUNKS": "extract_noun_chunks",
-    "PATTERN_SET_KEY_SKIP_TESTS": "skip_tests",
-    "PATTERN_SET_KEY_TESTS": "tests",
-    "PATTERN_SET_KEY_TESTS_INPUT": "input",
-    "PATTERN_SET_KEY_TESTS_RULENAMES": "rulenames",
-    "PATTERN_SET_KEY_TESTS_SKIP": "skip",
-    "PATTERN_SET_KEY_TESTS_SPANS": "spans",
-    "PATTERN_SET_KEY_TOKENS": "tokens",
-    # #
-    # # Acceptable values for configuring patternset files
-    "PATTERN_SET_VAL_ALL_MATCHES": "all",
-    "PATTERN_SET_VAL_FIRST_MATCH": "last",  # NYI
-    "PATTERN_SET_VAL_LAST_MATCH": "first",  # NYI
-    "PATTERN_SET_VAL_LONGEST_MATCH": "longest",  # Currently the only choice
-    "PATTERN_SET_VAL_ONE_MATCH": "one",
-    "PATTERN_SET_VAL_SHORTEST_MATCH": "shortest",  # NYI
-}
+class Config:
+    """A class for managing configuration settings. To create one, either use the `ConfigFactory` class or extend `Config`. When using the `ConfigFactory` class, specify the prefix in the `create` method. When extending `Config`, set the `prefix` attribute in the constructor."""
 
+    def __init__(self, config_dict: ConfigDict) -> None:
+        self._settings = config_dict
+        self.prefix = None  # Set the prefix in the constructor of extending classes
 
-class _ConfigBase:
-    """The base class from which config classes are derived. This class is not intended for direct use."""
-
-    def __init__(self, config_dict: ConfigDict):
-        self._config = config_dict or {}
-
-    def prop(self, property_name: str):
-        """Return a configuration setting. Fails loudly via KeyError."""
+    def prop(self, property_name: str) -> ConfigSetting:
+        """Return a configuration setting matching the pattern `{prefix}_{property_name}`. Fails loudly via KeyError."""
+        if self.prefix:
+            property_name = f"{self.prefix}_{property_name}"
         property_name = property_name.upper()
-        if property_name not in self._config:
-            return None
-        return self._config[property_name]
+        return self._settings[property_name]
 
     @property
     def project_root_path(self) -> str:
@@ -73,27 +36,12 @@ class _ConfigBase:
         return path.dirname(path.abspath(__file__))
 
 
-class DataConfig(_ConfigBase):
-    """A class containing the configuration settings for the language data."""
-
-    def prop(self, property_name: str) -> str:
-        """Return a language data configuration setting."""
-        return super().prop(f"DATA_{property_name}")
-
-
-class LoggerConfig(_ConfigBase):
-    """A class containing the configuration settings for the logger."""
-
-    def prop(self, property_name: str) -> str:
-        """Return a logger configuration setting."""
-        return super().prop(f"LOGGER_{property_name}")
-
-
-class PatternSetConfig(_ConfigBase):
-    """A class containing the configuration settings for the patternset dir and files."""
+class PatternSetConfig(Config):
+    """A class containing the configuration settings for the patternset directory and files."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.prefix = "PATTERN_SET"
         self.keys = None  # Shortcut for PatternSetConfigKeys
         self.values = None  # Shortcut for PatternSetConfigValues
 
@@ -102,10 +50,6 @@ class PatternSetConfig(_ConfigBase):
         is_hidden_file = lambda f: bool(f.startswith("."))
         is_correct_extension = lambda f: bool(f.endswith(self.prop("FILE_EXTENSION")))
         return bool(not is_hidden_file(file) and is_correct_extension(file))
-
-    def prop(self, property_name: str) -> str:
-        """Return a patternset configuration setting."""
-        return super().prop(f"PATTERN_SET_{property_name}")
 
     @property
     def host_dir_path(self) -> str:
@@ -132,31 +76,47 @@ class PatternSetConfig(_ConfigBase):
         return [trim_extension(path) for path in self.paths]
 
 
-class PatternSetConfigKeys(_ConfigBase):
-    """A class containing the valid keys for patternset file configuration."""
+class ConfigFactory:
+    """A helper class for creating instances of the `Config` class. Load the YAML settings file using the `load` method, then construct new `Config` instances using the `create` method."""
 
-    def prop(self, property_name: str) -> str:
-        """Return a patternset configuration key."""
-        return super().prop(f"PATTERN_SET_KEY_{property_name}")
+    def __init__(self):
+        self._cache: dict[str, Config] = {}
+        self.settings: ConfigDict = {}
+
+    def load(self, config_file_path: str):  # -> ConfigFactory
+        """Load a YAML file containing the configuration settings to the attribute `settings`. Returns the ConfigFactory instance."""
+        self.config_file_path = config_file_path
+        with open(config_file_path, "r") as f:
+            self.settings = load_yaml(f, Loader=FullLoader)
+        return self
+
+    def create(self, prefix: str) -> Config:
+        """Construct a new Config instance and set its prefix to the attribute `prefix`. The method `load()` must be called prior to this method."""
+        # Check call order
+        if not self.settings:
+            msg = "The config file has not yet been loaded. Load it using the `load` method."
+            logger.error(msg)
+            raise Exception(msg)
+
+        # Search cache
+        prefix = prefix.upper()
+        if prefix in self._cache:
+            return self._cache[prefix]
+
+        # Create then cache
+        instance = Config(self.settings)
+        instance.prefix = prefix
+        self._cache[instance.prefix] = instance
+        return instance
 
 
-class PatternSetConfigValues(_ConfigBase):
-    """A class containing the valid values for patternset file configuration."""
+config_factory = ConfigFactory().load(config_file_path)
+data_config = config_factory.create("DATA")
+logger_config = config_factory.create("LOGGER")
 
-    def prop(self, property_name: str) -> str:
-        """Return a patternset configuration value."""
-        return super().prop(f"PATTERN_SET_VAL_{property_name}")
-
-
-data_config = DataConfig(_config_dict)
-
-logger_config = LoggerConfig(_config_dict)
-
-pattern_set_config = PatternSetConfig(_config_dict)
-
-pattern_set_config_keys = PatternSetConfigKeys(_config_dict)
-
-pattern_set_config_values = PatternSetConfigValues(_config_dict)
+pattern_set_config = PatternSetConfig(config_factory.settings)
+pattern_set_config_keys = config_factory.create("PATTERN_SET_KEY")
+pattern_set_config_values = config_factory.create("PATTERN_SET_VAL")
 
 pattern_set_config.keys = pattern_set_config_keys  # For convenience
 pattern_set_config.values = pattern_set_config_values  # For convenience
