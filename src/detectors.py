@@ -1,8 +1,8 @@
 import asyncio
 from logging import getLogger
-from settings import config, PatternSetConfigKeys
 from spacy.tokens import Doc, Span
 from typing import Any, Union
+from settings import pattern_set_config
 from .extractors import get_doc
 from .loaders import PatternSetLoader, YamlLoader
 from .matchers import ParsedMatch, PatternSetMatcher
@@ -18,8 +18,8 @@ async def detect_feature(doc: Doc, pattern_set: PatternSet) -> dict[str, Any]:
     matcher = PatternSetMatcher(pattern_set)
 
     logger.debug("Determining if the noun chunks should be extracted from the doc")
-    key: str = PatternSetConfigKeys.META_EXTRACT_NOUN_CHUNKS.value
-    should_extract_noun_chunks: bool = bool(pattern_set.meta[key])
+    key: str = pattern_set_config.keys.prop("SHOULD_EXTRACT_NOUN_CHUNKS")
+    should_extract_noun_chunks: bool = pattern_set.meta[key]
 
     inputs: list[Union[Doc, Span]] = []
     if should_extract_noun_chunks:
@@ -45,7 +45,7 @@ async def detect_features(
     doc: Doc = get_doc(sentence)
 
     logger.debug("Constructing the PatternSetLoader")
-    file_loader = YamlLoader(config.pattern_set_dir_path)
+    file_loader = YamlLoader(pattern_set_config.host_dir_path)
     pattern_set_loader = PatternSetLoader(file_loader)
 
     for pattern_set_name in pattern_set_names:
