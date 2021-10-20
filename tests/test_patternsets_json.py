@@ -120,7 +120,7 @@ class TestPatternSetJsonTests(unittest.TestCase):
         if should_skip:
             msg = f"Skipping patternset '{pset.name}': '{input}'"
             if bool(len(skip_reason)):
-                msg = msg + f"({skip_reason})"
+                msg = msg + f" ({skip_reason})"
                 print(msg)
                 logger.debug(msg)
             return
