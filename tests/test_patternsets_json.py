@@ -49,8 +49,8 @@ class TestPatternSetJsonTests(unittest.TestCase):
         except Exception as e:
             logger.error(e)
             raise e
-        finally:
-            return (should_skip, skip_reason)
+
+        return (should_skip, skip_reason)
 
     def should_skip_test(self, test):
         """Determine if the patternset's tests should be skipped. This operates at the test level."""
@@ -58,7 +58,7 @@ class TestPatternSetJsonTests(unittest.TestCase):
         skip_reason = None
 
         try:
-            skip_key = pattern_set_config.keys.post("SKIP")
+            skip_key = pattern_set_config.keys.prop("TESTS_SKIP")
             skip_setting = test[skip_key]
             if type(skip_setting) == bool:
                 should_skip = skip_setting
@@ -77,8 +77,8 @@ class TestPatternSetJsonTests(unittest.TestCase):
         except Exception as e:
             logger.error(e)
             raise e
-        finally:
-            return (should_skip, skip_reason)
+
+        return (should_skip, skip_reason)
 
     def get_input(self, test):
         """Extract and tokenize the input from the test entry."""
