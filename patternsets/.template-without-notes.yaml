@@ -1,0 +1,58 @@
+---
+meta:
+    extract_noun_chunks: false
+    how_many_matches: one
+    # skip_tests: "not yet implemented"
+
+patterns:
+    - rulename: present simple
+      tokens:
+          - {TAG: {IN: ["VBP", "VBZ"]}, OP: "+"}
+
+    - rulename: present simple passive
+      tokens:
+          - {
+              TAG: {IN: ["VBP", "VBZ"]},
+              DEP: "auxpass",
+              LEMMA: "be",
+              OP: "+",
+          }
+          - {TAG: "VBN", OP: "+"}
+
+    - rulename: future simple be-going-to
+      tokens:
+          - {TAG: {IN: ["VBP", "VBZ"]}, DEP: "aux", OP: "+"}
+          - {TAG: "VBG", OP: "+", LEMMA: "go"}
+          - {TAG: "TO", DEP: "aux", OP: "+"}
+          - {TAG: "VB", DEP: "xcomp", OP: "+"}
+
+tests:
+    - input: He chases it.
+      rulenames:
+          - present simple
+      spans:
+          - chases
+
+    - input: He is chased by it.
+      rulenames:
+          - present simple passive
+      spans:
+          - is chased
+
+    - input: He is going to chase it.
+      rulenames:
+          - future simple be-going-to
+      spans:
+          - is going to chase
+
+    - input: the book that was on a shelf behind the TV
+      skip: true
+      rulenames:
+          - definite
+          # none - FIXME this result was unexpected
+          - indefinite  # other - FIXME this result is incorrect
+          - definite
+      spans:
+          - the book
+          - a shelf
+          - the TV

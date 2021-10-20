@@ -1,5 +1,5 @@
 ---
-# This template describes how to create a patternset. Patternsets are YAML or JSON files that describe and validate syntactic rules. When a sentence or chunk of text is run through the detector, the input is compared to each item in `patterns`. These items, each representing a rule and its corresponding syntactic pattern, are added to the underlying `Matcher` from the spaCy package's `Matcher`. When a pattern matches, the detector outputs the result.
+# This template describes how to create a patternset. A template without the descriptions is also available. Patternsets are YAML or JSON files that describe and validate syntactic rules. When a sentence or chunk of text is run through the detector, the input is compared to each item in `patterns`. These items, each representing a rule and its corresponding syntactic pattern, are added to the underlying `Matcher` from the spaCy package's `Matcher`. When a pattern matches, the detector outputs the result.
 # A result is of type `tuple[str, spacy.tokens.Span, dict[str, str]]`,
 # and consists of the following components:
 # 1) the matching rulename as a `str`,
@@ -24,6 +24,12 @@ meta:
 
     # NYI - Not yet implemented due to lack of need. Defaults to `"longest"`.
     # best_match: longest
+    
+
+    # skip_tests (`Union[str, bool]`): If `true`, then all tests in the `tests` key will be ignored by the unittest module. If `str`, then the value will also be logged. If `false`, then the `tests` will be run. Defaults to `false`.
+    # skip_tests: true
+    # skip_tests: not yet implemented
+    skip_tests: false
 
 
 #### Patterns ####
@@ -33,7 +39,7 @@ patterns:
 
     ##### **The start of rule #1**
     # rulename (`str`): The name corresponding to the `tokens`. When a pattern is detected, this is the 1st value of the detector's output. Each `rulename` must be unique. Creating separate entries with the same `rulename` and/or the same `tokens` is undefined behavior and not recommended. The intended way of creating multiple versions of the same rule is to slightly modify the `rulename`. A good example of this is the future simple patterns in the `tense_aspects` patternset.
-    - rulename: "rule #1"
+    - rulename: "present simple"
 
       # tokens (`list[spacy.tokens.Token]`): The syntax pattern corresponding to the `rulename`. Each hyphenated dictionary represents a single spaCy `Token`, which in turn typically represents a single word. Any text that matches the pattern of `tokens` will be detected and extracted. JSON-esque formatting is usually the most effective for readability because of how YAML objects/dicts are laid out. However, the .json extension itself does not support comments.
       tokens:
@@ -41,13 +47,13 @@ patterns:
     ##### **The end of rule #1**
 
     ##### **The start of rule #2**
-    - rulename: rule \#2  # Valid; special characters are escaped
+    - rulename: present simple passive  # Valid; special characters are escaped
       tokens:
           - {  # The 1st token
               TAG: {IN: ["VBP", "VBZ"]},
-              DEP: auxpass,  # Valid; "" are optional here but recommended
-              LEMMA: be,  # Valid
-              OP: +  # Invalid: OPs always require ""
+              DEP: auxpass,  # Valid; "quotation marks" for values is optional but recommended
+              LEMMA: "be",  # Valid
+              OP: "+",  # OP values must always be in "quotation marks"
           }
           - {TAG: "VBN", OP: "+"}  # The 2nd token
     ##### **The end of rule #2**
@@ -62,34 +68,35 @@ patterns:
 
 
 #### Tests ####
+# The tests can be run using the following command: $ python -m unittest
 
 # tests (`list[dict[str, Union[str, list[str]]]]`): The automated tests that are run when calling the unittest package in the CLI. The output of the detector is compared to the rulenames and spans attributes. A test consists of an `input` of type `str`, `rulenames` of type `list[str]`, and `spans` of type `list[str]`.
-# The tests can be run using the following command: $ python -m unittest
-tests:  # typing: ()
+tests:
 
     ##### **The start of test #1**
     # input (str): The sentence or chunk of text to be fed to the detector.
-    - input: the book
+    - input: He chases it.
 
-      # rulenames (list[str]): The expected rulenames that the detector should
-      # output. A test must have at least one of these: rulenames, spans.
-      # These are **always** a list of strings, even when matching for one.
+      # rulenames (list[str]): The expected matching rulenames that the detector should output. A test must have at least one of these: rulenames, spans. These are **always** a list of strings, even when matching for one.
       rulenames:
-          - definite
+          - present simple
 
-      # spans (list[str]): The expected matching text that the detector should
-      # output. A test must have at least one of these: rulenames, spans.
-      # These are **always** a list of strings, even when matching for one.
+      # spans (list[str]): The expected matching text that the detector should output. A test must have at least one of these: rulenames, spans. These are **always** a list of strings, even when matching for one.
       spans:
-          - the book
+          - chased
+
+      # skip (`Union[str, bool]`): If `true`, then this individual test will be ignored by the unittest module. If `str`, then the value will also be logged. If `false`, then the `tests` will be run. Defaults to `false`.
+      # skip: true
+      # skip: not yet implemented
+      skip: false
     ##### **The end of test #1**
 
     ##### **The start of test #2**
-    - input: He runs.
+    - input: He is chased by it.
       rulenames:
-          - present simple
+          - present simple passive
       spans:
-          - runs
+          - is chased
     ##### **The end of test #2**
 
     # An example test with multiple results and documented test failure
