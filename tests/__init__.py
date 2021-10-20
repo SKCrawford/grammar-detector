@@ -11,7 +11,7 @@ log_file_path = join(
 
 
 basicConfig(
-    filename=logger_config.prop("FILE_TEST"),
+    filename=log_file_path,
     filemode="w+",
     format=logger_config.prop("FORMAT"),
     level=logger_config.prop("LEVEL"),
