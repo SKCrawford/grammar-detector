@@ -26,7 +26,7 @@ LOGGER_LEVEL: 10
 PATTERN_SET_FILE_EXTENSION: "yaml"
 
 # PatternSetConfig.prop setting . The name of the directory containing the patternset files. The default is "patterns".
-PATTERN_SET_HOST_DIR: "patterns"
+PATTERN_SET_HOST_DIR: "patternsets"
 
 # PatternSetConfig.host_dir_path setting. The full path of the patternset host directory. The default is the path according to the other settings in this file. Overriding this setting is not recommended. The default is "".
 PATTERN_SET_HOST_DIR_PATH: ""
