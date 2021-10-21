@@ -44,22 +44,3 @@ class YamlLoader(FileLoader):
 
     def load(self, file: TextIO) -> Any:
         return load_yaml(file, Loader=FullLoader)
-
-
-class PatternSetLoader:
-    """FileLoader is injected, not inherited."""
-
-    def __init__(self, file_loader: FileLoader) -> None:
-        self.file_loader = file_loader
-        self.pattern_sets: dict[str, PatternSet] = {}
-
-    def __call__(self, pset_name: str) -> PatternSet:
-        if pset_name in self.pattern_sets:
-            logger.debug(f"Retrieving patternset '{pset_name}'")
-            return self.pattern_sets[pset_name]
-
-        logger.debug(f"Loading patternset '{pset_name}'")
-        pset_data = self.file_loader(pset_name)
-        pset = PatternSet(pset_name, pset_data)
-        self.pattern_sets[pset.name] = pset
-        return pset

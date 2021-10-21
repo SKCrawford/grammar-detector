@@ -4,9 +4,9 @@ from spacy.tokens import Doc, Span
 from typing import Any, Union
 from settings import pattern_set_config
 from .extractors import get_doc
-from .loaders import PatternSetLoader, YamlLoader
+from .loaders import YamlLoader
 from .matchers import ParsedMatch, PatternSetMatcher
-from .patterns import PatternSet
+from .patterns import PatternSet, PatternSetRepository
 
 
 logger = getLogger(__name__)
@@ -44,13 +44,22 @@ async def detect_features(
     logger.debug(f"Tokenizing '{sentence}'")
     doc: Doc = get_doc(sentence)
 
-    logger.debug("Constructing the PatternSetLoader")
+    logger.debug("Creating the FileLoader")
     file_loader = YamlLoader(pattern_set_config.host_dir_path)
-    pattern_set_loader = PatternSetLoader(file_loader)
 
-    for pattern_set_name in pattern_set_names:
-        logger.debug(f"Loading the patternset '{pattern_set_name}'")
-        pattern_set = pattern_set_loader(pattern_set_name)
+    logger.debug("Creating the PatternSetRepository")
+    repo = PatternSetRepository()
+
+    logger.debug("Creating and caching the PatternSets")
+    for pset_name in pattern_set_names:
+        logger.debug(f"Loading PatternSet data '{pset_name}'")
+        pset_data = file_loader(pset_name)
+
+        logger.debug(f"Creating and caching the PatternSet '{pset_name}'")
+        repo.create(pset_name, pset_data)
+
+    for pattern_set in repo.get_all():
+        logger.debug(f"Loading the PatternSet '{pattern_set.name}'")
         feature_set[pattern_set.name] = await detect_feature(doc, pattern_set)
 
     logger.debug(f"Finished detecting for the features '{pattern_set_names}'")
