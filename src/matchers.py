@@ -38,15 +38,15 @@ class PatternSetMatcher:
         """The entry point for running the matcher. Using the pattern set provided
         during construction, the appropriate matcher method will be returned.
         All usable matcher methods should be included here."""
-        # Maybe handle default in PatternSet
-        how_many_matches: str = None
+        one_match_setting_val: str = pattern_set_config.values.prop("ONE_MATCH")
+        all_matches_setting_val: str = pattern_set_config.values.prop("ALL_MATCHES")
+
+        how_many_matches: str = one_match_setting_val  # Defaults to one match
         how_many_key: str = pattern_set_config.keys.prop("HOW_MANY_MATCHES")
         if how_many_key in self.pattern_set.meta:
             how_many_matches = str(self.pattern_set.meta[how_many_key])
 
         logger.debug(f"Running the matcher method for '{how_many_matches}' result(s)")
-        one_match_setting_val: str = pattern_set_config.values.prop("ONE_MATCH")
-        all_matches_setting_val: str = pattern_set_config.values.prop("ALL_MATCHES")
         if how_many_matches.upper() == one_match_setting_val.upper():
             return self._match_one(doc)
         elif how_many_matches.upper() == all_matches_setting_val.upper():
