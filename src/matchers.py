@@ -81,17 +81,6 @@ class PatternSetMatcher:
         logger.debug(f"Parsed many matches: {parsed}")
         return parsed
 
-    def _on_match(
-        self, matcher: SpacyMatcher, doc: Doc, i: int, matches: list[Match]
-    ) -> None:
-        # logger.debug(f"MATCH #{i}")
-        # logger.debug("Running the on_match callback")
-        # logger.debug(f"External matcher: {self}")
-        # logger.debug(f"Internal matcher: {matcher}")
-        # logger.debug(f"Doc: {doc}")
-        # logger.debug(f"Matches: {matches}")
-        return
-
     def _parse_match(self, match: Match, doc: Doc) -> ParsedMatch:
         (match_id, start, end) = match
         rulename = nlp.vocab.strings[match_id]
