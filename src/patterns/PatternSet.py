@@ -1,5 +1,6 @@
 from logging import getLogger
 from typing import Union
+from settings import pattern_set_config_keys
 from .Pattern import Pattern, PatternData
 
 
@@ -46,7 +47,7 @@ class PatternSet:
         self.tests: Tests = []
 
     def add_pattern(self, pattern: Pattern) -> None:
-        self.patterns[pattern.name] = pattern
+        self.patterns[pattern.rulename] = pattern
 
     def get_all_patterns(self) -> list[Pattern]:
         return [self.patterns[k] for k in self.patterns]

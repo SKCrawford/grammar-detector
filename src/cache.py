@@ -21,11 +21,11 @@ class Cache:
     def get_one(self, key: str) -> Any:
         """Return the value corresponding to the key in the cache."""
         key = str(key)
-        if not self.is_key_in_cache(key)
+        if not self.has_key(key):
             raise KeyError(f"Key '{key}' is not cached.")
         return self._cache[key]
 
-    def clear()(self) -> bool:
+    def clear(self) -> bool:
         """Clear the cache. Returns True."""
         self._cache = {}
         return True
@@ -42,7 +42,7 @@ class Cache:
     def save(self, key: str, value: Any) -> bool:
         """Save one key/value pair to the cache. Returns True if successful; otherwise, raises errors."""
         key = str(key)
-        if self.is_key_in_cache(key)
+        if self.has_key(key):
             raise ValueError(f"Key '{key}' is already cached.")
         self._cache[key] = value
         return True

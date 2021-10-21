@@ -20,19 +20,14 @@ class PatternSetMatcher:
     def __init__(self, pattern_set: PatternSet):
         self.pattern_set: PatternSet = pattern_set
 
-        logger.debug("Constructing the internal spaCy matcher")
+        logger.debug("Constructing the internal spaCy Matcher")
         self._inner_matcher = SpacyMatcher(nlp.vocab, validate=True)
 
-        logger.debug("Adding the patterns to the internal matcher")
+        logger.debug("Adding the Patterns to the internal matcher")
         for pattern in self.pattern_set.get_all_patterns():
-            rulename: str = pattern.rulename
-            tokens: list[Token] = pattern.tokens
-            config: dict[str, Any] = {
-                "greedy": "LONGEST",  # Not the same as the settings.py value
-                "on_match": self._on_match,
-            }
-            logger.debug(f"Adding the pattern '{rulename}' to the internal matcher")
-            self._inner_matcher.add(rulename, [tokens], **config)
+            spacy_config: dict[str, str] = {"greedy": "LONGEST"}
+            logger.debug(f"Adding the Pattern '{pattern.rulename}'")
+            self._inner_matcher.add(pattern.rulename, [pattern.tokens], **spacy_config)
 
     def __call__(self, doc: Doc) -> list[ParsedMatch]:
         """The entry point for running the matcher. Using the pattern set provided
