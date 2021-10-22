@@ -7,10 +7,12 @@ from .Pattern import Pattern, PatternData
 Name = str
 MetaSetting = Union[str, bool]
 Meta = dict[str, MetaSetting]
+
 TestInput = str
 TestExpectedRulenames = list[str]
 TestExpectedSpans = list[str]
 Test = dict[str, Union[TestInput, TestExpectedRulenames, TestExpectedSpans]]
+
 PatternSetData = dict[str, Union[Meta, list[PatternData], list[Test]]]
 ExtractedPatternSetData = tuple[Meta, list[PatternData], list[Test]]
 

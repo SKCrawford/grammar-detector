@@ -2,15 +2,19 @@ import asyncio
 from logging import getLogger
 from spacy.matcher import Matcher as SpacyMatcher
 from spacy.tokens import Doc, Span, Token
-from typing import Any
 from settings import pattern_set_config
 from .extractors import extract_span_features
 from .nlp import nlp
-from .patterns import PatternSet
+from .patterns import PatternSet, Rulename
 
 
-Match = tuple[int, int, int]
-ParsedMatch = tuple[str, Span, dict[str, str]]
+MatchId = int
+Start = int
+End = int
+Match = tuple[MatchId, Start, End]
+
+SpanFeatures = dict[str, str]
+ParsedMatch = tuple[Rulename, Span, SpanFeatures]
 
 
 logger = getLogger(__name__)
@@ -30,9 +34,7 @@ class PatternSetMatcher:
             self._inner_matcher.add(pattern.rulename, [pattern.tokens], **spacy_config)
 
     def __call__(self, doc: Doc) -> list[ParsedMatch]:
-        """The entry point for running the matcher. Using the pattern set provided
-        during construction, the appropriate matcher method will be returned.
-        All usable matcher methods should be included here."""
+        """The entry point for running the matcher. Using the pattern set provided during construction, the appropriate matcher method will be called. All usable matcher methods should be included here."""
         one_match_setting_val: str = pattern_set_config.values.prop("ONE_MATCH")
         all_matches_setting_val: str = pattern_set_config.values.prop("ALL_MATCHES")
 
@@ -43,13 +45,13 @@ class PatternSetMatcher:
 
         logger.debug(f"Running the matcher method for '{how_many_matches}' result(s)")
         if how_many_matches.upper() == one_match_setting_val.upper():
-            return self._match_one(doc)
+            return [self._match_one(doc)]
         elif how_many_matches.upper() == all_matches_setting_val.upper():
             return self._match_all(doc)
         else:
             raise ValueError(f"Invalid how_many_matches setting: {how_many_matches}")
 
-    def _match_one(self, doc: Doc) -> list[ParsedMatch]:
+    def _match_one(self, doc: Doc) -> ParsedMatch:
         logger.debug("Matching for one result")
         logger.debug("Running the internal matcher")
         all_matches = self._inner_matcher(doc)
@@ -62,7 +64,7 @@ class PatternSetMatcher:
         parsed_match = self._parse_match(best_match, doc)
 
         logger.debug(f"Parsed the best match: {parsed_match}")
-        return [parsed_match]
+        return parsed_match
 
     def _match_all(self, doc: Doc) -> list[ParsedMatch]:
         logger.debug("Matching for all results")
@@ -78,10 +80,11 @@ class PatternSetMatcher:
 
     def _parse_match(self, match: Match, doc: Doc) -> ParsedMatch:
         (match_id, start, end) = match
-        rulename = nlp.vocab.strings[match_id]
-        span = doc[start:end]
+        rulename: Rulename = nlp.vocab.strings[match_id]
+        span: Span = doc[start:end]
+        span_features: SpanFeatures = extract_span_features(span)
         logger.debug(f"Parsed ('{rulename}', '{span}') from match '{match}'")
-        return (rulename, span, extract_span_features(span))
+        return (rulename, span, span_features)
 
     def _get_best_match(self, matches: list[Match]) -> Match:
         # TODO

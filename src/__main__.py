@@ -4,8 +4,6 @@ import sys
 import time
 import src.logger
 from logging import getLogger
-
-# from settings import config
 from settings import pattern_set_config
 from .detectors import detect_features
 from .utils import to_token_table

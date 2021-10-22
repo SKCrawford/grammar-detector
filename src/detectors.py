@@ -58,6 +58,7 @@ async def detect_features(
         logger.debug(f"Creating and caching the PatternSet '{pset_name}'")
         repo.create(pset_name, pset_data)
 
+    # TODO fix async
     for pattern_set in repo.get_all():
         logger.debug(f"Loading the PatternSet '{pattern_set.name}'")
         feature_set[pattern_set.name] = await detect_feature(doc, pattern_set)
