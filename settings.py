@@ -69,8 +69,8 @@ class PatternSetConfig(Config):
     def __init__(self, config_dict: ConfigDict) -> None:
         super().__init__(config_dict)
         self.prefix = "PATTERN_SET"
-        self.keys: Optional[Config] = None  # Shortcut for PatternSetConfigKeys
-        self.values: Optional[Config] = None  # Shortcut for PatternSetConfigValues
+        self.keys: Config = Config({})  # Shortcut dummy for PatternSetConfigKeys
+        self.values: Config = Config({})  # Shortcut dummy for PatternSetConfigValues
 
     def _validate_filename(self, file: str) -> bool:
         """Return True if the file is a valid filename for patternset file. Otherwise, return False."""

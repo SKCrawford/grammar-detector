@@ -1,4 +1,5 @@
 from logging import getLogger
+from typing import cast
 from ..cache import Cacheable
 from .Pattern import extract_pattern_data, Pattern, PatternData
 from .PatternSet import extract_pattern_set_data, PatternSet, PatternSetData

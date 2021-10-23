@@ -12,14 +12,14 @@ from .patterns import PatternSet, PatternSetRepository
 logger = getLogger(__name__)
 
 
-async def detect_feature(doc: Doc, pattern_set: PatternSet) -> dict[str, Any]:
+async def detect_feature(doc: Doc, pattern_set: PatternSet) -> list[list[ParsedMatch]]:
     logger.debug(f"Started detecting for the feature '{pattern_set.name}'")
     logger.debug("Constructing the PatternSetMatcher")
     matcher = PatternSetMatcher(pattern_set)
 
     logger.debug("Determining if the noun chunks should be extracted from the doc")
     key: str = pattern_set_config.keys.prop_str("SHOULD_EXTRACT_NOUN_CHUNKS")
-    should_extract_noun_chunks: bool = pattern_set.meta[key]
+    should_extract_noun_chunks: bool = bool(pattern_set.meta[key])
 
     inputs: list[Union[Doc, Span]] = []
     if should_extract_noun_chunks:

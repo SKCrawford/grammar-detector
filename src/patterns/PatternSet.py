@@ -46,7 +46,7 @@ class PatternSet:
         self.name: Name = name
         self.patterns: dict[str, Pattern] = {}
         self.meta: Meta = {}
-        self.tests: Tests = []
+        self.tests: list[Test] = []
 
     def add_pattern(self, pattern: Pattern) -> None:
         self.patterns[pattern.rulename] = pattern
