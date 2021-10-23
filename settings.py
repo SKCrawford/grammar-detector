@@ -1,8 +1,9 @@
+from __future__ import annotations  # Required for typing ConfigFactory
 from logging import DEBUG
 from os import listdir, path
 from typing import cast, Optional, TextIO, Union
 from yaml import FullLoader, load as load_yaml
-from src.utils import has_extension, is_hidden_file
+from src.utils import has_extension, is_hidden_file, trim_extension
 
 
 # Adopted from: https://www.hackerearth.com/practice/notes/samarthbhargav/a-design-pattern-for-configuration-management-in-python/
@@ -89,19 +90,18 @@ class PatternSetConfig(Config):
     @property
     def names(self) -> list[str]:
         """Return a list of the existing patternsets without the file extension."""
-        file_extension = "." + self.prop_str("FILE_EXTENSION")
-        trim_extension = lambda p: p.replace(file_extension, "")
-        return [trim_extension(path) for path in self.paths]
+        extension: str = "." + self.prop_str("FILE_EXTENSION")
+        return [trim_extension(extension, path) for path in self.paths]
 
 
 class ConfigFactory:
     """A helper class for creating instances of the `Config` class. Load the YAML settings file using the `load` method, then construct new `Config` instances using the `create` method."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._cache: dict[str, Config] = {}
         self.settings: ConfigDict = {}
 
-    def load(self, config_file_path: str):  # -> ConfigFactory
+    def load(self, config_file_path: str) -> ConfigFactory:
         """Load a YAML file containing the configuration settings to the attribute `settings`. Returns the ConfigFactory instance."""
         self.config_file_path = config_file_path
         with open(config_file_path, "r") as f:

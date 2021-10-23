@@ -17,6 +17,10 @@ def has_extension(expected_extension: str, filename: str) -> bool:
     return bool(str(filename).endswith(expected_extension))
 
 
+def trim_extension(extension: str, filename: str) -> str:
+    return filename.replace(extension, "")
+
+
 def to_token_table(
     nlp: Language,
     sentence: str,
