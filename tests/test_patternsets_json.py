@@ -31,7 +31,7 @@ class TestPatternSetJsonTests(unittest.TestCase):
         skip_reason = None
 
         try:
-            skip_key = pattern_set_config.keys.prop("SKIP_TESTS")
+            skip_key = pattern_set_config.keys.prop_str("SKIP_TESTS")
             skip_setting = pset.meta[skip_key]
             if type(skip_setting) == bool:
                 should_skip = skip_setting
@@ -58,7 +58,7 @@ class TestPatternSetJsonTests(unittest.TestCase):
         skip_reason = None
 
         try:
-            skip_key = pattern_set_config.keys.prop("TESTS_SKIP")
+            skip_key = pattern_set_config.keys.prop_str("TESTS_SKIP")
             skip_setting = test[skip_key]
             if type(skip_setting) == bool:
                 should_skip = skip_setting
@@ -82,12 +82,12 @@ class TestPatternSetJsonTests(unittest.TestCase):
 
     def get_input(self, test):
         """Extract and tokenize the input from the test entry."""
-        return get_doc(test[pattern_set_config.keys.prop("TESTS_INPUT")])
+        return get_doc(test[pattern_set_config.keys.prop_str("TESTS_INPUT")])
 
     def get_expected_results(self, test, pset):
         """Extract the expected rulenames and text spans from the test entry."""
-        rulenames_key = pattern_set_config.keys.prop("TESTS_RULENAMES")
-        spans_key = pattern_set_config.keys.prop("TESTS_SPANS")
+        rulenames_key = pattern_set_config.keys.prop_str("TESTS_RULENAMES")
+        spans_key = pattern_set_config.keys.prop_str("TESTS_SPANS")
         expected_rulenames = test[rulenames_key] if rulenames_key in test else []
         expected_spans = test[spans_key] if spans_key in test else []
 
@@ -102,9 +102,9 @@ class TestPatternSetJsonTests(unittest.TestCase):
         expects_many_rulenames = bool(len(expected_rulenames) > 1)
         expects_many_spans = bool(len(expected_spans) > 1)
         if expects_many_rulenames or expects_many_spans:
-            how_many_key = pattern_set_config.keys.prop("HOW_MANY_MATCHES")
+            how_many_key = pattern_set_config.keys.prop_str("HOW_MANY_MATCHES")
             how_many_matches = pset.meta[how_many_key]
-            one_match_setting = pattern_set_config.values.prop("ONE_MATCH")
+            one_match_setting = pattern_set_config.values.prop_str("ONE_MATCH")
             if how_many_matches.upper() == one_match_setting.upper():
                 err_msg = "The pattern set expects only one match, but the test expects multiple matches"
                 logger.error(err_msg)
