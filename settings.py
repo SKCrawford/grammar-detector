@@ -1,5 +1,5 @@
 from __future__ import annotations  # Required for typing ConfigFactory
-from logging import DEBUG
+from logging import DEBUG, getLogger
 from os import listdir, path
 from typing import cast, Optional, TextIO, Union
 from yaml import FullLoader, load as load_yaml
@@ -11,6 +11,9 @@ from src.utils import has_extension, is_hidden_file, trim_extension
 
 ConfigSetting = Union[str, bool, int, float]
 ConfigDict = dict[str, ConfigSetting]
+
+
+logger = getLogger(__name__)
 
 
 # TODO refactor this out
@@ -64,8 +67,8 @@ class PatternSetConfig(Config):
     def __init__(self, config_dict: ConfigDict) -> None:
         super().__init__(config_dict)
         self.prefix = "PATTERN_SET"
-        self.keys = None  # Shortcut for PatternSetConfigKeys
-        self.values = None  # Shortcut for PatternSetConfigValues
+        self.keys: Optional[Config] = None  # Shortcut for PatternSetConfigKeys
+        self.values: Optional[Config] = None  # Shortcut for PatternSetConfigValues
 
     def _validate_filename(self, file: str) -> bool:
         """Return True if the file is a valid filename for patternset file. Otherwise, return False."""
