@@ -15,7 +15,7 @@ logger = getLogger(__name__)
 
 def extract_pattern_data(data: PatternData) -> ExtractedPatternData:
     rulename: Rulename = data[pattern_set_config_keys.prop_str("RULENAME")]
-    tokens: Tokens = data[pattern_set_config_keys.prop("TOKENS")]
+    tokens: Tokens = data[pattern_set_config_keys._prop("TOKENS", Tokens)]  # type: ignore # TODO
     return (rulename, tokens)
 
 

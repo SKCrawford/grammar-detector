@@ -1,7 +1,7 @@
 from __future__ import annotations  # Required for typing ConfigFactory
 from logging import DEBUG, getLogger
 from os import listdir, path
-from typing import cast, Optional, TextIO, Union
+from typing import Any, cast, Optional, TextIO, TypeVar, Union
 from yaml import FullLoader, load as load_yaml
 from src.utils import has_extension, is_hidden_file, trim_extension
 
@@ -11,6 +11,7 @@ from src.utils import has_extension, is_hidden_file, trim_extension
 
 ConfigSetting = Union[str, bool, int, float]
 ConfigDict = dict[str, ConfigSetting]
+T = TypeVar("T", bound="Config")
 
 
 logger = getLogger(__name__)
@@ -28,16 +29,17 @@ class Config:
         self._settings = config_dict
         self.prefix: str = ""
 
-    def _prop(self, property_name: str) -> ConfigSetting:
+    def _prop(self, property_name: str) -> Any:
         """Returns a configuration setting matching the pattern `{prefix}_{property_name}`. Fails loudly via KeyError."""
         if self.prefix:
             property_name = f"{self.prefix}_{property_name}"
         property_name = property_name.upper()
         return self._settings[property_name]
 
-    def prop(self, property_name: str) -> ConfigSetting:
-        """Returns a settings property of unknown type."""
-        return self._prop(property_name)
+    # def prop(self, property_name: str, klass: T) -> T:
+    #     """Returns a settings property of unknown type."""
+    #     prop = self._prop(property_name)
+    #     return prop
 
     def prop_str(self, property_name: str) -> str:
         """Coerces the settings property to guarantee type safety."""
