@@ -18,7 +18,7 @@ async def detect_feature(doc: Doc, pattern_set: PatternSet) -> dict[str, Any]:
     matcher = PatternSetMatcher(pattern_set)
 
     logger.debug("Determining if the noun chunks should be extracted from the doc")
-    key: str = pattern_set_config.keys.prop("SHOULD_EXTRACT_NOUN_CHUNKS")
+    key: str = pattern_set_config.keys.prop_str("SHOULD_EXTRACT_NOUN_CHUNKS")
     should_extract_noun_chunks: bool = pattern_set.meta[key]
 
     inputs: list[Union[Doc, Span]] = []

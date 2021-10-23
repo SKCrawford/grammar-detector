@@ -35,11 +35,11 @@ class PatternSetMatcher:
 
     def __call__(self, doc: Doc) -> list[ParsedMatch]:
         """The entry point for running the matcher. Using the pattern set provided during construction, the appropriate matcher method will be called. All usable matcher methods should be included here."""
-        one_match_setting_val: str = pattern_set_config.values.prop("ONE_MATCH")
-        all_matches_setting_val: str = pattern_set_config.values.prop("ALL_MATCHES")
+        one_match_setting_val: str = pattern_set_config.values.prop_str("ONE_MATCH")
+        all_matches_setting_val: str = pattern_set_config.values.prop_str("ALL_MATCHES")
 
         how_many_matches: str = one_match_setting_val  # Defaults to one match
-        how_many_key: str = pattern_set_config.keys.prop("HOW_MANY_MATCHES")
+        how_many_key: str = pattern_set_config.keys.prop_str("HOW_MANY_MATCHES")
         if how_many_key in self.pattern_set.meta:
             how_many_matches = str(self.pattern_set.meta[how_many_key])
 
