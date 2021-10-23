@@ -23,18 +23,18 @@ logger = getLogger(__name__)
 def extract_pattern_set_data(data: PatternSetData) -> ExtractedPatternSetData:
     """Extract and return the patterns, meta config, and tests from the loaded PatternSetData."""
     # Extract the patterns
-    patterns_key: str = pattern_set_config_keys.prop("PATTERNS")
+    patterns_key: str = pattern_set_config_keys.prop_str("PATTERNS")
     pattern_data_list: list[PatternData] = data[patterns_key]
 
     # Extract the meta config
     meta: Meta = {}
-    meta_key: str = pattern_set_config_keys.prop("META")
+    meta_key: str = pattern_set_config_keys.prop_str("META")
     if meta_key in data:
         meta = data[meta_key]
 
     # Extract the tests
     tests: list[Test] = []
-    tests_key: str = pattern_set_config_keys.prop("TESTS")
+    tests_key: str = pattern_set_config_keys.prop_str("TESTS")
     if tests_key in data:
         tests = data[tests_key]
 

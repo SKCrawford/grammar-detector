@@ -31,12 +31,6 @@ PATTERN_SET_HOST_DIR: "patternsets"
 # PatternSetConfig.host_dir_path setting. The full path of the patternset host directory. The default is the path according to the other settings in this file. Overriding this setting is not recommended. The default is "".
 PATTERN_SET_HOST_DIR_PATH: ""
 
-# PatternSetConfig.names setting. A list of the filenames of the valid patternsets in the patternset host directory. The file extension is not included. Overriding this setting is not recommended. The default is "".
-PATTERN_SET_NAMES: ""
-
-# PatternSetConfig.paths setting. The filenames of the valid patternsets in the patternset host directory. The file extension is included. Overriding this setting is not recommended. The default is "".
-PATTERN_SET_PATHS: ""
-
 # PatternSetConfigKey.prop setting. The key assigned to this patternset file setting. Changing this setting changes the corresponding key in the patternset files.
 PATTERN_SET_KEY_BEST_MATCH: "best_match"
 

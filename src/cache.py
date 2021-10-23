@@ -5,9 +5,10 @@ from typing import Any
 logger = getLogger(__name__)
 
 
+# TODO these types need major improvement
 class Cache:
-    def __init__(self):
-        self._cache = {}
+    def __init__(self, *args: str, **kwargs: str) -> None:
+        self._cache: dict[str, Any] = {}
 
     def has_key(self, key: str) -> bool:
         """Returns True if `key` is already in use. Otherwise, returns False."""
@@ -49,6 +50,5 @@ class Cache:
 
 
 class Cacheable:
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(self, *args: str, **kwargs: str) -> None:
         self.cache = Cache()

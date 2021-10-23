@@ -1,7 +1,8 @@
 from logging import DEBUG
 from os import listdir, path
-from typing import Optional, TextIO, Union
+from typing import cast, Optional, TextIO, Union
 from yaml import FullLoader, load as load_yaml
+from src.utils import has_extension, is_hidden_file
 
 
 # Adopted from: https://www.hackerearth.com/practice/notes/samarthbhargav/a-design-pattern-for-configuration-management-in-python/
@@ -21,57 +22,74 @@ class Config:
 
     def __init__(self, config_dict: ConfigDict) -> None:
         self._settings = config_dict
-        self.prefix = None  # Set the prefix in the constructor of extending classes
+        self.prefix: str = ""
 
-    def prop(self, property_name: str) -> ConfigSetting:
-        """Return a configuration setting matching the pattern `{prefix}_{property_name}`. Fails loudly via KeyError."""
+    def _prop(self, property_name: str) -> ConfigSetting:
+        """Returns a configuration setting matching the pattern `{prefix}_{property_name}`. Fails loudly via KeyError."""
         if self.prefix:
             property_name = f"{self.prefix}_{property_name}"
         property_name = property_name.upper()
         return self._settings[property_name]
 
+    def prop(self, property_name: str) -> ConfigSetting:
+        """Returns a settings property of unknown type."""
+        return self._prop(property_name)
+
+    def prop_str(self, property_name: str) -> str:
+        """Coerces the settings property to guarantee type safety."""
+        return str(self._prop(property_name))
+
+    def prop_bool(self, property_name: str) -> bool:
+        """Coerces the settings property to guarantee type safety."""
+        return bool(self._prop(property_name))
+
+    def prop_int(self, property_name: str) -> int:
+        """Coerces the settings property to guarantee type safety."""
+        return int(self._prop(property_name))
+
+    def prop_float(self, property_name: str) -> float:
+        """Coerces the settings property to guarantee type safety."""
+        return float(self._prop(property_name))
+
     @property
     def project_root_path(self) -> str:
-        """Return the full path of the project's root directory."""
+        """Returns the full path of the project's root directory."""
         return path.dirname(path.abspath(__file__))
 
 
 class PatternSetConfig(Config):
     """A class containing the configuration settings for the patternset directory and files."""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, config_dict: ConfigDict) -> None:
+        super().__init__(config_dict)
         self.prefix = "PATTERN_SET"
         self.keys = None  # Shortcut for PatternSetConfigKeys
         self.values = None  # Shortcut for PatternSetConfigValues
 
-    def _validate_pattern_set_file(self, file: TextIO) -> bool:
-        """Return True if the file is a valid patternset file. Otherwise, return False."""
-        is_hidden_file = lambda f: bool(f.startswith("."))
-        is_correct_extension = lambda f: bool(f.endswith(self.prop("FILE_EXTENSION")))
-        return bool(not is_hidden_file(file) and is_correct_extension(file))
+    def _validate_filename(self, file: str) -> bool:
+        """Return True if the file is a valid filename for patternset file. Otherwise, return False."""
+        is_hidden: bool = is_hidden_file(file)
+        expected_extension: str = self.prop_str("FILE_EXTENSION")
+        has_correct_extension: bool = has_extension(expected_extension, file)
+        return bool(not is_hidden and has_correct_extension)
 
     @property
     def host_dir_path(self) -> str:
         """Return the full path of the directory containing the patternsets."""
-        if self.prop("HOST_DIR_PATH"):  # Set manually
-            return self.prop("HOST_DIR_PATH")
-        return path.join(self.project_root_path, self.prop("HOST_DIR"))
+        if self.prop_str("HOST_DIR_PATH"):  # Set manually
+            return self.prop_str("HOST_DIR_PATH")
+        return path.join(self.project_root_path, self.prop_str("HOST_DIR"))
 
     @property
     def paths(self) -> list[str]:
         """Return a list of the existing patternsets with the file extension."""
-        if self.prop("PATHS"):  # Set manually
-            return self.prop("PATHS")
-        pset_files = listdir(self.host_dir_path)
-        return [str(f) for f in pset_files if self._validate_pattern_set_file(f)]
+        filenames: list[str] = listdir(self.host_dir_path)
+        return [fn for fn in filenames if self._validate_filename(fn)]
 
     @property
     def names(self) -> list[str]:
         """Return a list of the existing patternsets without the file extension."""
-        if self.prop("NAMES"):  # Set manually
-            return self.prop("NAMES")
-        file_extension = "." + self.prop("FILE_EXTENSION")
+        file_extension = "." + self.prop_str("FILE_EXTENSION")
         trim_extension = lambda p: p.replace(file_extension, "")
         return [trim_extension(path) for path in self.paths]
 

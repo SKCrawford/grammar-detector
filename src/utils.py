@@ -1,13 +1,25 @@
 from logging import getLogger
 from spacy import explain
+from spacy.language import Language
 from tabulate import tabulate
-from .nlp import nlp
+from typing import TextIO
 
 
 logger = getLogger(__name__)
 
 
+def is_hidden_file(file: TextIO) -> bool:
+    """Returns True if a file's filename indicates whether it is a hidden file. Otherwise, returns False."""
+    return bool(str(file).startswith("."))
+
+
+def has_extension(expected_extension: str, file: TextIO) -> bool:
+    """Returns True if a file's filename ends with the expected extension. Otherwise, returns False."""
+    return bool(str(file).endswith(expected_extension))
+
+
 def to_token_table(
+    nlp: Language,
     sentence: str,
     pos: bool = True,
     tag: bool = True,

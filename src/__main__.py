@@ -7,6 +7,7 @@ from logging import getLogger
 from settings import pattern_set_config
 from .detectors import detect_features
 from .utils import to_token_table
+from .nlp import nlp
 
 
 logger = getLogger(__name__)
@@ -29,7 +30,7 @@ async def main() -> None:
         logger.info(f"Sentence {count}: `{sentence}`")
 
         print("##### Sentence tokens #####")
-        token_table = to_token_table(sentence)
+        token_table = to_token_table(nlp, sentence)
         logger.info(f"Token table:\n{token_table}")
         print(token_table, "\n")
 
