@@ -1,9 +1,10 @@
-from logging import getLogger
 import unittest
+from logging import getLogger
 from settings import pattern_set_config
 from src.extractors import get_doc
-from src.loaders import PatternSetLoader, YamlLoader
+from src.loaders import YamlLoader
 from src.matchers import PatternSetMatcher
+from src.patterns import PatternSet, PatternSetRepository
 
 
 logger = getLogger(__name__)
@@ -15,13 +16,14 @@ class TestPatternSetJsonTests(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         """Load the patternset configuration files to extract the tests."""
-        self.pattern_sets = {}
-        self.matchers = {}
+        self.pattern_sets: dict[str, PatternSet] = {}
+        self.matchers: dict[str, PatternSetMatcher] = {}
         file_loader = YamlLoader(pattern_set_config.host_dir_path)
-        pattern_set_loader = PatternSetLoader(file_loader)
+        repo = PatternSetRepository()
 
         for pset_name in pattern_set_config.names:
-            pattern_set = pattern_set_loader(pset_name)
+            pset_data = file_loader(pset_name)
+            pattern_set: PatternSet = repo.create(pset_name, pset_data)
             self.pattern_sets[pattern_set.name] = pattern_set
             self.matchers[pattern_set.name] = PatternSetMatcher(pattern_set)
 
