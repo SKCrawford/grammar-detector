@@ -6,6 +6,9 @@ from spacy.language import Language
 from tabulate import tabulate
 
 
+logger = getLogger(__name__)
+
+
 # Source: https://stackoverflow.com/a/45323085
 def flatten(a):
     return reduce(concat, a)
