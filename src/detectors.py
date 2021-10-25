@@ -25,6 +25,7 @@ class Detector:
 
     def detect(self, raw: str) -> list[Match]:
         input = Input(raw)
+        input.extract_noun_chunks = self.pattern_set.should_extract_noun_chunks
         return self.matcher(input)
 
 

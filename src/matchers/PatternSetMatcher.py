@@ -13,7 +13,6 @@ from .Match import Match
 from .SoloMatcher import SoloMatcher
 
 
-CallableOneMatch = Callable[[Input], Match]
 CallableManyMatches = Callable[[Input], list[Match]]
 
 
@@ -45,7 +44,7 @@ class PatternSetMatcher(SoloMatcher):
         fragments: list[Doc] = input.fragments
 
         logger.debug("Getting the match function")
-        match: Union[CallableOneMatch, CallableManyMatches] = self.get_match_fn()
+        match: CallableManyMatches = self.get_match_fn()
 
         logger.debug(f"Running the match function on the fragments: {fragments}")
         matches = [match(item) for item in fragments]
@@ -56,7 +55,7 @@ class PatternSetMatcher(SoloMatcher):
         logger.debug(f"Returning the matches: {matches}")
         return matches
 
-    def get_match_fn(self) -> Union[CallableOneMatch, CallableManyMatches]:
+    def get_match_fn(self) -> CallableManyMatches:
         """Determine the appropriate match function to use based on the PatternSet's settings."""
         one_match_setting: str = pattern_set_config_values.prop_str("ONE_MATCH")
         all_matches_setting: str = pattern_set_config_values.prop_str("ALL_MATCHES")

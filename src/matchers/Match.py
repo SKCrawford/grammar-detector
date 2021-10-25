@@ -24,6 +24,9 @@ class Match:
         self.end: End = end
         self.doc: Doc = doc
 
+    def __repr__(self):
+        return f"<{self.rulename}: {self.span}>"
+
     @property
     def rulename(self) -> Rulename:
         return nlp.vocab.strings[self.match_id]
