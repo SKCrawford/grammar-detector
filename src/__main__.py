@@ -25,14 +25,12 @@ async def main() -> None:
     count: int = 0
     for sentence in sentences:
         sentence_start_time: float = time.time()
-        logger.info(f"Sentences ({len(sentences)}): `{sentences}`")
-        print(f"####### START SENTENCE {count} #######")
-        logger.info(f"Sentence {count}: `{sentence}`")
 
-        print("##### Sentence tokens #####")
+        logger.info(f"Sentences ({len(sentences)}): {sentences}")
+        logger.info(f"Sentence {count}: '{sentence}'")
+
         token_table = to_token_table(nlp, sentence)
         logger.info(f"Token table:\n{token_table}")
-        print(token_table, "\n")
 
         feature_set = {}
         for feature in pattern_set_config.names:
@@ -40,13 +38,15 @@ async def main() -> None:
             feature_set[feature] = result
 
         logger.info("Detected features:")
-        logger.info(pprint.pformat(feature_set))
-        print("Detected features:")
-        pprint.pprint(feature_set)
-        print(f"Sentence run time: {time.time() - sentence_start_time:.2f}s")
-        print(f"####### END SENTENCE {count} #######")
+        logger.info("\n" + pprint.pformat(feature_set))
+
+        sentence_finish_time: float = time.time()
+        logger.debug(
+            f"Sentence run time: {sentence_finish_time - sentence_start_time:.2f}s"
+        )
         count += 1
-    print(f"Total run time: {time.time() - start_time:.2f}s")
+    finish_time: float = time.time()
+    logger.debug(f"Total run time: {finish_time - start_time:.2f}s")
 
 
 if __name__ == "__main__":
