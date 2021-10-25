@@ -5,23 +5,56 @@ from spacy.tokens import Doc, Span
 from typing import Any, cast, Union
 from settings import pattern_set_config
 from .extractors import get_doc
-from .inputs import Input
 from .loaders import FileLoader, YamlLoader
 from .matchers import ParsedMatch, PatternSetMatcher
 from .patterns import PatternSet, PatternSetRepository
+
+# from .loaders import YamlLoader
 
 
 logger = getLogger(__name__)
 
 
 class SyntaxFeatureDetector:
-    def __init__(self, pattern_set: PatternSet) -> None:
+    # def __init__(self, file_loader: YamlLoader, pattern_set_repo: PatternSetRepository):
+    def __init__(self, file_loader: YamlLoader, pattern_set_repo: PatternSetRepository):
+        # self.file_loader: YamlLoader = file_loader
+        # self.pset_repo: PatternSetRepository = pattern_set_repo
+        self.feature: str = ""
+        self.matcher: PatternSetMatcher = None 
         self.pattern_set: PatternSet = pattern_set
-        self.matcher = PatternSetMatcher(self.pattern_set)
 
-    def __call__(self, raw: str) -> dict[str, Any]:
-        input = Input(raw)
-        return self.matcher(self.input)
+    def load_pattern_set(self, feature: str) -> SyntaxFeatureDetector:
+        pset_data: PatternSetData = self.file_loader(feature)
+        self.pset_repo.create(feature, pset_data)
+        return self
+
+    def load_matcher(self, feature: str) -> SyntaxFeatureDetector:
+        pattern_set = self.pset_repo.get_one(feature)
+        self.matcher = PatternSetMatcher(pattern_set)
+        return self
+
+    def process_input(self, input: str) -> SyntaxFeatureDetector:
+        # logger.debug("Determining if the noun chunks should be extracted from the doc")
+        key: str = pattern_set_config.keys.prop_str("SHOULD_EXTRACT_NOUN_CHUNKS")
+        should_extract_noun_chunks: bool = bool(pattern_set.meta[key])
+
+        if should_extract_noun_chunks:
+            # logger.debug("Extracting the noun chunks from the doc")
+            inputs = doc.noun_chunks
+            cast(list[Span], inputs)
+            self.inputs = inputs
+        else:
+            inputs = [doc]
+            cast(list[Doc], inputs)
+            self.inputs = inputs
+        return self
+
+    def __call__(self, input: str, feature: str) -> dict[str, Any]:
+        self.load_pattern_set(feature)
+            .load_matcher(feature)
+
+        pattern_set = self.pset_repo.get_one(feature)
         # self.load_pattern_sets(features).load_matchers().process_input(input)
 
         # feature_set = {}

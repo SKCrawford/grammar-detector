@@ -48,6 +48,22 @@ class PatternSet:
         self.meta: Meta = {}
         self.tests: list[Test] = []
 
+    @property
+    def how_many_matches(self) -> str:
+        try:
+            key: str = pattern_set_config.keys.prop_str("HOW_MANY_MATCHES")
+            return str(self.meta[key])
+        except:
+            return pattern_set_config.values.prop_str("ONE_MATCH")
+
+    @property
+    def should_extract_noun_chunks(self) -> bool:
+        try:
+            key: str = pattern_set_config.keys.prop_str("SHOULD_EXTRACT_NOUN_CHUNKS")
+            return bool(self.meta[key])
+        except:
+            return False
+
     def add_pattern(self, pattern: Pattern) -> None:
         self.patterns[pattern.rulename] = pattern
 

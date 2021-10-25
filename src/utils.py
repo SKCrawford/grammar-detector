@@ -1,10 +1,14 @@
+from functools import reduce
 from logging import getLogger
+from operator import concat
 from spacy import explain
 from spacy.language import Language
 from tabulate import tabulate
 
 
-logger = getLogger(__name__)
+# Source: https://stackoverflow.com/a/45323085
+def flatten(a):
+    return reduce(concat, a)
 
 
 def is_hidden_file(filename: str) -> bool:

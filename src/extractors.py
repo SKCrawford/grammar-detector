@@ -5,6 +5,9 @@ from typing import Any, cast, Union
 from .nlp import nlp
 
 
+SpanFeatures = dict[str, str]
+
+
 logger = getLogger(__name__)
 
 
@@ -28,7 +31,7 @@ def get_doc(phrase: Union[str, Doc, Span]) -> Doc:
     return doc
 
 
-def extract_span_features(match_span: Span) -> dict[str, str]:
+def extract_span_features(match_span: Span) -> SpanFeatures:
     logger.debug(f"Parsing Span '{match_span}'")
     return {
         "span": match_span,
