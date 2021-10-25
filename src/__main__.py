@@ -5,7 +5,7 @@ import time
 import src.logger
 from logging import getLogger
 from settings import pattern_set_config
-from .detectors import detect_features
+from .detectors import detect_feature
 from .utils import to_token_table
 from .nlp import nlp
 
@@ -34,7 +34,10 @@ async def main() -> None:
         logger.info(f"Token table:\n{token_table}")
         print(token_table, "\n")
 
-        feature_set = await detect_features(sentence, pattern_set_config.names)
+        feature_set = {}
+        for feature in pattern_set_config.names:
+            result = detect_feature(sentence, feature)
+            feature_set[feature] = result
 
         logger.info("Detected features:")
         logger.info(pprint.pformat(feature_set))

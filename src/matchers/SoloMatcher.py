@@ -1,19 +1,28 @@
 from logging import getLogger
-from .BaseMatcher import BaseMatcher
-from .LongestMatcher import LongestMatcher
+from spacy.tokens import Doc
 from settings import pattern_set_config_values
+from .LongestMatcher import LongestMatcher
+from .Match import Match
+from .Matcher import Matcher
 
 
 logger = getLogger(__name__)
 
 
 class SoloMatcher(LongestMatcher):
-    def __init__(self):
+    """A callable Matcher for getting the best match for a given Doc, which is determined by the `best_match` attribute. For compatibility, the singular result is returned in a list."""
+
+    def __init__(self) -> None:
+        super().__init__()
         self.best_match = pattern_set_config_values.prop_str("LONGEST_MATCH")
 
-    def match_one(self, doclike: Union[Doc, Span]) -> Match:
-        """Run the matcher and return the best match. The matcher method is determined by the `best_match` attribute."""
-        longest_match_setting_val = pattern_set_config_values.prop_str("LONGEST_MATCH")
+    def __call__(self, doc: Doc) -> Match:
+        """The entrypoint for this Matcher."""
+        return self.match_one(doc)
 
-        if self.best_match.upper() == longest_match_setting_val.upper():
-            return self.match_longest(doclike)
+    def match_one(self, doc: Doc) -> Match:
+        """Get the best match for a given Doc, which is determined by the `best_match` attribute. For compatibility, the singular result is returned in a list."""
+        longest_match_setting = pattern_set_config_values.prop_str("LONGEST_MATCH")
+
+        if self.best_match.upper() == longest_match_setting.upper():
+            return self.match_longest(doc)

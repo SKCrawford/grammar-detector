@@ -6,107 +6,48 @@ from typing import Any, cast, Union
 from settings import pattern_set_config
 from .extractors import get_doc
 from .inputs import Input
-from .loaders import FileLoader, YamlLoader
-from .matchers import ParsedMatch, PatternSetMatcher
+from .loaders import YamlLoader
+from .matchers import Match, PatternSetMatcher
 from .patterns import PatternSet, PatternSetRepository
 
 
 logger = getLogger(__name__)
 
 
-class SyntaxFeatureDetector:
+class Detector:
     def __init__(self, pattern_set: PatternSet) -> None:
         self.pattern_set: PatternSet = pattern_set
         self.matcher = PatternSetMatcher(self.pattern_set)
 
-    def __call__(self, raw: str) -> dict[str, Any]:
+    def __call__(self, raw: str):
+        """The entrypoint for the Detector."""
+        return self.detect(raw)
+
+    def detect(self, raw: str) -> list[Match]:
         input = Input(raw)
-        return self.matcher(self.input)
-        # self.load_pattern_sets(features).load_matchers().process_input(input)
-
-        # feature_set = {}
-        # for feature_name in self.matchers:
-        #     matcher = self.matcher[feature_name]
-        #     matches: list[list[ParsedMatch]] = [matcher(input) for input in self.inputs]
-        #     feature_set[feature_name] = matches
-        # return feature_set
+        return self.matcher(input)
 
 
-class Feature:
-    pass
-
-
-def detect_feature(input: str, feature: str) -> Feature:
-    logger.debug(f"Tokenizing '{sentence}'")
-    doc: Doc = get_doc(input)
-
+def detect_feature(input: str, feature: str):
     logger.debug("Creating the FileLoader")
     file_loader = YamlLoader(pattern_set_config.host_dir_path)
 
     logger.debug("Creating the PatternSetRepository")
-    repo = PatternSetRepository()
+    pset_repo = PatternSetRepository()
 
-    logger.debug("Creating the SyntaxFeatureDetector")
-    detector = SyntaxFeatureDetector(file_loader, repo)
+    logger.debug("Loading the PatternSetRepository")
+    for pset_name in pattern_set_config.names:
+        pset_data = file_loader(pset_name)
+        pset_repo.create(pset_name, pset_data)
 
-    matches = detector(doc, feature)
+    logger.debug(f"Getting the PatternSet for '{feature}'")
+    pattern_set = pset_repo.get_one(feature)
 
+    logger.debug("Creating the Detector")
+    detector = Detector(pattern_set)
 
-# async def detect_feature(doc: Doc, pattern_set: PatternSet) -> list[list[ParsedMatch]]:
-#     logger.debug(f"Started detecting for the feature '{pattern_set.name}'")
-#     logger.debug("Constructing the PatternSetMatcher")
-#     matcher = PatternSetMatcher(pattern_set)
+    logger.debug(f"Running the Detector on str '{input}'")
+    matches = detector(input)
 
-#     logger.debug("Determining if the noun chunks should be extracted from the doc")
-#     key: str = pattern_set_config.keys.prop_str("SHOULD_EXTRACT_NOUN_CHUNKS")
-#     should_extract_noun_chunks: bool = bool(pattern_set.meta[key])
-
-#     inputs: list[Union[Doc, Span]] = []
-#     if should_extract_noun_chunks:
-#         logger.debug("Extracting the noun chunks from the doc")
-#         inputs = doc.noun_chunks
-#     else:
-#         inputs = [doc]
-
-#     logger.debug("Running the PatternSetMatcher")
-#     matches: list[list[ParsedMatch]] = [matcher(input) for input in inputs]
-#     logger.debug(f"Finished detecting for the feature '{pattern_set.name}'")
-#     return matches
-
-
-# async def detect_features(
-#     sentence: str, pattern_set_names: list[str]
-# ) -> dict[str, Any]:  # TODO fix typing
-#     """The main entry point for the feature detector."""
-#     logger.debug(f"Started detecting for the features '{pattern_set_names}'")
-#     feature_set = {}
-
-#     logger.debug(f"Tokenizing '{sentence}'")
-#     doc: Doc = get_doc(sentence)
-
-#     logger.debug("Creating the FileLoader")
-#     file_loader = YamlLoader(pattern_set_config.host_dir_path)
-
-#     logger.debug("Creating the PatternSetRepository")
-#     repo = PatternSetRepository()
-
-#     logger.debug("Creating the SyntaxFeatureDetector")
-#     detector = SyntaxFeatureDetector(file_loader, repo)
-
-#     matches = detector(sentence, pattern_set_names)
-
-#     # logger.debug("Creating and caching the PatternSets")
-#     # for pset_name in pattern_set_names:
-#     #     logger.debug(f"Loading PatternSet data '{pset_name}'")
-#     #     pset_data = file_loader(pset_name)
-
-#     #     logger.debug(f"Creating and caching the PatternSet '{pset_name}'")
-#     #     repo.create(pset_name, pset_data)
-
-#     # # TODO fix async
-#     # for pattern_set in repo.get_all():
-#     #     logger.debug(f"Loading the PatternSet '{pattern_set.name}'")
-#     #     feature_set[pattern_set.name] = await detect_feature(doc, pattern_set)
-
-#     logger.debug(f"Finished detecting for the features '{pattern_set_names}'")
-#     return feature_set
+    logger.debug(f"Found {len(matches)} Match(es): {matches}")
+    return matches
