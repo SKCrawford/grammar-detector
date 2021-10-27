@@ -7,7 +7,8 @@ from settings import pattern_set_config
 from .extractors import get_doc
 from .inputs import Input
 from .loaders import YamlLoader
-from .matchers import Match, PatternSetMatcher
+from .matches import Match
+from .matchers import PatternSetMatcher
 from .patterns import PatternSet, PatternSetRepository
 
 

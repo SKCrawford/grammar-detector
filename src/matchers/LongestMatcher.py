@@ -1,6 +1,6 @@
 from logging import getLogger
 from spacy.tokens import Doc
-from .Match import Match
+from ..matches import Match
 from .Matcher import Matcher
 
 

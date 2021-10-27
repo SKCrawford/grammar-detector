@@ -8,7 +8,7 @@ from ..patterns import Rulename
 MatchId = int
 Start = int
 End = int
-SpacyMatch = tuple[MatchId, Start, End]
+RawMatch = tuple[MatchId, Start, End]
 
 
 logger = getLogger(__name__)
@@ -17,8 +17,8 @@ logger = getLogger(__name__)
 class Match:
     """A helper class that wraps the output of the spaCy Matcher and provides useful attributes."""
 
-    def __init__(self, spacy_match: SpacyMatch, doc: Doc) -> None:
-        (match_id, start, end) = spacy_match
+    def __init__(self, raw_match: RawMatch, doc: Doc) -> None:
+        (match_id, start, end) = raw_match
         self.match_id: MatchId = match_id
         self.start: Start = start
         self.end: End = end

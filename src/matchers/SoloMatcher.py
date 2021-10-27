@@ -1,8 +1,8 @@
 from logging import getLogger
 from spacy.tokens import Doc
 from settings import pattern_set_config_values
+from ..matches import Match
 from .LongestMatcher import LongestMatcher
-from .Match import Match
 from .Matcher import Matcher
 
 

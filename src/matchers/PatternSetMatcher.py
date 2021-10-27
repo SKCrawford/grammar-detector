@@ -6,10 +6,10 @@ from typing import Callable, Union
 from settings import pattern_set_config_values
 from ..extractors import extract_span_features
 from ..inputs import Input
+from ..matches import Match
 from ..nlp import nlp
 from ..patterns import PatternSet, Rulename
 from ..utils import flatten
-from .Match import Match
 from .SoloMatcher import SoloMatcher
 
 

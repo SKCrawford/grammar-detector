@@ -3,7 +3,7 @@ from spacy.matcher import Matcher as SpacyMatcher
 from spacy.tokens import Doc, Span
 from typing import Union
 from ..nlp import nlp
-from .Match import Match, SpacyMatch
+from ..matches import Match, RawMatch
 
 
 logger = getLogger(__name__)
