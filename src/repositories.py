@@ -1,32 +1,56 @@
-from typing import Generic, TypeVar
+from logging import getLogger
+from typing import Callable, Generic, TypeVar
 from .cache import Cache
 
 
 T = TypeVar("T")
+BeforeSaveCallback = Callable[[T], T]
+CacheKeyCallback = Callable[[T], str]
+
+
+logger = getLogger(__name__)
+
+
+def get_object_id(t: T) -> str:
+    return str(id(t))
+
+
+def noop(t: T) -> T:
+    return t
 
 
 class Repository(Generic[T]):
-    def __init__(self, klass: T, cache_key: str = "id") -> None:
-        """The `cache_key` option changes the key from the `klass` instance's `int id` as a `str` to some other `str`. This changes the attribute by which the repository saves and searches. A `cache_key` of `id` caches the `klass` instances by their `id()` as a `str`. A `cache_key` of any other `str` will cache by that attribute of the `klass` instance."""
+    def __init__(self, klass: T, cache_key: CacheKeyCallback = get_object_id) -> None:
+        """Create a repository for the specified `klass`. The `cache_key` callback takes a `klass` instance and returns a `str` to be used as the cache key, defaulting to the instance's `id` as a `str`."""
+        logger.debug(f"Constructing the Repository[{klass}]")
         self._klass: T = klass
-        self._cache = Cache()
-        self._cache_key: str = cache_key
+        self.cache = Cache()
+        self.make_cache_key: CacheKeyCallback = cache_key
 
-    def create(self, *args: str, **kwargs: str) -> T:
+    def create(
+        self,
+        *args: str,
+        before_save: BeforeSaveCallback = noop,
+        **kwargs: str,
+    ) -> T:
+        """Run the `before_save` callback after creating the `klass` instance but before saving it to the cache, permitting changes to be made pre-save. When saving the instance to the cache, its key is created by the `cache_key` callback that was provided to the Repository's constructor."""
+        logger.debug(f"Constructing the {self._klass}")
         instance: T = self._klass(*args, **kwargs)
-        cache_key = self._make_key(instance)
-        if self._cache.has_key(cache_key):
-            return self.get_one(cache_key)
-        self._cache.save(cache_key, instance)
+
+        logger.debug("Running the before_save callback")
+        instance = before_save(instance)
+
+        logger.debug("Running the cache_key callback")
+        cache_key: str = self.make_cache_key(instance)
+
+        logger.debug(f"Saving the key '{cache_key}' instance of {self._klass}")
+        self.cache.save(cache_key, instance)
         return self.get_one(cache_key)
 
     def get_all(self) -> list[T]:
-        return self._cache.get_all()
+        logger.debug(f"Getting all instances of {self._klass}")
+        return self.cache.get_all()
 
-    def get_one(self, key: str) -> T:
-        return self._cache.get_one(str(key))
-
-    def _make_key(instance: T) -> str:
-        if self._cache_key != "id":
-            return str(instance[self._cache_key])
-        return str(id(instance))
+    def get_one(self, cache_key: str) -> T:
+        logger.debug(f"Getting the key '{cache_key}' instance of {self._klass}")
+        return self.cache.get_one(str(cache_key))
