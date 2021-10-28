@@ -23,7 +23,7 @@ def get_doc(phrase: Union[str, Doc, Span]) -> Doc:
         doc = phrase
     elif phrase_type == Span:
         phrase = cast(Span, phrase)
-        doc = phrase.doc
+        doc = phrase
     else:
         msg = f"Cannot get the Doc of '{phrase}' ({phrase_type})"
         logger.error(msg)
