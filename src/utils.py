@@ -1,4 +1,4 @@
-from functools import reduce
+from functools import reduce, wraps
 from logging import getLogger
 from operator import concat
 from spacy import explain
@@ -7,6 +7,22 @@ from tabulate import tabulate
 
 
 logger = getLogger(__name__)
+
+
+def singleton(klass):
+    instances = []
+
+    @wraps(klass.__new__)
+    def wrapper(*args, **kwargs):
+        if not instances:
+            logger.debug("Constructing a new instance")
+            instance = klass(*args, **kwargs)
+            instances.append(instance)
+        else:
+            logger.debug("Retrieving an existing instance")
+        return instances[0]
+
+    return wrapper
 
 
 # Source: https://stackoverflow.com/a/45323085

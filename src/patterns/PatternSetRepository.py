@@ -1,6 +1,7 @@
 from logging import getLogger
 from typing import cast
 from ..repositories import BeforeSaveCallback, CacheKeyCallback, Repository
+from ..utils import singleton
 from .Pattern import extract_pattern_data, Pattern, PatternData
 from .PatternSet import extract_pattern_set_data, Name, PatternSet, PatternSetData
 
@@ -8,6 +9,7 @@ from .PatternSet import extract_pattern_set_data, Name, PatternSet, PatternSetDa
 logger = getLogger(__name__)
 
 
+@singleton
 class PatternSetRepository(Repository):
     def __init__(self):
         make_cache_key: CacheKeyCallback = lambda pset: pset.name  # Callable[[T], str]
@@ -42,5 +44,5 @@ class PatternSetRepository(Repository):
     def _register_pattern(self, data: PatternData, pattern_set: PatternSet) -> None:
         """Extract the components of the raw PatternData, create a Pattern, and add it to the PatternSet."""
         (rulename, tokens) = extract_pattern_data(data)
-        logger.debug(f"Loading the '{rulename}' Pattern")
+        logger.debug(f"Registering the '{rulename}' Pattern")
         pattern_set.add_pattern(Pattern(rulename, tokens))
