@@ -9,6 +9,9 @@ class MatchSet:
         self.doc: Doc = doc
         self.best_match = pattern_set_config_values.prop_str("LONGEST_MATCH")
 
+    def __repr__(self):
+        return f"<MatchSet ({len(self.all)}): {[repr(m) for m in self.all]}"
+
     @property
     def all(self):
         return self.matches
