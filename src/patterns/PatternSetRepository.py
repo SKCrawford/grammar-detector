@@ -25,18 +25,17 @@ class PatternSetRepository(Repository):
         return super().create(name, before_save=before_save)
 
     def _before_save(self, pset: PatternSet, data: PatternSetData) -> PatternSet:
-        """Curry the `PatternSetData`."""
         (pattern_data_list, meta, tests) = extract_pattern_set_data(data)
         logger.debug(
-            f"Loading the {len(meta.keys())} meta options for the '{pset.name}' PatternSet"
+            f"Loading {len(meta.keys())} meta options for the '{pset.name}' PatternSet"
         )
         pset.meta = meta
 
-        logger.debug(f"Loading the {len(tests)} tests for the '{pset.name}' PatternSet")
+        logger.debug(f"Loading {len(tests)} tests for the '{pset.name}' PatternSet")
         pset.tests = tests
 
         logger.debug(
-            f"Loading the {len(pattern_data_list)} Patterns for the '{pset.name}' PatternSet"
+            f"Loading {len(pattern_data_list)} patterns for the '{pset.name}' PatternSet"
         )
         [self._register_pattern(p_data, pset) for p_data in pattern_data_list]
         return pset

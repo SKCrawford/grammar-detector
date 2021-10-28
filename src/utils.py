@@ -3,7 +3,12 @@ from logging import getLogger
 from operator import concat
 from spacy import explain
 from spacy.language import Language
+from spacy.tokens import Doc, Span
+from typing import Union
 from tabulate import tabulate
+
+
+Doclike = Union[Doc, Span]
 
 
 logger = getLogger(__name__)
