@@ -1,6 +1,6 @@
 from logging import getLogger
 from spacy.matcher import Matcher as SpacyMatcher
-from spacy.tokens import Doc, Span
+from spacy.tokens import Doc
 from typing import Union
 from ..nlp import nlp
 from ..matches import Match, RawMatch

@@ -12,7 +12,8 @@ logger = getLogger(__name__)
 @singleton
 class PatternSetRepository(Repository):
     def __init__(self):
-        make_cache_key: CacheKeyCallback = lambda pset: pset.name  # Callable[[T], str]
+        # Callable[[T], str]
+        make_cache_key: CacheKeyCallback = lambda pset: pset.name
         super().__init__(PatternSet, cache_key=make_cache_key)
 
     def create(self, name: Name, data: PatternSetData) -> PatternSet:
@@ -26,22 +27,18 @@ class PatternSetRepository(Repository):
 
     def _before_save(self, pset: PatternSet, data: PatternSetData) -> PatternSet:
         (pattern_data_list, meta, tests) = extract_pattern_set_data(data)
-        logger.debug(
-            f"Loading {len(meta.keys())} meta options for the '{pset.name}' PatternSet"
-        )
+        logger.debug(f"Loading {len(meta.keys())} meta options for '{pset.name}'")
         pset.meta = meta
 
-        logger.debug(f"Loading {len(tests)} tests for the '{pset.name}' PatternSet")
+        logger.debug(f"Loading {len(tests)} tests for '{pset.name}'")
         pset.tests = tests
 
-        logger.debug(
-            f"Loading {len(pattern_data_list)} patterns for the '{pset.name}' PatternSet"
-        )
-        [self._register_pattern(p_data, pset) for p_data in pattern_data_list]
+        logger.debug(f"Loading {len(pattern_data_list)} patterns for '{pset.name}'")
+        [self._load_pattern(p_data, pset) for p_data in pattern_data_list]
         return pset
 
-    def _register_pattern(self, data: PatternData, pattern_set: PatternSet) -> None:
+    def _load_pattern(self, data: PatternData, pattern_set: PatternSet) -> None:
         """Extract the components of the raw PatternData, create a Pattern, and add it to the PatternSet."""
         (rulename, tokens) = extract_pattern_data(data)
-        logger.debug(f"Registering the '{rulename}' Pattern")
+        logger.debug(f"Loading the '{rulename}' Pattern")
         pattern_set.add_pattern(Pattern(rulename, tokens))

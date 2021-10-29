@@ -19,7 +19,7 @@ class Cache(Generic[T]):
 
     def clear_one(self, key: str) -> None:
         """Removes one value corresponding to the key in the cache."""
-        logger.debug(f"Clearing the key '{key}' from the cache")
+        logger.debug(f"Clearing '{key}' from the cache")
         key = str(key)
         self._cache[key] = None
 
@@ -31,25 +31,21 @@ class Cache(Generic[T]):
     def get_one(self, key: str) -> T:
         """Returns the value cache by `key`."""
         key = str(key)
-        logger.debug(f"Getting one cache entry with the key '{key}'")
+        logger.debug(f"Getting the '{key}' cache entry")
         if not self.has_key(key):
-            msg = f"The key '{key}' is not cached"
+            msg = f"'{key}' is not cached"
             logger.error(msg)
             raise KeyError(msg)
-        logger.debug(f"Returning the cache entry with the key '{key}'")
         return self._cache[key]
 
     def has_key(self, key: str) -> bool:
-        """Returns True if `key` is already in use. Otherwise, returns False."""
-        logger.debug(f"Checking the cache for the key '{key}'")
-        key = str(key)
-        return bool(key in self._cache)
+        """Returns True if the `key` is already in use. Otherwise, returns False."""
+        return bool(str(key) in self._cache)
 
     def save(self, key: str, value: T) -> None:
         """Save one key/value pair to the cache."""
         logger.debug(f"Saving the key '{key}' to the cache")
-        key = str(key)
-        self._cache[key] = value
+        self._cache[str(key)] = value
 
 
 class Cacheable:

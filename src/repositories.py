@@ -43,7 +43,7 @@ class Repository(Generic[T]):
         logger.debug("Running the cache_key callback")
         cache_key: str = self.make_cache_key(instance)
 
-        logger.debug(f"Saving the key '{cache_key}' instance of {self._klass}")
+        logger.debug(f"Saving the '{cache_key}' {self._klass} instance")
         self.cache.save(cache_key, instance)
         return self.get_one(cache_key)
 
@@ -52,5 +52,5 @@ class Repository(Generic[T]):
         return self.cache.get_all()
 
     def get_one(self, cache_key: str) -> T:
-        logger.debug(f"Getting the key '{cache_key}' instance of {self._klass}")
+        logger.debug(f"Getting the '{cache_key}' {self._klass}")
         return self.cache.get_one(str(cache_key))

@@ -2,12 +2,13 @@ from logging import getLogger
 from os.path import join
 from typing import Any, TextIO
 from yaml import FullLoader, load as load_yaml
-from .patterns import PatternSet
+from .utils import singleton
 
 
 logger = getLogger(__name__)
 
 
+# @singleton  # the parent inherits the child's singleton decorator
 class FileLoader:
     def __init__(self, file_ext: str, dir_path: str) -> None:
         if not file_ext:
@@ -36,10 +37,9 @@ class FileLoader:
         raise NotImplementedError(msg)
 
 
+@singleton
 class YamlLoader(FileLoader):
     def __init__(self, *args: str, **kwargs: str) -> None:
-        # type(*args) == the type of one of the values in its list
-        # type(**kwargs) == the type of one of the values of its key-value pairs
         super().__init__("yaml", *args, **kwargs)
 
     def load(self, file: TextIO) -> Any:

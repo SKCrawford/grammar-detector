@@ -1,19 +1,6 @@
-import asyncio
 from logging import getLogger
-from spacy.matcher import Matcher as SpacyMatcher
-from spacy.tokens import Doc, Span, Token
-from typing import Callable, Union
-from settings import pattern_set_config_values
-from ..extractors import extract_span_features
-from ..inputs import Input
-from ..matches import Match, MatchSet
-from ..nlp import nlp
-from ..patterns import PatternSet, Rulename
-from ..utils import flatten
+from ..patterns import PatternSet
 from .MatchSetMatcher import MatchSetMatcher
-
-
-CallableManyMatches = Callable[[Input], list[Match]]
 
 
 logger = getLogger(__name__)
@@ -27,10 +14,8 @@ class PatternSetMatcher(MatchSetMatcher):
         super().__init__()
         self.pattern_set: PatternSet = pattern_set
 
-        logger.debug(
-            f"Registering the '{self.pattern_set.name}' PatternSet's Patterns to the internal matcher"
-        )
+        logger.debug(f"Registering the '{self.pattern_set.name}' PatternSet's Patterns")
         for pattern in self.pattern_set.get_all_patterns():
             spacy_config: dict[str, str] = {"greedy": "LONGEST"}
-            logger.debug(f"Adding the Pattern '{pattern.rulename}'")
+            logger.debug(f"Registering the '{pattern.rulename}' Pattern")
             self._matcher.add(pattern.rulename, [pattern.tokens], **spacy_config)

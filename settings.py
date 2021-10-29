@@ -106,7 +106,8 @@ class ConfigFactory:
         self._cache: dict[str, Config] = {}
         self.settings: ConfigDict = {}
 
-    def load(self, config_file_path: str) -> ConfigFactory:
+    # def load(self, config_file_path: str) -> ConfigFactory:
+    def load(self, config_file_path: str):
         """Load a YAML file containing the configuration settings to the attribute `settings`. Returns the ConfigFactory instance."""
         self.config_file_path = config_file_path
         with open(config_file_path, "r") as f:

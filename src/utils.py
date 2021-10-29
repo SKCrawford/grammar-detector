@@ -18,16 +18,16 @@ def singleton(klass):
     instances = []
 
     @wraps(klass.__new__)
-    def wrapper(*args, **kwargs):
+    def singleton_wrapper(*args, **kwargs):
         if not instances:
-            logger.debug("Constructing a new instance")
+            logger.debug("Constructing a new instance singleton")
             instance = klass(*args, **kwargs)
             instances.append(instance)
         else:
-            logger.debug("Retrieving an existing instance")
+            logger.debug("Retrieving an existing instance singleton")
         return instances[0]
 
-    return wrapper
+    return singleton_wrapper
 
 
 # Source: https://stackoverflow.com/a/45323085
