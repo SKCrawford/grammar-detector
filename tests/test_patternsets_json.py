@@ -1,7 +1,7 @@
 import unittest
 from logging import getLogger
 from settings import pattern_set_config
-from src.extractors import get_doc
+from src.utils import get_doc
 from src.loaders import YamlLoader
 from src.matchers import PatternSetMatcher
 from src.patterns import PatternSet, PatternSetRepository

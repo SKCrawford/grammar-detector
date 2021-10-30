@@ -1,5 +1,4 @@
-from spacy.tokens import Doc, Span
-from .extractors import get_doc
+from spacy.tokens import Doc
 from .nlp import nlp
 
 
