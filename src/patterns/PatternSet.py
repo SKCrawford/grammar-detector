@@ -22,17 +22,22 @@ logger = getLogger(__name__)
 
 def extract_pattern_set_data(data: PatternSetData) -> ExtractedPatternSetData:
     """Extract and return the patterns, meta config, and tests from the loaded PatternSetData."""
+    logger.info("Extracting the PatternSet data")
+
     # Extract the patterns
+    logger.debug("Extracting the patterns")
     patterns_key: str = pattern_set_config.keys.prop_str("PATTERNS")
     pattern_data_list: list[PatternData] = data[patterns_key]
 
     # Extract the meta config
+    logger.debug("Extracting the meta config")
     meta: Meta = {}
     meta_key: str = pattern_set_config.keys.prop_str("META")
     if meta_key in data:
         meta = data[meta_key]
 
     # Extract the tests
+    logger.debug("Extracting the tests")
     tests: list[Test] = []
     tests_key: str = pattern_set_config.keys.prop_str("TESTS")
     if tests_key in data:
@@ -43,6 +48,7 @@ def extract_pattern_set_data(data: PatternSetData) -> ExtractedPatternSetData:
 
 class PatternSet:
     def __init__(self, name: Name) -> None:
+        logger.info(f"Constructing the '{name}' PatternSet")
         self.name: Name = name
         self.patterns: dict[str, Pattern] = {}
         self.meta: Meta = {}
@@ -65,7 +71,11 @@ class PatternSet:
             return False
 
     def add_pattern(self, pattern: Pattern) -> None:
+        logger.info(
+            f"Adding the '{pattern.rulename}' Pattern to the '{self.name}' PatternSet"
+        )
         self.patterns[pattern.rulename] = pattern
 
     def get_all_patterns(self) -> list[Pattern]:
+        logger.info(f"Getting all '{self.name}' PatternSet instances")
         return [self.patterns[k] for k in self.patterns]

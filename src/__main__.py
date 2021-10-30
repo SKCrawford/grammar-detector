@@ -41,12 +41,12 @@ async def main() -> None:
         logger.info("\n" + pprint.pformat(feature_set))
 
         sentence_finish_time: float = time.time()
-        logger.debug(
+        logger.info(
             f"Sentence run time: {sentence_finish_time - sentence_start_time:.2f}s"
         )
         count += 1
     finish_time: float = time.time()
-    logger.debug(f"Total run time: {finish_time - start_time:.2f}s")
+    logger.info(f"Total run time: {finish_time - start_time:.2f}s")
 
 
 if __name__ == "__main__":

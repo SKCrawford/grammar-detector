@@ -10,6 +10,7 @@ logger = getLogger(__name__)
 
 class Cache(Generic[T]):
     def __init__(self) -> None:
+        logger.info("Constructing the Cache")  # TODO add type to log
         self._cache: dict[str, T] = {}
 
     def clear_all(self) -> None:
@@ -44,7 +45,7 @@ class Cache(Generic[T]):
 
     def save(self, key: str, value: T) -> None:
         """Save one key/value pair to the cache."""
-        logger.debug(f"Saving the key '{key}' to the cache")
+        logger.info(f"Saving the key '{key}' to the cache")
         self._cache[str(key)] = value
 
 

@@ -22,7 +22,8 @@ def noop(t: T) -> T:
 class Repository(Generic[T]):
     def __init__(self, klass: T, cache_key: CacheKeyCallback = get_object_id) -> None:
         """Create a repository for the specified `klass`. The `cache_key` callback takes a `klass` instance and returns a `str` to be used as the cache key, defaulting to the instance's `id` as a `str`."""
-        logger.debug(f"Constructing the Repository[{klass}]")
+        # logger.debug(f"Constructing the Repository[{klass}]")
+        logger.info(f"Constructing the Repository[{klass}]")
         self._klass: T = klass
         self.cache = Cache()
         self.make_cache_key: CacheKeyCallback = cache_key
@@ -34,7 +35,8 @@ class Repository(Generic[T]):
         **kwargs: str,
     ) -> T:
         """Run the `before_save` callback after creating the `klass` instance but before saving it to the cache, permitting changes to be made pre-save. When saving the instance to the cache, its key is created by the `cache_key` callback that was provided to the Repository's constructor."""
-        logger.debug(f"Constructing the {self._klass}")
+        # logger.debug(f"Constructing the {self._klass}")
+        logger.info(f"Constructing the {self._klass}")
         instance: T = self._klass(*args, **kwargs)
 
         logger.debug("Running the before_save callback")
@@ -43,7 +45,7 @@ class Repository(Generic[T]):
         logger.debug("Running the cache_key callback")
         cache_key: str = self.make_cache_key(instance)
 
-        logger.debug(f"Saving the '{cache_key}' {self._klass} instance")
+        logger.info(f"Saving the '{cache_key}' {self._klass} instance")
         self.cache.save(cache_key, instance)
         return self.get_one(cache_key)
 

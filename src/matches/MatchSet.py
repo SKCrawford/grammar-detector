@@ -1,6 +1,10 @@
+from logging import getLogger
 from spacy.tokens import Doc
 from settings import pattern_set_config_values
 from .Match import Match, RawMatch
+
+
+logger = getLogger(__name__)
 
 
 class MatchSet:
@@ -14,19 +18,21 @@ class MatchSet:
 
     @property
     def all(self):
+        logger.info(f"Getting all {len(self.matches)} matches")
         return self.matches
 
     @property
     def best(self):
+        logger.info(f"Getting the best match of these: {matches}")
         longest_match_setting = pattern_set_config_values.prop_str("LONGEST_MATCH")
         if self.best_match.upper() == longest_match_setting.upper():
             return self.match_longest(doc)
 
     @property
     def longest(self):
-        logger.debug(f"Getting the longest match of these: {matches}")
+        logger.info(f"Getting the longest match of these: {matches}")
         distances: list[int] = [match.end - match.start for match in self.matches]
         largest_distance_i: int = distances.index(max(distances))
         longest_match: Match = self.matches[largest_distance_i]
-        logger.debug(f"Got the longest match: {longest_match}")
+        logger.info(f"Got the longest match: {longest_match}")
         return longest_match

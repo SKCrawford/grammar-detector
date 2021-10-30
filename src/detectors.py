@@ -16,15 +16,17 @@ logger = getLogger(__name__)
 
 class Detector:
     def __init__(self, pattern_set: PatternSet) -> None:
-        logger.debug(
-            f"Constructing the Detector with the '{pattern_set.name}' PatternSet"
+        logger.info(
+            f"Constructing the Detector for the '{pattern_set.name}' PatternSet"
         )
         self.pattern_set: PatternSet = pattern_set
         self.matcher = PatternSetMatcher(self.pattern_set)
 
     def __call__(self, raw: str):
         """The entrypoint for the Detector."""
-        logger.debug(f"Calling the '{self.pattern_set.name}' Detector on: '{raw}'")
+        logger.info(
+            f"Calling the '{self.pattern_set.name}' Detector on the '{raw}' string"
+        )
         return self.detect(raw)
 
     def detect(self, raw: str) -> list[MatchSet]:
@@ -34,6 +36,7 @@ class Detector:
 
 
 def detect_feature(input: str, feature: str):
+    logger.info(f"Detecting {feature} for '{input}'")
     logger.debug("Creating the FileLoader")
     file_loader = YamlLoader(pattern_set_config.host_dir_path)
 
@@ -51,8 +54,8 @@ def detect_feature(input: str, feature: str):
     logger.debug("Creating the Detector")
     detector = Detector(pattern_set)
 
-    logger.debug(f"Running the Detector on str '{input}'")
+    logger.debug(f"Running the {pattern_set.name} Detector on str '{input}'")
     match_sets: list[MatchSet] = detector(input)
 
-    logger.debug(f"Found {len(match_sets)} '{feature}' MatchSets: {match_sets}")
+    logger.info(f"Found {len(match_sets)} '{feature}' MatchSets: {match_sets}")
     return match_sets

@@ -11,6 +11,7 @@ logger = getLogger(__name__)
 # @singleton  # the parent inherits the child's singleton decorator
 class FileLoader:
     def __init__(self, file_ext: str, dir_path: str) -> None:
+        logger.info(f"Constructing the FileLoader")
         if not file_ext:
             msg = f"argument 'file_ext' is missing"
             logger.error(msg)
@@ -32,7 +33,7 @@ class FileLoader:
         return join(self.dir_path, f"{filename_base}.{self.file_ext}")
 
     def load(self, file: TextIO) -> dict[str, Any]:
-        msg = f"FileLoader.load was not implemented"
+        msg = f"load(file) was not implemented"
         logger.error(msg)
         raise NotImplementedError(msg)
 
@@ -40,7 +41,9 @@ class FileLoader:
 @singleton
 class YamlLoader(FileLoader):
     def __init__(self, *args: str, **kwargs: str) -> None:
+        logger.info(f"Constructing the YamlLoader")
         super().__init__("yaml", *args, **kwargs)
 
     def load(self, file: TextIO) -> Any:
+        logger.debug(f"Loading the YAML file: {file}")
         return load_yaml(file, Loader=FullLoader)

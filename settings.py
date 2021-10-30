@@ -26,20 +26,17 @@ class Config:
     """A class for managing configuration settings. To create one, either use the `ConfigFactory` class or extend `Config`. When using the `ConfigFactory` class, specify the prefix in the `create` method. When extending `Config`, set the `prefix` attribute in the constructor."""
 
     def __init__(self, config_dict: ConfigDict) -> None:
+        logger.info("Constructing the Config")
         self._settings = config_dict
         self.prefix: str = ""
 
     def _prop(self, property_name: str) -> Any:
-        """Returns a configuration setting matching the pattern `{prefix}_{property_name}`. Fails loudly via KeyError."""
+        """Returns the config setting for `property_name`. Fails loudly."""
         if self.prefix:
             property_name = f"{self.prefix}_{property_name}"
+        logger.debug(f"Getting the config setting '{property_name}'")
         property_name = property_name.upper()
         return self._settings[property_name]
-
-    # def prop(self, property_name: str, klass: T) -> T:
-    #     """Returns a settings property of unknown type."""
-    #     prop = self._prop(property_name)
-    #     return prop
 
     def prop_str(self, property_name: str) -> str:
         """Coerces the settings property to guarantee type safety."""
@@ -67,58 +64,68 @@ class PatternSetConfig(Config):
     """A class containing the configuration settings for the patternset directory and files."""
 
     def __init__(self, config_dict: ConfigDict) -> None:
+        logger.info("Constructing the PatternSetConfig")
         super().__init__(config_dict)
         self.prefix = "PATTERN_SET"
         self.keys: Config = Config({})  # Shortcut dummy for PatternSetConfigKeys
         self.values: Config = Config({})  # Shortcut dummy for PatternSetConfigValues
 
-    def _validate_filename(self, file: str) -> bool:
-        """Return True if the file is a valid filename for patternset file. Otherwise, return False."""
-        is_hidden: bool = is_hidden_file(file)
+    def _validate_filename(self, filename: str) -> bool:
+        """Returns True if the filename is valid for patternset file. Otherwise, returns False."""
+        logger.info(f"Validating patternset filename '{filename}'")
+        is_hidden: bool = is_hidden_file(filename)
         expected_extension: str = self.prop_str("FILE_EXTENSION")
-        has_correct_extension: bool = has_extension(expected_extension, file)
+        has_correct_extension: bool = has_extension(expected_extension, filename)
         return bool(not is_hidden and has_correct_extension)
 
     @property
     def host_dir_path(self) -> str:
         """Return the full path of the directory containing the patternsets."""
-        if self.prop_str("HOST_DIR_PATH"):  # Set manually
-            return self.prop_str("HOST_DIR_PATH")
+        logger.info(f"Getting the filepath for the patternsets dir")
+        dir_path_override = self.prop_str("HOST_DIR_PATH")
+        if dir_path_override:
+            return dir_path_override
         return path.join(self.project_root_path, self.prop_str("HOST_DIR"))
 
     @property
     def paths(self) -> list[str]:
-        """Return a list of the existing patternsets with the file extension."""
+        """Returns a list of the existing patternsets with the file extension."""
+        logger.info("Getting the list of patternsets filepaths in the patternsets dir")
         filenames: list[str] = listdir(self.host_dir_path)
         return [fn for fn in filenames if self._validate_filename(fn)]
 
     @property
     def names(self) -> list[str]:
-        """Return a list of the existing patternsets without the file extension."""
+        """Returns a list of the existing patternsets without the file extension."""
+        logger.info("Getting the list of patternsets in the patternsets dir")
         extension: str = "." + self.prop_str("FILE_EXTENSION")
         return [trim_extension(extension, path) for path in self.paths]
 
 
 class ConfigFactory:
-    """A helper class for creating instances of the `Config` class. Load the YAML settings file using the `load` method, then construct new `Config` instances using the `create` method."""
+    """A helper class for creating instances of the `Config` class. Load the YAML settings file using the `load()` method, then construct new `Config` instances using the `create()` method."""
 
     def __init__(self) -> None:
+        logger.info("Constructing the ConfigFactory")
         self._cache: dict[str, Config] = {}
         self.settings: ConfigDict = {}
 
     # def load(self, config_file_path: str) -> ConfigFactory:
     def load(self, config_file_path: str):
         """Load a YAML file containing the configuration settings to the attribute `settings`. Returns the ConfigFactory instance."""
+        logger.info(f"Loading the config file at {config_file_path}")
         self.config_file_path = config_file_path
         with open(config_file_path, "r") as f:
             self.settings = load_yaml(f, Loader=FullLoader)
         return self
 
     def create(self, prefix: str) -> Config:
-        """Construct a new Config instance and set its prefix to the attribute `prefix`. The method `load()` must be called prior to this method."""
+        """Constructs a new Config instance and sets its prefix to the `prefix` attribute. The `load()` method must be called prior to this method."""
+        logger.info(f"Creating a new Config with the '{prefix}' prefix")
+
         # Check call order
         if not self.settings:
-            msg = "The config file has not yet been loaded. Load it using the `load` method."
+            msg = "The config file has not yet been loaded. Load it using the `load()` method."
             logger.error(msg)
             raise Exception(msg)
 

@@ -33,7 +33,7 @@ def singleton(klass):
     instances = []
 
     @wraps(klass.__new__)
-    def singleton_wrapper(*args, **kwargs):
+    def _singleton(*args, **kwargs):
         if not instances:
             logger.debug(f"Constructing a new {klass}")
             instance = klass(*args, **kwargs)
@@ -42,7 +42,7 @@ def singleton(klass):
             logger.debug(f"Retrieving an existing {klass}")
         return instances[0]
 
-    return singleton_wrapper
+    return _singleton
 
 
 # Source: https://stackoverflow.com/a/45323085
