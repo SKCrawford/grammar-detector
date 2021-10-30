@@ -77,10 +77,10 @@ PATTERN_SET_VAL_ALL_MATCHES: "all"
 PATTERN_SET_VAL_ONE_MATCH: "one"
 
 # NYI. PatternSetConfigVal.prop setting. The value of the `best_match` setting representing the last match. Changing this setting changes the corresponding value of the setting in the patternset files.
-PATTERN_SET_VAL_FIRST_MATCH: "last"
+PATTERN_SET_VAL_FIRST_MATCH: "first"
 
 # NYI. PatternSetConfigVal.prop setting. The value of the `best_match` setting representing the first match. Changing this setting changes the corresponding value of the setting in the patternset files.
-PATTERN_SET_VAL_LAST_MATCH: "first"
+PATTERN_SET_VAL_LAST_MATCH: "last"
 
 # PatternSetConfigVal.prop setting. The value of the `best_match` setting representing the longest match. Changing this setting changes the corresponding value of the setting in the patternset files.
 PATTERN_SET_VAL_LONGEST_MATCH: "longest"
