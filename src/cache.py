@@ -10,7 +10,7 @@ logger = getLogger(__name__)
 
 class Cache(Generic[T]):
     def __init__(self) -> None:
-        logger.info("Constructing the Cache")  # TODO add type to log
+        logger.debug("Constructing the Cache")  # TODO add type to log
         self._cache: dict[str, T] = {}
 
     def clear_all(self) -> None:

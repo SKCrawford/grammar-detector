@@ -21,8 +21,8 @@ class FileLoader:
             logger.error(msg)
             raise ValueError(msg)
 
-        self.file_ext = file_ext
-        self.dir_path = dir_path
+        self.file_ext: str = file_ext
+        self.dir_path: str = dir_path
 
     def __call__(self, filename_base: str) -> dict[str, Any]:
         path: str = self.generate_path(filename_base)

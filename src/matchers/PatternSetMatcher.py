@@ -14,7 +14,9 @@ class PatternSetMatcher(MatchSetMatcher):
         super().__init__()
         self.pattern_set: PatternSet = pattern_set
 
-        logger.info(f"Registering the '{self.pattern_set.name}' PatternSet's Patterns")
+        logger.info(
+            f"Registering the Patterns for the '{self.pattern_set.name}' PatternSet"
+        )
         for pattern in self.pattern_set.get_all_patterns():
             spacy_config: dict[str, str] = {"greedy": "LONGEST"}
             logger.debug(f"Registering the '{pattern.rulename}' Pattern")

@@ -9,10 +9,10 @@ logger = getLogger(__name__)
 
 class MatchSetMatcher(RawMatcher):
     def __init__(self) -> None:
-        logger.info("Constructing the MatchSetMatcher")
+        logger.debug("Constructing the MatchSetMatcher")
         super().__init__()
 
     def __call__(self, doc: Doc) -> MatchSet:
-        logger.info(f"Calling the MatchSetMatcher on '{doc}'")
+        logger.debug(f"Calling the MatchSetMatcher on '{doc}'")
         raw_matches: list[RawMatch] = super().__call__(doc)
         return MatchSet(raw_matches, doc)

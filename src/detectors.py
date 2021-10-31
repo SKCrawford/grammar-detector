@@ -16,20 +16,14 @@ logger = getLogger(__name__)
 
 class Detector:
     def __init__(self, pattern_set: PatternSet) -> None:
-        logger.info(
-            f"Constructing the Detector for the '{pattern_set.name}' PatternSet"
-        )
+        logger.info(f"Constructing the '{pattern_set.name}' Detector")
         self.pattern_set: PatternSet = pattern_set
         self.matcher = PatternSetMatcher(self.pattern_set)
+        self.name = self.pattern_set.name
 
     def __call__(self, raw: str):
         """The entrypoint for the Detector."""
-        logger.info(
-            f"Calling the '{self.pattern_set.name}' Detector on the '{raw}' string"
-        )
-        return self.detect(raw)
-
-    def detect(self, raw: str) -> list[MatchSet]:
+        logger.info(f"Calling the '{self.name}' Detector on the '{raw}' string")
         input = Input(raw)
         input.extract_noun_chunks = bool(self.pattern_set.should_extract_noun_chunks)
         return [self.matcher(fragment) for fragment in input.fragments]

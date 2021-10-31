@@ -13,7 +13,7 @@ logger = getLogger(__name__)
 
 def get_doc(text: Union[str, Doc, Span]) -> Doc:
     """Coerce a `str`, `Doc`, or `Span` into a `Doc`. Raises a `TypeError` when `text` is none of these classes."""
-    logger.debug(f"Getting the Doc for '{text}' (text_type)")
+    logger.info(f"Getting the Doc for '{text}' (text_type)")
     if isinstance(text_type, Doc):
         logger.debug("Skipping tokenizing")
         return text

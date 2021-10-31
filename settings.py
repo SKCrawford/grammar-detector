@@ -72,7 +72,7 @@ class PatternSetConfig(Config):
 
     def _validate_filename(self, filename: str) -> bool:
         """Returns True if the filename is valid for patternset file. Otherwise, returns False."""
-        logger.info(f"Validating patternset filename '{filename}'")
+        logger.debug(f"Validating patternset filename '{filename}'")
         is_hidden: bool = is_hidden_file(filename)
         expected_extension: str = self.prop_str("FILE_EXTENSION")
         has_correct_extension: bool = has_extension(expected_extension, filename)
@@ -81,7 +81,7 @@ class PatternSetConfig(Config):
     @property
     def host_dir_path(self) -> str:
         """Return the full path of the directory containing the patternsets."""
-        logger.info(f"Getting the filepath for the patternsets dir")
+        logger.debug(f"Getting the filepath for the patternsets dir")
         dir_path_override = self.prop_str("HOST_DIR_PATH")
         if dir_path_override:
             return dir_path_override
@@ -90,8 +90,9 @@ class PatternSetConfig(Config):
     @property
     def paths(self) -> list[str]:
         """Returns a list of the existing patternsets with the file extension."""
-        logger.info("Getting the list of patternsets filepaths in the patternsets dir")
+        logger.debug("Getting the list of patternsets filepaths in the patternsets dir")
         filenames: list[str] = listdir(self.host_dir_path)
+        logger.info("Validating PatternSet filenames")
         return [fn for fn in filenames if self._validate_filename(fn)]
 
     @property
