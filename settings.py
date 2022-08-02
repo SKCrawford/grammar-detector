@@ -3,7 +3,6 @@ from logging import DEBUG, getLogger
 from os import listdir, path
 from typing import Any, cast, Optional, TextIO, TypeVar, Union
 from yaml import FullLoader, load as load_yaml
-from src.utils import has_extension, is_hidden_file, trim_extension
 
 
 # Adopted from: https://www.hackerearth.com/practice/notes/samarthbhargav/a-design-pattern-for-configuration-management-in-python/
@@ -19,6 +18,20 @@ logger = getLogger(__name__)
 
 # TODO refactor this out
 config_file_path: str = "settings.yaml"
+
+
+def has_extension(expected_extension: str, filename: str) -> bool:
+    """Returns True if a file's filename ends with the expected extension. Otherwise, returns False."""
+    return bool(str(filename).endswith(expected_extension))
+
+
+def is_hidden_file(filename: str) -> bool:
+    """Returns True if a file's filename indicates whether it is a hidden filename. Otherwise, returns False."""
+    return bool(str(filename).startswith("."))
+
+
+def trim_extension(extension: str, filename: str) -> str:
+    return filename.replace(extension, "")
 
 
 # The values are easily configurable whereas the keys themselves are not configurable.

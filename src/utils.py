@@ -6,6 +6,7 @@ from spacy.language import Language
 from spacy.tokens import Doc, Span
 from tabulate import tabulate
 from typing import Union
+from .nlp import nlp
 
 
 logger = getLogger(__name__)
@@ -14,17 +15,17 @@ logger = getLogger(__name__)
 def get_doc(text: Union[str, Doc, Span]) -> Doc:
     """Coerce a `str`, `Doc`, or `Span` into a `Doc`. Raises a `TypeError` when `text` is none of these classes."""
     logger.info(f"Getting the Doc for '{text}' (text_type)")
-    if isinstance(text_type, Doc):
+    if isinstance(text, Doc):
         logger.debug("Skipping tokenizing")
         return text
-    elif isinstance(text_type, Span):
+    elif isinstance(text, Span):
         logger.debug("Converting the Span to a Doc")
         return text.as_doc()
-    elif isinstance(text_type, str):
+    elif isinstance(text, str):
         logger.debug("Tokenizing")
         return nlp(text)
     else:
-        msg = f"Cannot get the Doc for '{text}' ({text_type})"
+        msg = f"Cannot get the Doc for '{text}' ({type(text)})"
         logger.error(msg)
         raise TypeError(msg)
 
@@ -48,20 +49,6 @@ def singleton(klass):
 # Source: https://stackoverflow.com/a/45323085
 def flatten(a):
     return reduce(concat, a)
-
-
-def is_hidden_file(filename: str) -> bool:
-    """Returns True if a file's filename indicates whether it is a hidden filename. Otherwise, returns False."""
-    return bool(str(filename).startswith("."))
-
-
-def has_extension(expected_extension: str, filename: str) -> bool:
-    """Returns True if a file's filename ends with the expected extension. Otherwise, returns False."""
-    return bool(str(filename).endswith(expected_extension))
-
-
-def trim_extension(extension: str, filename: str) -> str:
-    return filename.replace(extension, "")
 
 
 def to_token_table(
