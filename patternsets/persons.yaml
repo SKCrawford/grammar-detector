@@ -1,7 +1,7 @@
 ---
 meta:
     extract_noun_chunks: true
-    how_many_matches: one
+    how_many_matches: all
 
 patterns:
     - rulename: 1st
@@ -35,41 +35,59 @@ tests:
     - input: I am running for President.
       rulenames:
           - 1st
+          - 3rd
       spans:
           - I
+          - President
 
     - input: We are running for President.
       rulenames:
           - 1st
+          - 3rd
       spans:
           - We
+          - President
 
     - input: You are running for President.
       rulenames:
           - 2nd
+          - 3rd
       spans:
           - You
+          - President
 
     - input: She is running for President.
       rulenames:
           - 3rd
+          - 3rd
       spans:
           - She
+          - President
 
     - input: They are running for President.
       rulenames:
           - 3rd
+          - 3rd
       spans:
           - They
+          - President
 
     - input: Biden is running for President.
       rulenames:
           - 3rd
+          - 3rd
       spans:
           - Biden
+          - President
 
     - input: Biden and Harris are running for President and Vice-President.
       rulenames:
           - 3rd
+          - 3rd
+          - 3rd
+          - 3rd
       spans:
-          - Biden and Harris
+          - Biden
+          - Harris
+          - President
+          - Vice-President

@@ -63,7 +63,7 @@ tests:
       rulenames:
           - impersonal
       spans:
-          - It is going to rain
+          - It is going to rain  # FIXME incorrectly "It is going"
 
     - input: It is raining.
       rulenames:
@@ -82,12 +82,6 @@ tests:
           - impersonal
       spans:
           - It will be raining
-
-    - input: It is going to rain.
-      rulenames:
-          - impersonal
-      spans:
-          - It is going to rain
 
     - input: It has rained.
       rulenames:
@@ -111,7 +105,7 @@ tests:
       rulenames:
           - impersonal
       spans:
-          - It is going to have rained
+          - It is going to have rained  # FIXME incorrectly "It is going"
 
     - input: It has been raining.
       rulenames:
@@ -135,22 +129,24 @@ tests:
       rulenames:
           - impersonal
       spans:
-          - It is going to have been raining
+          - It is going to have been raining  # FIXME incorrectly "It is going"
 
     - input: She runs.
       rulenames:
           - intransitive
+
     - input: She ran.
       rulenames:
-
           - intransitive
+
     - input: She will run.
       rulenames:
           - intransitive
-    - input: She is running.
 
+    - input: She is running.
       rulenames:
           - intransitive
+
     - input: She was running.
       rulenames:
           - intransitive

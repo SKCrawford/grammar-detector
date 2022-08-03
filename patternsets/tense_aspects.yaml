@@ -287,9 +287,9 @@ tests:
 
     - input: I am going to have run.
       rulenames:
-          - future perfect continuous
+          - future perfect continuous  # FIXME incorrectly "present continuous"
       spans:
-          - am going to have run
+          - am going to have run  # FIXME incorrectly "am going"
 
     - input: I am running.
       rulenames:
