@@ -1,23 +1,23 @@
 import unittest
 from logging import getLogger
 from settings import pattern_set_config
-from src.utils import get_doc
+from src.detectors import detect_feature
 from src.loaders import YamlLoader
 from src.matchers import PatternSetMatcher
 from src.patterns import PatternSet, PatternSetRepository
+from src.utils import get_doc
 
 
 logger = getLogger(__name__)
 
 
-class TestPatternSetJsonTests(unittest.TestCase):
+class TestDetectorTests(unittest.TestCase):
     """The test suite for the YAML patternset configuration files. When running this suite via `$ python -m unittest`, the tests in the YAML patternset configuration files will be run. This allows for the patterns to be tested by running the specified input then comparing the expected/actual matching rulenames and text spans. This information can then be used to make improvements to, expand upon, and battle harden the YAML patternset configuration files. As a general rule, when patternsets do not behave as expected, the solution is to improve the patterns or add new variations of existing patterns. The solution is rarely to add new features via code, so fixing errors in the patterns themselves should be the first step."""
 
     @classmethod
     def setUpClass(self):
         """Load the patternset configuration files to extract the tests."""
         self.pattern_sets: dict[str, PatternSet] = {}
-        self.matchers: dict[str, PatternSetMatcher] = {}
         file_loader = YamlLoader(pattern_set_config.host_dir_path)
         repo = PatternSetRepository()
 
@@ -25,7 +25,6 @@ class TestPatternSetJsonTests(unittest.TestCase):
             pset_data = file_loader(pset_name)
             pattern_set: PatternSet = repo.create(pset_name, pset_data)
             self.pattern_sets[pattern_set.name] = pattern_set
-            self.matchers[pattern_set.name] = PatternSetMatcher(pattern_set)
 
     def should_skip_pset(self, pset):
         """Determine if the patternset's tests should be skipped. This operates at the patternset level."""
@@ -83,8 +82,8 @@ class TestPatternSetJsonTests(unittest.TestCase):
         return (should_skip, skip_reason)
 
     def get_input(self, test):
-        """Extract and tokenize the input from the test entry."""
-        return get_doc(test[pattern_set_config.keys.prop_str("TESTS_INPUT")])
+        """Extract the input from the test entry."""
+        return test[pattern_set_config.keys.prop_str("TESTS_INPUT")]
 
     def get_expected_results(self, test, pset):
         """Extract the expected rulenames and text spans from the test entry."""
@@ -113,7 +112,7 @@ class TestPatternSetJsonTests(unittest.TestCase):
                 raise ValueError(err_msg)
         return (expected_rulenames, expected_spans)
 
-    def run_test(self, test, matcher, pset):
+    def run_test(self, test, pset):
         """The main entrypoint to run an individual test."""
         input = self.get_input(test)
 
@@ -131,19 +130,20 @@ class TestPatternSetJsonTests(unittest.TestCase):
         # Separate each test in a pset using subTest to prevent failures from stopping other tests
         with self.subTest(f"{pset.name}:{input}"):
             (expected_rulenames, expected_spans) = self.get_expected_results(test, pset)
-
             rulenames = []
             spans = []
-            for (rulename, span, features) in matcher(input):
-                rulenames.append(rulename)
-                spans.append(str(span))
+
+            match_sets = detect_feature(input, pset.name)
+            for mset in match_sets:
+                rulenames.append(mset.best.rulename)
+                spans.append(str(mset.best.span))
 
             if expected_rulenames:
                 self.assertListEqual(rulenames, expected_rulenames)
             if expected_spans:
                 self.assertListEqual(spans, expected_spans)
 
-    def run_pset(self, pset, matcher):
+    def run_pset(self, pset):
         """The main entrypoint to run all of the tests in a patternset."""
         (should_skip, skip_reason) = self.should_skip_pset(pset)
         if should_skip:
@@ -157,11 +157,10 @@ class TestPatternSetJsonTests(unittest.TestCase):
         # Separate each pset using subTest to prevent failures from stopping the run
         if pset.tests:
             with self.subTest(pset.name):
-                [self.run_test(test, matcher, pset) for test in pset.tests]
+                [self.run_test(test, pset) for test in pset.tests]
 
     def test_pattern_set_json_tests(self):
         """The main entrypoint for the unittest package."""
         for pset_key in self.pattern_sets:
             pset = self.pattern_sets[pset_key]
-            matcher = self.matchers[pset_key]
-            self.run_pset(pset, matcher)
+            self.run_pset(pset)

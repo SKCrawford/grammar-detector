@@ -29,7 +29,7 @@ class MatchSet:
         )
         longest_match_setting = pattern_set_config_values.prop_str("LONGEST_MATCH")
         if self.best_match.upper() == longest_match_setting.upper():
-            return self.match_longest(doc)
+            return self.longest
 
     @property
     def longest(self) -> Match:
