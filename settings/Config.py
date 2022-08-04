@@ -1,7 +1,7 @@
 from logging import getLogger
 from os.path import abspath
 from pathlib import Path
-from typing import Any, TypeVar, Union
+from typing import Any
 from yaml import FullLoader, load as load_yaml
 
 
@@ -48,4 +48,4 @@ class Config:
     def project_root_path(self) -> str:
         """Returns the full path of the project's root directory."""
         p = abspath(__file__)
-        return str(Path(p).parents[2])
+        return str(Path(p).parents[1])

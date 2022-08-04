@@ -1,13 +1,11 @@
 from os.path import join
-from .models import DataConfig, LoggerConfig, PatternSetConfig
+from .DataConfig import DataConfig
+from .LoggerConfig import LoggerConfig
+from .PatternSetConfig import PatternSetConfig
 
 
-def settings_path(filename: str) -> str:
-    dir_path = "settings/"
-    filetype = "yaml"
-    return join(dir_path, f"{filename}.{filetype}")
+settings_filepath = "settings.yaml"
 
-
-data_config = DataConfig(settings_path("data"))
-logger_config = LoggerConfig(settings_path("logger"))
-pattern_set_config = PatternSetConfig(settings_path("patternsets"))
+data_config = DataConfig(settings_filepath)
+logger_config = LoggerConfig(settings_filepath)
+pattern_set_config = PatternSetConfig(settings_filepath)

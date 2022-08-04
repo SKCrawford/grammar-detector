@@ -41,9 +41,6 @@ class PatternSetConfig(Config):
     def host_dir_path(self) -> str:
         """Return the full path of the directory containing the patternsets."""
         logger.debug(f"Getting the filepath for the patternsets dir")
-        dir_path_override = self.prop_str("HOST_DIR_PATH")
-        if dir_path_override:
-            return dir_path_override
         return join(self.project_root_path, self.prop_str("HOST_DIR"))
 
     @property

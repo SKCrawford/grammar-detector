@@ -1,3 +1,0 @@
----
-# DataConfig.prop setting. The spaCy dataset from which the NLP model is derived. Be sure to download the dataset beforehand by `$ python -m spacy download name_of_the_dataset`. `The default is "en_core_web_lg".
-DATA_DATASET: "en_core_web_lg"
