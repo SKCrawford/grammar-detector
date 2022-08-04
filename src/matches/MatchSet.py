@@ -1,6 +1,6 @@
 from logging import getLogger
 from spacy.tokens import Doc
-from settings import pattern_set_config_values
+from settings import pattern_set_config
 from .Match import Match, RawMatch
 
 
@@ -12,7 +12,8 @@ class MatchSet:
         logger.info(f"Constructing the MatchSet for '{doc.text}'")
         self.matches: list[Match] = [Match(raw_match, doc) for raw_match in raw_matches]
         self.doc: Doc = doc
-        self.best_match: str = pattern_set_config_values.prop_str("LONGEST_MATCH")
+        # TODO refactor setting the default
+        self.best_match: str = pattern_set_config.prop_str("LONGEST_MATCH")
 
     def __repr__(self):
         return f"<MatchSet ({len(self.all)}): {[repr(m) for m in self.all]}"
@@ -27,9 +28,14 @@ class MatchSet:
         logger.info(
             f"Getting the best match of these {len(self.matches)}: {self.matches}"
         )
-        longest_match_setting = pattern_set_config_values.prop_str("LONGEST_MATCH")
+        longest_match_setting = pattern_set_config.prop_str("LONGEST_MATCH")
+
         if self.best_match.upper() == longest_match_setting.upper():
             return self.longest
+        else:
+            msg = f"The best match was either not provided or not supported: {self.best_match}"
+            logger.error(msg)
+            raise ValueError(msg)
 
     @property
     def longest(self) -> Match:

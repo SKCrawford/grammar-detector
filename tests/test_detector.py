@@ -1,5 +1,5 @@
-import unittest
 from logging import getLogger
+from unittest import TestCase
 from settings import pattern_set_config
 from src.detectors import detect_feature
 from src.loaders import YamlLoader
@@ -11,7 +11,7 @@ from src.utils import get_doc
 logger = getLogger(__name__)
 
 
-class TestDetectorTests(unittest.TestCase):
+class TestDetectorTests(TestCase):
     """The test suite for the YAML patternset configuration files. When running this suite via `$ python -m unittest`, the tests in the YAML patternset configuration files will be run. This allows for the patterns to be tested by running the specified input then comparing the expected/actual matching rulenames and text spans. This information can then be used to make improvements to, expand upon, and battle harden the YAML patternset configuration files. As a general rule, when patternsets do not behave as expected, the solution is to improve the patterns or add new variations of existing patterns. The solution is rarely to add new features via code, so fixing errors in the patterns themselves should be the first step."""
 
     @classmethod
@@ -32,8 +32,7 @@ class TestDetectorTests(unittest.TestCase):
         skip_reason = None
 
         try:
-            skip_key = pattern_set_config.keys.prop_str("SKIP_TESTS")
-            skip_setting = pset.meta[skip_key]
+            skip_setting = pset.meta["skip_tests"]
             if type(skip_setting) == bool:
                 should_skip = skip_setting
                 skip_reason = ""
@@ -59,8 +58,7 @@ class TestDetectorTests(unittest.TestCase):
         skip_reason = None
 
         try:
-            skip_key = pattern_set_config.keys.prop_str("TESTS_SKIP")
-            skip_setting = test[skip_key]
+            skip_setting = test["skip"]
             if type(skip_setting) == bool:
                 should_skip = skip_setting
                 skip_reason = ""
@@ -83,14 +81,12 @@ class TestDetectorTests(unittest.TestCase):
 
     def get_input(self, test):
         """Extract the input from the test entry."""
-        return test[pattern_set_config.keys.prop_str("TESTS_INPUT")]
+        return test["input"]
 
     def get_expected_results(self, test, pset):
         """Extract the expected rulenames and text spans from the test entry."""
-        rulenames_key = pattern_set_config.keys.prop_str("TESTS_RULENAMES")
-        spans_key = pattern_set_config.keys.prop_str("TESTS_SPANS")
-        expected_rulenames = test[rulenames_key] if rulenames_key in test else []
-        expected_spans = test[spans_key] if spans_key in test else []
+        expected_rulenames = test["rulenames"] if "rulenames" in test else []
+        expected_spans = test["spans"] if "spans" in test else []
 
         # Validate the presence of at least one key containing expected results
         if not expected_rulenames and not expected_spans:
@@ -103,11 +99,11 @@ class TestDetectorTests(unittest.TestCase):
         expects_many_rulenames = bool(len(expected_rulenames) > 1)
         expects_many_spans = bool(len(expected_spans) > 1)
         if expects_many_rulenames or expects_many_spans:
-            how_many_key = pattern_set_config.keys.prop_str("HOW_MANY_MATCHES")
-            how_many_matches = pset.meta[how_many_key]
-            one_match_setting = pattern_set_config.values.prop_str("ONE_MATCH")
+            how_many_matches = pset.meta["how_many_matches"]
+            one_match_setting = pattern_set_config.prop_str("ONE_MATCH")
+
             if how_many_matches.upper() == one_match_setting.upper():
-                err_msg = "The pattern set expects only one match, but the test expects multiple matches"
+                err_msg = "The patternset expects only one match, but the test expects multiple matches"
                 logger.error(err_msg)
                 raise ValueError(err_msg)
         return (expected_rulenames, expected_spans)

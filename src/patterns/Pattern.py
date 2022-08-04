@@ -1,7 +1,6 @@
 from logging import getLogger
 from spacy.tokens import Token
 from typing import Union
-from settings import pattern_set_config_keys
 
 
 Rulename = str
@@ -14,8 +13,8 @@ logger = getLogger(__name__)
 
 
 def extract_pattern_data(data: PatternData) -> ExtractedPatternData:
-    rulename: Rulename = data[pattern_set_config_keys.prop_str("RULENAME")]
-    tokens: Tokens = data[pattern_set_config_keys._prop("TOKENS")]
+    rulename: Rulename = data["rulename"]
+    tokens: Tokens = data["tokens"]
     return (rulename, tokens)
 
 

@@ -8,7 +8,7 @@ from .inputs import Input
 from .loaders import YamlLoader
 from .matchers import PatternSetMatcher
 from .matches import Match, MatchSet
-from .patterns import PatternSet, PatternSetRepository
+from .patterns import PatternSet, PatternSetData, PatternSetRepository
 
 
 logger = getLogger(__name__)

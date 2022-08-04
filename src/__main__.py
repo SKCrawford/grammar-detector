@@ -6,8 +6,8 @@ import src.logger
 from logging import getLogger
 from settings import pattern_set_config
 from .detectors import detect_feature
-from .utils import to_token_table
 from .nlp import nlp
+from .utils import to_token_table
 
 
 logger = getLogger(__name__)

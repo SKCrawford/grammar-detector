@@ -1,6 +1,6 @@
 from logging import getLogger
-from settings import pattern_set_config
 from typing import Union
+from settings import pattern_set_config
 from .Pattern import Pattern, PatternData
 
 
@@ -25,20 +25,13 @@ def extract_pattern_set_data(data: PatternSetData) -> ExtractedPatternSetData:
     logger.info("Extracting the PatternSet data")
 
     logger.debug("Extracting the patterns")
-    patterns_key: str = pattern_set_config.keys.prop_str("PATTERNS")
-    pattern_data_list: list[PatternData] = data[patterns_key]
+    pattern_data_list: list[PatternData] = data["patterns"]
 
     logger.debug("Extracting the meta config")
-    meta: Meta = {}
-    meta_key: str = pattern_set_config.keys.prop_str("META")
-    if meta_key in data:
-        meta = data[meta_key]
+    meta: Meta = data["meta"] if "meta" in data else {}
 
     logger.debug("Extracting the tests")
-    tests: list[Test] = []
-    tests_key: str = pattern_set_config.keys.prop_str("TESTS")
-    if tests_key in data:
-        tests = data[tests_key]
+    tests: list[Test] = data["tests"] if "tests" in data else []
 
     return (pattern_data_list, meta, tests)
 
@@ -54,16 +47,14 @@ class PatternSet:
     @property
     def how_many_matches(self) -> str:
         try:
-            key: str = pattern_set_config.keys.prop_str("HOW_MANY_MATCHES")
-            return str(self.meta[key])
+            return str(self.meta["how_many_matches"])
         except:
-            return pattern_set_config.values.prop_str("ONE_MATCH")
+            return pattern_set_config.prop_str("ONE_MATCH")
 
     @property
     def should_extract_noun_chunks(self) -> bool:
         try:
-            key: str = pattern_set_config.keys.prop_str("SHOULD_EXTRACT_NOUN_CHUNKS")
-            return bool(self.meta[key])
+            return bool(self.meta["extract_noun_chunks"])
         except:
             return False
 

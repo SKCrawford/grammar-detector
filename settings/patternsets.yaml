@@ -1,0 +1,27 @@
+---
+# PatternSetConfig.prop setting. The file extension of the patternsets. The default is "yaml".
+PATTERN_SET_FILE_EXTENSION: "yaml"
+
+# PatternSetConfig.prop setting . The name of the directory containing the patternset files. The default is "patterns".
+PATTERN_SET_HOST_DIR: "patternsets"
+
+# PatternSetConfig.host_dir_path setting. The full path of the patternset host directory. The default is the path according to the other settings in this file. Overriding this setting is not recommended. The default is "".
+PATTERN_SET_HOST_DIR_PATH: ""
+
+# PatternSetConfigVal.prop setting. The value of the `how_many_matches` setting representing all matches. Changing this setting changes the corresponding value of the setting in the patternset files.
+PATTERN_SET_ALL_MATCHES: "all"
+
+# PatternSetConfigVal.prop setting. The value of the `how_many_matches` setting representing one match. Changing this setting changes the corresponding value of the setting in the patternset files.
+PATTERN_SET_ONE_MATCH: "one"
+
+# NYI. PatternSetConfigVal.prop setting. The value of the `best_match` setting representing the last match. Changing this setting changes the corresponding value of the setting in the patternset files.
+PATTERN_SET_FIRST_MATCH: "first"
+
+# NYI. PatternSetConfigVal.prop setting. The value of the `best_match` setting representing the first match. Changing this setting changes the corresponding value of the setting in the patternset files.
+PATTERN_SET_LAST_MATCH: "last"
+
+# PatternSetConfigVal.prop setting. The value of the `best_match` setting representing the longest match. Changing this setting changes the corresponding value of the setting in the patternset files.
+PATTERN_SET_LONGEST_MATCH: "longest"
+
+# NYI. PatternSetConfigVal.prop setting. The value of the `best_match` setting representing the shortest match. Changing this setting changes the corresponding value of the setting in the patternset files.
+PATTERN_SET_SHORTEST_MATCH: "shortest"
