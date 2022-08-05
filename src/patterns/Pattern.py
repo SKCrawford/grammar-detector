@@ -12,14 +12,15 @@ ExtractedPatternData = tuple[Rulename, Tokens]
 logger = getLogger(__name__)
 
 
-def extract_pattern_data(data: PatternData) -> ExtractedPatternData:
-    rulename: Rulename = data["rulename"]
-    tokens: Tokens = data["tokens"]
-    return (rulename, tokens)
-
-
 class Pattern:
-    def __init__(self, rulename: Rulename, tokens: Tokens):
+    def __init__(self, data: PatternData):
+        (rulename, tokens) = self._extract_data(data)
+
         logger.debug(f"Constructing the '{rulename}' Pattern")
         self.rulename: Rulename = rulename
         self.tokens: Tokens = tokens
+
+    def _extract_data(self, data: PatternData) -> ExtractedPatternData:
+        rulename: Rulename = data["rulename"]
+        tokens: Tokens = data["tokens"]
+        return (rulename, tokens)

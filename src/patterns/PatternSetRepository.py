@@ -1,9 +1,9 @@
 from logging import getLogger
 from typing import cast
-from ..repositories import BeforeSaveCallback, CacheKeyCallback, Repository
+from ..repositories import Repository
 from ..utils import singleton
-from .Pattern import extract_pattern_data, Pattern, PatternData
-from .PatternSet import extract_pattern_set_data, Name, PatternSet, PatternSetData
+from .Pattern import PatternData
+from .PatternSet import Name, PatternSet, PatternSetData
 
 
 logger = getLogger(__name__)
@@ -13,39 +13,16 @@ logger = getLogger(__name__)
 class PatternSetRepository(Repository):
     def __init__(self):
         logger.debug("Constructing the PatternSetRepository")
-        # Callable[[T], str]
-        make_cache_key: CacheKeyCallback = lambda pset: pset.name
-        super().__init__(PatternSet, cache_key=make_cache_key)
+        super().__init__(PatternSet, cache_key=lambda pset: pset.name)
 
-    def create(self, name: Name, data: PatternSetData) -> PatternSet:
+    def create(self, *args, **kwargs) -> PatternSet:
         """Create a new `PatternSet`, cache it, and return it. If a `PatternSet` with the same name has already been created, the cached instance will be returned."""
+        # TODO move this logic to Repository
+        name = args[0]
         if self.cache.has_key(name):
             logger.info(f"Getting an existing '{name}' PatternSet")
             return self.get_one(name)
 
         # Callable[[T], T]
         logger.info(f"Creating a new '{name}' PatternSet")
-        before_save: BeforeSaveCallback = lambda pset: self._before_save(pset, data)
-        return super().create(name, before_save=before_save)
-
-    def _before_save(self, pset: PatternSet, data: PatternSetData) -> PatternSet:
-        (pattern_data_list, meta, tests) = extract_pattern_set_data(data)
-        logger.info(
-            f"Loading {len(meta.keys())} meta options for the '{pset.name}' PatternSet"
-        )
-        pset.meta = meta
-
-        logger.info(f"Loading {len(tests)} tests for the '{pset.name}' PatternSet")
-        pset.tests = tests
-
-        logger.info(
-            f"Loading {len(pattern_data_list)} patterns for the '{pset.name}' PatternSet"
-        )
-        [self._load_pattern(p_data, pset) for p_data in pattern_data_list]
-        return pset
-
-    def _load_pattern(self, data: PatternData, pattern_set: PatternSet) -> None:
-        """Extract the components of the raw PatternData, create a Pattern, and add it to the PatternSet."""
-        (rulename, tokens) = extract_pattern_data(data)
-        logger.debug(f"Loading the '{rulename}' Pattern")
-        pattern_set.add_pattern(Pattern(rulename, tokens))
+        return super().create(*args, **kwargs)
