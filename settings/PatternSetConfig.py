@@ -2,23 +2,10 @@ from logging import getLogger
 from os import listdir
 from os.path import join
 from .Config import Config
+from .Filepath import Filepath
 
 
 logger = getLogger(__name__)
-
-
-def has_extension(expected_extension: str, filename: str) -> bool:
-    """Returns True if a file's filename ends with the expected extension. Otherwise, returns False."""
-    return bool(str(filename).endswith(expected_extension))
-
-
-def is_hidden_file(filename: str) -> bool:
-    """Returns True if a file's filename indicates whether it is a hidden filename. Otherwise, returns False."""
-    return bool(str(filename).startswith("."))
-
-
-def trim_extension(extension: str, filename: str) -> str:
-    return filename.replace(extension, "")
 
 
 class PatternSetConfig(Config):
@@ -26,34 +13,30 @@ class PatternSetConfig(Config):
 
     def __init__(self, config_file_path: str) -> None:
         logger.info("Constructing the PatternSetConfig")
-        super().__init__(config_file_path)
+        self.config_fp: Filepath = Filepath(config_file_path)
+        super().__init__(self.config_fp.filepath)
         self.prefix = "PATTERN_SET"
 
-    def _validate_filename(self, filename: str) -> bool:
-        """Returns True if the filename is valid for patternset file. Otherwise, returns False."""
-        logger.debug(f"Validating patternset filename '{filename}'")
-        is_hidden: bool = is_hidden_file(filename)
-        expected_extension: str = self.prop_str("FILE_EXTENSION")
-        has_correct_extension: bool = has_extension(expected_extension, filename)
-        return bool(not is_hidden and has_correct_extension)
-
     @property
-    def host_dir_path(self) -> str:
-        """Return the full path of the directory containing the patternsets."""
-        logger.debug(f"Getting the filepath for the patternsets dir")
+    def internal_patternset_dirpath(self) -> str:
         return join(self.project_root_path, self.prop_str("HOST_DIR"))
 
     @property
-    def paths(self) -> list[str]:
-        """Returns a list of the existing patternsets with the file extension."""
-        logger.debug("Getting the list of patternsets filepaths in the patternsets dir")
-        filenames: list[str] = listdir(self.host_dir_path)
-        logger.info("Validating PatternSet filenames")
-        return [fn for fn in filenames if self._validate_filename(fn)]
+    def internal_patternset_filenames(self):
+        filenames: list[str] = listdir(self.internal_patternset_dirpath)
+        return [fname for fname in filenames if self.is_valid_filename(fname)]
 
     @property
-    def names(self) -> list[str]:
-        """Returns a list of the existing patternsets without the file extension."""
-        logger.info("Getting the list of patternsets in the patternsets dir")
-        extension: str = "." + self.prop_str("FILE_EXTENSION")
-        return [trim_extension(extension, path) for path in self.paths]
+    def internal_patternset_filepaths(self):
+        filepaths = []
+        for fname in self.internal_patternset_filenames:
+            fpath = join(self.internal_patternset_dirpath, fname)
+            filepaths.append(fpath)
+        return filepaths
+
+    def is_valid_filename(self, filename: str) -> bool:
+        """Returns True if the filename is valid for patternset file. Otherwise, returns False."""
+        logger.debug(f"Validating patternset filename '{filename}'")
+        pset_fp: Filepath = Filepath(filename)
+        has_extension: bool = bool(pset_fp.extension == self.prop_str("FILE_EXTENSION"))
+        return bool(not pset_fp.is_hidden and has_extension)

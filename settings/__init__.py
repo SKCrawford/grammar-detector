@@ -1,5 +1,6 @@
 from os.path import join
 from .DataConfig import DataConfig
+from .Filepath import Filepath
 from .LoggerConfig import LoggerConfig
 from .PatternSetConfig import PatternSetConfig
 
