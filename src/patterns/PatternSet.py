@@ -5,11 +5,16 @@ from .Pattern import Pattern, PatternData
 
 
 Name = str
-MetaSettingKeys = Literal["extract_noun_chunks", "how_many_matches", "skip_tests"]
+MetaSettingKeys = Literal[
+    "best_match",
+    "extract_noun_chunks",
+    "how_many_matches",
+    "skip_tests",
+]
 MetaSettingValues = Union[str, bool]
 Meta = dict[MetaSettingKeys, MetaSettingValues]
 
-TestKeys = Literal["input", "rulenames", "spans", "skip"]
+TestKeys = Literal["input", "rulenames", "skip", "spans"]
 TestInput = str
 TestExpectedRulenames = list[str]
 TestExpectedSpans = list[str]
@@ -37,11 +42,18 @@ class PatternSet:
             self.add_pattern(pattern)
 
     @property
+    def best_match(self) -> str:
+        try:
+            return str(self.meta["best_match"])
+        except:
+            return pattern_set_config.prop_str("DEFAULT_BEST_MATCH")
+
+    @property
     def how_many_matches(self) -> str:
         try:
             return str(self.meta["how_many_matches"])
         except:
-            return pattern_set_config.prop_str("ONE_MATCH")
+            return pattern_set_config.prop_str("DEFAULT_HOW_MANY_MATCHES")
 
     @property
     def should_extract_noun_chunks(self) -> bool:

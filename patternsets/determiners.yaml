@@ -1,7 +1,7 @@
 ---
 meta:
     extract_noun_chunks: true
-    how_many_matches: all
+    how_many_matches: one
 
 patterns:
     - rulename: indefinite

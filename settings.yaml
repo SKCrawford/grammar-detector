@@ -45,3 +45,9 @@ PATTERN_SET_LONGEST_MATCH: "longest"
 
 # NYI. PatternSetConfigVal.prop setting. The value of the `best_match` setting representing the shortest match. Changing this setting changes the corresponding value of the setting in the patternset files.
 PATTERN_SET_SHORTEST_MATCH: "shortest"
+
+# PatternSetConfigVal.prop setting. The default value of the setting representing the expected number of matches. Changing this setting changes the corresponding value of the setting in the patternset files.
+PATTERN_SET_DEFAULT_HOW_MANY_MATCHES: "all"
+
+# PatternSetConfigVal.prop setting. The default value of the setting representing the best match. Changing this setting changes the corresponding value of the setting in the patternset files.
+PATTERN_SET_DEFAULT_BEST_MATCH: "longest"

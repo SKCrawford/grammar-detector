@@ -11,7 +11,10 @@ class PatternSetMatcher(MatchSetMatcher):
 
     def __init__(self, pattern_set: PatternSet) -> None:
         logger.info("Constructing the PatternSetMatcher")
-        super().__init__()
+        super().__init__(
+            best_match=pattern_set.best_match,
+            how_many_matches=pattern_set.how_many_matches,
+        )
         self.pset: PatternSet = pattern_set
 
         logger.info(f"Registering the Patterns for the '{self.pset.name}' PatternSet")

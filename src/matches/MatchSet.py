@@ -8,15 +8,35 @@ logger = getLogger(__name__)
 
 
 class MatchSet:
-    def __init__(self, raw_matches: list[RawMatch], doc: Doc) -> None:
+    def __init__(
+        self,
+        raw_matches: list[RawMatch],
+        doc: Doc,
+        best_match: str = "",
+        how_many_matches: str = "",
+    ) -> None:
         logger.info(f"Constructing the MatchSet for '{doc.text}'")
         self.matches: list[Match] = [Match(raw_match, doc) for raw_match in raw_matches]
         self.doc: Doc = doc
-        # TODO refactor setting the default
-        self.best_match: str = pattern_set_config.prop_str("LONGEST_MATCH")
+        self.best_match: str = best_match
+        self.how_many_matches: str = how_many_matches
 
     def __repr__(self):
         return f"<MatchSet ({len(self.all)}): {[repr(m) for m in self.all]}"
+
+    @property
+    def result(self) -> list[Match]:
+        if not self.matches:
+            return []
+
+        if self.how_many_matches == pattern_set_config.prop_str("ONE_MATCH"):
+            return [self.best]
+        elif self.how_many_matches == pattern_set_config.prop_str("ALL_MATCHES"):
+            return self.all
+        else:
+            msg = f"Invalid value for 'how_many_matches': {self.how_many_matches}"
+            logger.error(msg)
+            raise ValueError(msg)
 
     @property
     def all(self) -> list[Match]:
@@ -33,7 +53,7 @@ class MatchSet:
         if self.best_match.upper() == longest_match_setting.upper():
             return self.longest
         else:
-            msg = f"The best match was either not provided or not supported: {self.best_match}"
+            msg = f"Invalid value for 'best_match': {self.best_match}"
             logger.error(msg)
             raise ValueError(msg)
 

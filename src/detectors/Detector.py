@@ -1,8 +1,9 @@
 from logging import getLogger
 from ..inputs import Input
 from ..matchers import PatternSetMatcher
-from ..matches import MatchSet
+from ..matches import Match, MatchSet
 from ..patterns import PatternSet
+from ..utils import flatten
 
 
 logger = getLogger(__name__)
@@ -15,17 +16,16 @@ class Detector:
         self.name = self.pattern_set.name
 
         logger.debug(f"Creating the '{self.pattern_set.name}' PatternSetMatcher")
-        self.matcher = self._load_matcher(self.pattern_set)
+        self.matcher = PatternSetMatcher(self.pattern_set)
 
-    def __call__(self, raw: str) -> list[MatchSet]:
+    def __call__(self, raw: str) -> list[Match]:
         """The entrypoint for the Detector."""
-        logger.debug(f"Detecting for '{self.name}' feature in '{raw}'")
+        logger.info(f"Detecting for '{self.name}' feature in '{raw}'")
         input = Input(raw)
         input.extract_noun_chunks = bool(self.pattern_set.should_extract_noun_chunks)
-        match_sets: list[MatchSet] = [self.matcher(frag) for frag in input.fragments]
 
-        logger.debug(f"Found {len(match_sets)} '{self.name}' MatchSets: {match_sets}")
-        return match_sets
-
-    def _load_matcher(self, pattern_set: PatternSet) -> PatternSetMatcher:
-        return PatternSetMatcher(self.pattern_set)
+        matches: list[list[Match]] = []
+        for frag in input.fragments:
+            match_set: MatchSet = self.matcher(frag)
+            matches.append(match_set.result)
+        return flatten(matches)

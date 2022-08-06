@@ -1,18 +1,30 @@
 from logging import getLogger
 from spacy.tokens import Doc
-from .RawMatcher import RawMatcher
+from settings import pattern_set_config
 from ..matches import MatchSet, RawMatch
+from .RawMatcher import RawMatcher
 
 
 logger = getLogger(__name__)
 
 
 class MatchSetMatcher(RawMatcher):
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        best_match: str = pattern_set_config.prop_str("DEFAULT_BEST_MATCH"),
+        how_many_matches: str = pattern_set_config.prop_str("DEFAULT_HOW_MANY_MATCHES"),
+    ) -> None:
         logger.debug("Constructing the MatchSetMatcher")
         super().__init__()
+        self.best_match = best_match
+        self.how_many_matches = how_many_matches
 
     def __call__(self, doc: Doc) -> MatchSet:
         logger.debug(f"Calling the MatchSetMatcher on '{doc}'")
         raw_matches: list[RawMatch] = super().__call__(doc)
-        return MatchSet(raw_matches, doc)
+        return MatchSet(
+            raw_matches,
+            doc,
+            best_match=self.best_match,
+            how_many_matches=self.how_many_matches,
+        )
