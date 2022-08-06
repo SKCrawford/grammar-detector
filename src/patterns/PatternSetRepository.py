@@ -1,5 +1,6 @@
 from logging import getLogger
-from typing import cast
+from typing import cast, Union
+from settings import pattern_set_config
 from ..repositories import Repository
 from ..utils import singleton
 from .Pattern import PatternData
@@ -15,12 +16,10 @@ class PatternSetRepository(Repository):
         logger.debug("Constructing the PatternSetRepository")
         super().__init__(PatternSet)
 
-    def cache_key(self, *args: str, **kwargs: str) -> str:
-        name: str = args[0]
+    def cache_key(self, name: Name, data: PatternSetData) -> str:
         return name
 
-    def create(self, *args: str, **kwargs: str) -> PatternSet:
+    def create(self, name: Name, data: PatternSetData) -> PatternSet:
         """Create a new `PatternSet`, cache it, and return it. If a `PatternSet` with the same name has already been created, the cached instance will be returned."""
-        name: str = self.cache_key(*args, **kwargs)
         logger.info(f"Creating or retrieving the '{name}' PatternSet")
-        return super().create(*args, **kwargs)
+        return super().create(name, data)
