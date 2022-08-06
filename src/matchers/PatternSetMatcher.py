@@ -1,5 +1,5 @@
 from logging import getLogger
-from ..patterns import PatternSet
+from ..patterns import Pattern, PatternSet
 from .MatchSetMatcher import MatchSetMatcher
 
 
@@ -12,12 +12,11 @@ class PatternSetMatcher(MatchSetMatcher):
     def __init__(self, pattern_set: PatternSet) -> None:
         logger.info("Constructing the PatternSetMatcher")
         super().__init__()
-        self.pattern_set: PatternSet = pattern_set
+        self.pset: PatternSet = pattern_set
 
-        logger.info(
-            f"Registering the Patterns for the '{self.pattern_set.name}' PatternSet"
-        )
-        for pattern in self.pattern_set.get_all_patterns():
+        logger.info(f"Registering the Patterns for the '{self.pset.name}' PatternSet")
+        for pattern_key in self.pset.patterns:
+            pattern: Pattern = self.pset.patterns[pattern_key]
             spacy_config: dict[str, str] = {"greedy": "LONGEST"}
             logger.debug(f"Registering the '{pattern.rulename}' Pattern")
             self._matcher.add(pattern.rulename, [pattern.tokens], **spacy_config)
