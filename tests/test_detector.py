@@ -1,7 +1,7 @@
 from logging import getLogger
 from unittest import TestCase
-from settings import pattern_set_config
-from src.detectors import detect_feature
+from settings import Filepath, pattern_set_config
+from src.detectors import DetectorRepository
 from src.loaders import YamlLoader
 from src.matchers import PatternSetMatcher
 from src.patterns import PatternSet, PatternSetRepository
@@ -17,14 +17,10 @@ class TestDetectorTests(TestCase):
     @classmethod
     def setUpClass(self):
         """Load the patternset configuration files to extract the tests."""
-        self.pattern_sets: dict[str, PatternSet] = {}
-        file_loader = YamlLoader(pattern_set_config.host_dir_path)
-        repo = PatternSetRepository()
-
-        for pset_name in pattern_set_config.names:
-            pset_data = file_loader(pset_name)
-            pattern_set: PatternSet = repo.create(pset_name, pset_data)
-            self.pattern_sets[pattern_set.name] = pattern_set
+        self.repo = DetectorRepository(file_loader=YamlLoader)
+        for fpath in pattern_set_config.internal_patternset_filepaths:
+            fp = Filepath(fpath)
+            self.repo.create(fp.filepath)
 
     def should_skip_pset(self, pset):
         """Determine if the patternset's tests should be skipped. This operates at the patternset level."""
@@ -123,24 +119,25 @@ class TestDetectorTests(TestCase):
             return
 
         # Extract expected results, run matcher, and compare to actual results
-        # Separate each test in a pset using subTest to prevent failures from stopping other tests
+        # Separate each test using subTest to prevent failures from stopping other tests
         with self.subTest(f"{pset.name}:{input}"):
             (expected_rulenames, expected_spans) = self.get_expected_results(test, pset)
             rulenames = []
             spans = []
 
-            match_sets = detect_feature(input, pset.name)
-            for mset in match_sets:
-                rulenames.append(mset.best.rulename)
-                spans.append(str(mset.best.span))
+            detector = self.repo.get_one(pset.name)
+            for match in detector(input):
+                rulenames.append(match.rulename)
+                spans.append(str(match.span))
 
             if expected_rulenames:
                 self.assertListEqual(rulenames, expected_rulenames)
             if expected_spans:
                 self.assertListEqual(spans, expected_spans)
 
-    def run_pset(self, pset):
+    def run_detector(self, detector):
         """The main entrypoint to run all of the tests in a patternset."""
+        pset = detector.pattern_set
         (should_skip, skip_reason) = self.should_skip_pset(pset)
         if should_skip:
             msg = f"Skipping patternset '{pset.name}'"
@@ -150,13 +147,12 @@ class TestDetectorTests(TestCase):
                 logger.debug(msg)
             return
 
-        # Separate each pset using subTest to prevent failures from stopping the run
+        # Separate using subTest to prevent failures from stopping the run
         if pset.tests:
             with self.subTest(pset.name):
-                [self.run_test(test, pset) for test in pset.tests]
+                for test in pset.tests:
+                    self.run_test(test, pset)
 
     def test_pattern_set_json_tests(self):
         """The main entrypoint for the unittest package."""
-        for pset_key in self.pattern_sets:
-            pset = self.pattern_sets[pset_key]
-            self.run_pset(pset)
+        [self.run_detector(detector) for detector in self.repo.get_all()]
