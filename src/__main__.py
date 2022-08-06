@@ -7,6 +7,7 @@ from logging import getLogger
 from settings import pattern_set_config
 from .detectors import DetectorRepository
 from .loaders import YamlLoader
+from .nlp import nlp
 from .patterns import PatternSetRepository
 from .utils import to_token_table
 
@@ -30,41 +31,26 @@ async def main() -> None:
         detector_repo.create(internal_pset_fpath)
 
     # Run the detectors
-    results = {}
+    feature_set = {}
     count: int = 0
     for sentence in sentences:
+        logger.info(f"Sentence {count}: '{sentence}'")
+        sentence_start_time: float = time.time()
+
+        token_table = to_token_table(nlp, sentence)
+        logger.info(f"Token table:\n{token_table}")
+
         for detector in detector_repo.get_all():
-            result = detector(sentence)
-            results[detector.name] = result
+            feature_set[detector.name] = detector(sentence)
+
+        sentence_finish_time: float = time.time()
         count += 1
 
-    print(results)
+    finish_time: float = time.time()
+    logger.info(f"Total run time: {finish_time - start_time:.2f}s")
 
-    # count: int = 0
-    # for sentence in sentences:
-    #     sentence_start_time: float = time.time()
-
-    #     logger.info(f"Sentences ({len(sentences)}): {sentences}")
-    #     logger.info(f"Sentence {count}: '{sentence}'")
-
-    #     token_table = to_token_table(nlp, sentence)
-    #     logger.info(f"Token table:\n{token_table}")
-
-    #     feature_set = {}
-    #     for feature in pattern_set_config.names:
-    #         result = detect_feature(sentence, feature)
-    #         feature_set[feature] = result
-
-    #     logger.info("Detected features:")
-    #     logger.info("\n" + pprint.pformat(feature_set))
-
-    #     sentence_finish_time: float = time.time()
-    #     logger.info(
-    #         f"Sentence run time: {sentence_finish_time - sentence_start_time:.2f}s"
-    #     )
-    #     count += 1
-    # finish_time: float = time.time()
-    # logger.info(f"Total run time: {finish_time - start_time:.2f}s")
+    logger.info("Detected features:")
+    logger.info("\n" + pprint.pformat(feature_set))
 
 
 if __name__ == "__main__":
