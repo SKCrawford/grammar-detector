@@ -1,9 +1,6 @@
 from logging import getLogger
-from typing import cast, Union
-from settings import pattern_set_config
 from ..repositories import Repository
 from ..utils import singleton
-from .Pattern import PatternData
 from .PatternSet import Name, PatternSet, PatternSetData
 
 

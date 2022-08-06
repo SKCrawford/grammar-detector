@@ -1,6 +1,6 @@
 from logging import getLogger
 from typing import Type
-from settings import Filepath, pattern_set_config
+from settings import Filepath
 from ..loaders import FileLoader, YamlLoader
 from ..patterns import PatternSet, PatternSetData, PatternSetRepository
 from ..repositories import Repository

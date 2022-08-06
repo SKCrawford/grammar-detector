@@ -8,7 +8,6 @@ from settings import pattern_set_config
 from .detectors import DetectorRepository
 from .loaders import YamlLoader
 from .nlp import nlp
-from .patterns import PatternSetRepository
 from .utils import to_token_table
 
 
