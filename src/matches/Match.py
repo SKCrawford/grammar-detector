@@ -1,3 +1,4 @@
+from functools import cached_property
 from logging import getLogger
 from spacy import explain
 from spacy.tokens import Doc, Span
@@ -15,25 +16,6 @@ SpanFeatures = dict[str, str]
 logger = getLogger(__name__)
 
 
-def extract_span_features(span: Span) -> SpanFeatures:
-    """Extract useful attributes from the matching `Span`."""
-    logger.debug(f"Parsing the '{span}' Span")
-    return {
-        "span": span,
-        "phrase": span.text,
-        "root": span.root.text,
-        "root_head": span.root.head.text,
-        "pos": span.root.pos_,
-        "tag": span.root.tag_,
-        "dep": span.root.dep_,
-        "phrase_lemma": span.lemma_,
-        "root_lemma": span.root.lemma_,
-        "pos_desc": explain(span.root.pos_),  # type: ignore # explain is untyped
-        "tag_desc": explain(span.root.tag_),  # type: ignore # explain is untyped
-        "dep_desc": explain(span.root.dep_),  # type: ignore # explain is untyped
-    }
-
-
 class Match:
     """A helper class that wraps the output of the spaCy Matcher and provides useful attributes."""
 
@@ -48,14 +30,29 @@ class Match:
     def __repr__(self):
         return f"<{self.rulename}: {self.span}>"
 
-    @property
+    @cached_property
     def rulename(self) -> Rulename:
         return nlp.vocab.strings[self.match_id]
 
-    @property
+    @cached_property
     def span(self) -> Span:
         return self.doc[self.start : self.end]
 
-    @property
+    @cached_property
     def span_features(self) -> SpanFeatures:
-        return extract_span_features(self.span)
+        """Extract useful attributes from the matching `Span`."""
+        logger.debug(f"Parsing the '{self.span}' Span")
+        return {
+            "span": self.span,
+            "phrase": self.span.text,
+            "root": self.span.root.text,
+            "root_head": self.span.root.head.text,
+            "pos": self.span.root.pos_,
+            "tag": self.span.root.tag_,
+            "dep": self.span.root.dep_,
+            "phrase_lemma": self.span.lemma_,
+            "root_lemma": self.span.root.lemma_,
+            "pos_desc": explain(self.span.root.pos_),  # type: ignore # explain is untyped
+            "tag_desc": explain(self.span.root.tag_),  # type: ignore # explain is untyped
+            "dep_desc": explain(self.span.root.dep_),  # type: ignore # explain is untyped
+        }
