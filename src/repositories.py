@@ -4,48 +4,36 @@ from .cache import Cache
 
 
 T = TypeVar("T")
-BeforeSaveCallback = Callable[[T], T]
-CacheKeyCallback = Callable[[T], str]
 
 
 logger = getLogger(__name__)
 
 
-def get_object_id(t: T) -> str:
-    return str(id(t))
-
-
-def noop(t: T) -> T:
-    return t
-
-
 class Repository(Generic[T]):
-    def __init__(self, klass: T, cache_key: CacheKeyCallback = get_object_id) -> None:
-        """Create a repository for the specified `klass`. The `cache_key` callback takes a `klass` instance and returns a `str` to be used as the cache key, defaulting to the instance's `id` as a `str`."""
-        # logger.debug(f"Constructing the Repository[{klass}]")
+    def __init__(self, klass: T) -> None:
+        """Create a repository for the specified `klass`."""
         logger.info(f"Constructing the Repository[{klass}]")
         self._klass: T = klass
-        self.cache = Cache()
-        self.make_cache_key: CacheKeyCallback = cache_key
+        self.cache: Cache = Cache()
 
-    def create(
-        self,
-        *args: str,
-        before_save: BeforeSaveCallback = noop,
-        **kwargs: str,
-    ) -> T:
-        """Run the `before_save` callback after creating the `klass` instance but before saving it to the cache, permitting changes to be made pre-save. When saving the instance to the cache, its key is created by the `cache_key` callback that was provided to the Repository's constructor."""
-        # logger.debug(f"Constructing the {self._klass}")
-        logger.info(f"Constructing the {self._klass}")
+    def cache_key(self, *args, **kwargs) -> str:
+        msg = "make_cache_key method was not overridden"
+        logger.error(msg)
+        raise NotImplementedError(msg)
+
+    def create(self, *args: str, **kwargs: str) -> T:
+        """When saving the instance to the cache, its key is created by the overriden `make_cache_key` method."""
+        logger.debug("Making the cache key")
+        cache_key: str = self.cache_key(*args, **kwargs)
+
+        logger.debug(f"Checking the cache for key '{cache_key}'")
+        if self.cache.has_key(cache_key):
+            return self.get_one(cache_key)
+
+        logger.debug(f"Constructing the {self._klass}")
         instance: T = self._klass(*args, **kwargs)
 
-        logger.debug("Running the before_save callback")
-        instance = before_save(instance)
-
-        logger.debug("Running the cache_key callback")
-        cache_key: str = self.make_cache_key(instance)
-
-        logger.info(f"Saving the '{cache_key}' {self._klass} instance")
+        logger.debug(f"Caching {self._klass} instance to key '{cache_key}'")
         self.cache.save(cache_key, instance)
         return self.get_one(cache_key)
 
