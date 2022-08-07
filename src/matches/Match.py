@@ -3,7 +3,6 @@ from logging import getLogger
 from spacy import explain
 from spacy.tokens import Doc, Span
 from ..nlp import nlp
-from ..patterns import Rulename
 
 
 MatchId = int
@@ -31,7 +30,7 @@ class Match:
         return f"<{self.rulename}: {self.span}>"
 
     @cached_property
-    def rulename(self) -> Rulename:
+    def rulename(self) -> str:
         return nlp.vocab.strings[self.match_id]
 
     @cached_property

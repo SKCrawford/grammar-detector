@@ -1,3 +1,3 @@
-from .Pattern import Pattern, PatternData, Rulename
+from .Pattern import Pattern
 from .PatternSet import PatternSet, PatternSetData
 from .PatternSetRepository import PatternSetRepository
