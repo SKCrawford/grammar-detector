@@ -1,16 +1,22 @@
 import logging
-from os.path import join
+from logging import basicConfig, Formatter, StreamHandler
+import sys
 from settings import logger_config
 
 
-last_filepath = join(logger_config.host_dir_path, logger_config.prop_str("FILE_LAST"))
-last_filehandler = logging.FileHandler(last_filepath, mode="w+")
+basic_formatter = Formatter(fmt=logger_config.prop_str("FORMAT_BASIC"))
+detailed_formatter = Formatter(fmt=logger_config.prop_str("FORMAT_DETAILED"))
 
-debug_filepath = join(logger_config.host_dir_path, logger_config.prop_str("FILE_DEBUG"))
-debug_filehandler = logging.FileHandler(debug_filepath, mode="a+")
+handler = StreamHandler(sys.stdout)
+level: int = logger_config.prop_int("LEVEL")
+formatter: Formatter = basic_formatter if level == logging.INFO else detailed_formatter
+handler.setFormatter(formatter)
 
-logging.basicConfig(
-    format=logger_config.prop_str("FORMAT"),
-    level=logger_config.prop_int("LEVEL"),
-    handlers=[last_filehandler, debug_filehandler],
+error_handler = StreamHandler(sys.stderr)
+error_handler.setLevel(logging.WARNING)
+error_handler.setFormatter(detailed_formatter)
+
+basicConfig(
+    level=level,
+    handlers=[handler, error_handler],
 )

@@ -2,23 +2,15 @@
 # DataConfig.prop setting. The spaCy dataset from which the NLP model is derived. Be sure to download the dataset beforehand by `$ python -m spacy download name_of_the_dataset`. `The default is "en_core_web_lg".
 DATA_DATASET: "en_core_web_lg"
 
-# LoggerConfig.prop setting. The directory containing the log files, relevant to the project's root. The default is ".logs".
-LOGGER_DIR: ".logs"
-
-# LoggerConfig.prop setting. The filename of the accumulated debug log. The default is "debug.log".
-LOGGER_FILE_DEBUG: "debug.log"
-
-# LoggerConfig.prop setting. The filename of the last run's log. The default is "last.log".
-LOGGER_FILE_LAST: "last.log"
-
-# LoggerConfig.prop setting. The filename of the test-driven log. The default is "test.log".
-LOGGER_FILE_TEST: "test.log"
+# LoggerConfig.prop setting. The format of the logger. The default is:
+# [%(asctime)s][%(levelname)s] %(message)s
+LOGGER_FORMAT_BASIC: "[%(asctime)s][%(levelname)s] %(message)s"
 
 # LoggerConfig.prop setting. The format of the logger. The default is:
 # [%(asctime)s][%(module)s:%(funcName)s:%(lineno)d][%(levelname)s] %(message)s
-LOGGER_FORMAT: "[%(asctime)s][%(module)s:%(funcName)s:%(lineno)d][%(levelname)s] %(message)s"
+LOGGER_FORMAT_DETAILED: "[%(asctime)s][%(module)s:%(funcName)s:%(lineno)d][%(levelname)s] %(message)s"
 
-# LoggerConfig.prop setting. The level of the logger. The default is 20.
+# LoggerConfig.prop setting. The level of the logger. The default is 30.
 # DEBUG=10, INFO=20, WARN=30, ERROR=40, CRITICAL=50
 LOGGER_LEVEL: 20
 
