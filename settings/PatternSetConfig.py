@@ -1,4 +1,3 @@
-import src.logger
 from logging import getLogger
 from os import listdir
 from os.path import join

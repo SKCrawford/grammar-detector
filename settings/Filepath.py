@@ -1,4 +1,3 @@
-import src.logger
 from logging import getLogger
 from functools import cached_property
 from os.path import split
