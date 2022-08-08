@@ -8,8 +8,9 @@ from .detectors import DetectorRepository
 from .loaders import YamlLoader
 from .logger import configure_logger
 from .matches import Match
-from .nlp import configure_nlp, nlp
+from .nlp import nlp
 from .utils import to_token_table
+from .config import Config
 
 
 class SyntaxDetector:
@@ -32,13 +33,18 @@ class SyntaxDetector:
         self.very_verbose: bool = very_verbose
         self.detector_repo = DetectorRepository()
 
+    def __call__(self, input: str) -> dict[str, list[Match]]:
+        matches: dict[str, list[Match]] = {}
+        for detector in self.detectors:
+            matches[detector.name] = detector(input)
+        return matches
+
     @property
     def detectors(self):
         return self.detector_repo.get_all()
 
     def configure(self):
-        configure_settings(settings_path)
-        configure_nlp(data_conf)
+        config = Config(self.settings_path)
 
         # Logger
         log_level: int = logger_conf.prop_int("LEVEL")
@@ -78,12 +84,6 @@ class SyntaxDetector:
 
         # Detectors
         [self.detector_repo.create(fpath) for fpath in patternset_filepaths]
-
-    def detect(self, input: str) -> dict[str, list[Match]]:
-        matches: dict[str, list[Match]] = {}
-        for detector in self.detectors:
-            matches[detector.name] = detector(input)
-        return matches
 
 
 def main() -> None:
