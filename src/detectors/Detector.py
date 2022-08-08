@@ -11,7 +11,7 @@ logger = getLogger(__name__)
 
 class Detector:
     def __init__(self, pattern_set: PatternSet) -> None:
-        logger.debug("Constructing the '{pattern_set.name}' Detector")
+        logger.debug(f"Constructing the '{pattern_set.name}' Detector")
         self.pattern_set = pattern_set
         self.name = self.pattern_set.name
 

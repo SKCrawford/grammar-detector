@@ -23,5 +23,5 @@ class PatternSetMatcher(MatchSetMatcher):
         for pattern_key in self.pset.patterns:
             pattern: Pattern = self.pset.patterns[pattern_key]
             spacy_config: dict[str, str] = {"greedy": "LONGEST"}
-            logger.debug(f"Registering the '{pattern.rulename}' Pattern")
+            logger.debug(f"Adding the '{pattern.rulename}' Pattern")
             self._matcher.add(pattern.rulename, [pattern.tokens], **spacy_config)

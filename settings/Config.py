@@ -22,10 +22,11 @@ class Config:
 
     def _prop(self, property_name: str) -> Any:
         """Returns the config setting for `property_name`. Fails loudly."""
-        logger.debug(f"Getting the config setting '{property_name}'")
         if self.prefix:
             property_name = f"{self.prefix}_{property_name}"
         property_name = property_name.upper()
+        value = self._settings[property_name]
+        logger.debug(f"Found '{value}' for config setting '{property_name}'")
         return self._settings[property_name]
 
     def prop_str(self, property_name: str) -> str:

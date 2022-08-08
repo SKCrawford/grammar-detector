@@ -41,11 +41,13 @@ class PatternSet:
             logger.info(f"Adding '{pattern.rulename}' to '{self.name}'")
             self.patterns[pattern.rulename] = pattern
 
-        logger.debug("Loading the meta settings")
         self.meta: Meta = data["meta"] if "meta" in data else {}
+        for meta_key in self.meta:
+            logger.debug(f"Found '{self.meta[meta_key]}' for meta '{meta_key}'")
 
-        logger.debug("Loading the tests")
         self.tests: list[Test] = data["tests"] if "tests" in data else []
+        for test in self.tests:
+            logger.debug(f"Found test: {test['input']}")
 
     @property
     def best_match(self) -> str:

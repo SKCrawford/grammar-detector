@@ -10,29 +10,29 @@ logger = getLogger(__name__)
 
 class Cache(Generic[T]):
     def __init__(self) -> None:
-        logger.debug("Constructing the Cache")  # TODO add type to log
+        logger.debug(f"Constructing the Cache")  # TODO add type to log
         self._cache: dict[str, T] = {}
 
     def clear_all(self) -> None:
         """Clears the cache. Returns True."""
-        logger.debug("Clearing the cache")
+        logger.debug("Clearing the Cache")
         self._cache = {}
 
     def clear_one(self, key: str) -> None:
         """Removes one value corresponding to the key in the cache."""
-        logger.debug(f"Clearing '{key}' from the cache")
+        logger.debug(f"Clearing '{key}' from Cache")
         key = str(key)
         self._cache[key] = None
 
     def get_all(self) -> list[T]:
         """Returns all values in the cache."""
-        logger.debug(f"Getting all cache entries")
+        logger.debug(f"Getting all Cache entries")
         return [self._cache[key] for key in self._cache]
 
     def get_one(self, key: str) -> T:
         """Returns the value cache by `key`."""
         key = str(key)
-        logger.debug(f"Getting the '{key}' cache entry")
+        logger.debug(f"Getting the '{key}' Cache entry")
         if not self.has_key(key):
             msg = f"'{key}' is not cached"
             logger.error(msg)
@@ -45,7 +45,7 @@ class Cache(Generic[T]):
 
     def save(self, key: str, value: T) -> None:
         """Save one key/value pair to the cache."""
-        logger.debug(f"Caching the '{key}' {T}")
+        logger.debug(f"Caching to the '{key}' Cache")
         self._cache[str(key)] = value
 
 
