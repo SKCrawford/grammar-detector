@@ -11,7 +11,7 @@ logger = getLogger(__name__)
 
 class Detector:
     def __init__(self, pattern_set: PatternSet) -> None:
-        logger.debug("Constructing the Detector")
+        logger.debug("Constructing the '{pattern_set.name}' Detector")
         self.pattern_set = pattern_set
         self.name = self.pattern_set.name
 
@@ -20,7 +20,8 @@ class Detector:
 
     def __call__(self, raw: str) -> list[Match]:
         """The entrypoint for the Detector."""
-        logger.info(f"Detecting for '{self.name}' feature in '{raw}'")
+        logger.info(f"Detecting '{self.name}'")
+        # logger.info(f"Detecting for '{self.name}' feature in '{raw}'")
         input = Input(raw)
         input.extract_noun_chunks = bool(self.pattern_set.should_extract_noun_chunks)
 

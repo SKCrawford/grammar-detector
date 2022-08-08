@@ -12,7 +12,7 @@ logger = getLogger(__name__)
 class Repository(Generic[T]):
     def __init__(self, klass: T) -> None:
         """Create a repository for the specified `klass`."""
-        logger.info(f"Constructing the Repository[{klass}]")
+        logger.debug(f"Constructing the Repository[{klass}]")
         self._klass: T = klass
         self.cache: Cache = Cache()
 

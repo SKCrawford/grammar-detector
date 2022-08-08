@@ -15,7 +15,7 @@ class MatchSet:
         best_match: str = "",
         how_many_matches: str = "",
     ) -> None:
-        logger.info(f"Constructing the MatchSet for '{doc.text}'")
+        logger.debug(f"Constructing the MatchSet for '{doc.text}'")
         self.matches: list[Match] = [Match(raw_match, doc) for raw_match in raw_matches]
         self.doc: Doc = doc
         self.best_match: str = best_match

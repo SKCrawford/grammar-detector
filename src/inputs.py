@@ -10,7 +10,7 @@ class Input:
     """A helper class for tokenizing text and fragmenting the result into a `list[Doc]`. All properties must return a `list[Doc]` for compatibility purposes, hence the `docs` property."""
 
     def __init__(self, raw_input: str, extract_noun_chunks: bool = False) -> None:
-        logger.info(f"Constructing the Input for '{raw_input}'")
+        logger.debug(f"Constructing the Input for '{raw_input}'")
         self.raw: str = raw_input
         self.doc: Doc = nlp(raw_input)
         self.extract_noun_chunks: bool = extract_noun_chunks
@@ -30,7 +30,7 @@ class Input:
     @property
     def fragments(self) -> list[Doc]:
         """Automatically select the most appropriate fragmenting attribute."""
-        logger.info("Fragmenting the Input")
+        logger.debug("Fragmenting the Input")
         if self.extract_noun_chunks:
             return self.noun_chunks
         return self.docs

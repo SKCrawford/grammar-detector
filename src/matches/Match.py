@@ -19,7 +19,7 @@ class Match:
     """A helper class that wraps the output of the spaCy Matcher and provides useful attributes."""
 
     def __init__(self, raw_match: RawMatch, doc: Doc) -> None:
-        logger.info(f"Constructing the Match for '{doc.text}'")
+        logger.debug(f"Constructing the Match for '{doc.text}'")
         (match_id, start, end) = raw_match
         self.match_id: MatchId = match_id
         self.start: Start = start

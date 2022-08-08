@@ -45,7 +45,7 @@ class Cache(Generic[T]):
 
     def save(self, key: str, value: T) -> None:
         """Save one key/value pair to the cache."""
-        logger.info(f"Saving the key '{key}' to the cache")
+        logger.debug(f"Caching the '{key}' {T}")
         self._cache[str(key)] = value
 
 

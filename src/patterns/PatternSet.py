@@ -38,7 +38,7 @@ class PatternSet:
         self.patterns: dict[str, Pattern] = {}
         for p_data in data["patterns"]:
             pattern = Pattern(p_data)
-            logger.info(f"Loading '{pattern.rulename}' to '{self.name}'")
+            logger.info(f"Adding '{pattern.rulename}' to '{self.name}'")
             self.patterns[pattern.rulename] = pattern
 
         logger.debug("Loading the meta settings")

@@ -12,4 +12,5 @@ logger = getLogger(__name__)
 class Pattern:
     def __init__(self, data: PatternData):
         self.rulename: str = data["rulename"]
+        logger.debug("Constructing the '{self.rulename}' Pattern")
         self.tokens: list[Token] = data["tokens"]
