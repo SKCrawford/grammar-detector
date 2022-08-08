@@ -4,7 +4,7 @@ DATA_DATASET: "en_core_web_lg"
 
 # LoggerConfig.prop setting. The format of the logger. The default is:
 # [%(asctime)s][%(levelname)s] %(message)s
-LOGGER_FORMAT_BASIC: "[%(asctime)s][%(levelname)s] %(message)s"
+LOGGER_FORMAT_BASIC: "[%(asctime)s] %(message)s"
 
 # LoggerConfig.prop setting. The format of the logger. The default is:
 # [%(asctime)s][%(module)s:%(funcName)s:%(lineno)d][%(levelname)s] %(message)s
