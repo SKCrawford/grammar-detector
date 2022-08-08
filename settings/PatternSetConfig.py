@@ -1,3 +1,4 @@
+import src.logger
 from logging import getLogger
 from os import listdir
 from os.path import join
@@ -12,7 +13,7 @@ class PatternSetConfig(Config):
     """A class containing the configuration settings for the patternset directory and files."""
 
     def __init__(self, config_file_path: str) -> None:
-        logger.info("Constructing the PatternSetConfig")
+        logger.debug("Constructing the PatternSetConfig")
         self.config_fp: Filepath = Filepath(config_file_path)
         super().__init__(self.config_fp.filepath)
         self.prefix = "PATTERN_SET"

@@ -1,3 +1,4 @@
+import src.logger
 from logging import getLogger
 from os.path import abspath
 from pathlib import Path
@@ -12,10 +13,10 @@ class Config:
     """A class for managing configuration settings. When extending `Config`, set the `prefix` attribute in the constructor."""
 
     def __init__(self, config_file_path: str) -> None:
-        logger.info("Constructing the Config")
+        logger.debug("Constructing the Config")
         self.prefix: str = ""
 
-        logger.info(f"Loading the config file at {config_file_path}")
+        logger.debug(f"Loading the config file at {config_file_path}")
         self.config_file_path = config_file_path
         with open(config_file_path, "r") as f:
             self._settings = load_yaml(f, Loader=FullLoader)
