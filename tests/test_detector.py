@@ -1,14 +1,6 @@
-from logging import getLogger
 from unittest import TestCase
 from settings import Filepath, pattern_set_config
 from src.detectors import DetectorRepository
-from src.loaders import YamlLoader
-from src.matchers import PatternSetMatcher
-from src.patterns import PatternSet, PatternSetRepository
-from src.utils import get_doc
-
-
-logger = getLogger(__name__)
 
 
 class TestDetectorTests(TestCase):
@@ -17,7 +9,7 @@ class TestDetectorTests(TestCase):
     @classmethod
     def setUpClass(self):
         """Load the patternset configuration files to extract the tests."""
-        self.repo = DetectorRepository(file_loader=YamlLoader)
+        self.repo = DetectorRepository()
         for fpath in pattern_set_config.internal_patternset_filepaths:
             fp = Filepath(fpath)
             self.repo.create(fp.filepath)
@@ -37,13 +29,11 @@ class TestDetectorTests(TestCase):
                 skip_reason = skip_setting
             else:
                 msg = f"Expected a bool or str but got '{type(skip_setting)}'"
-                logger.error(msg)
                 raise TypeError(msg)
         except KeyError:
             should_skip = False
             skip_reason = ""
         except Exception as e:
-            logger.error(e)
             raise e
 
         return (should_skip, skip_reason)
@@ -63,14 +53,12 @@ class TestDetectorTests(TestCase):
                 skip_reason = skip_setting
             else:
                 msg = f"Expected a bool or str but got '{type(skip_setting)}'"
-                logger.error(msg)
                 raise TypeError(msg)
             return (should_skip, skip_reason)
         except KeyError:
             should_skip = False
             skip_reason = ""
         except Exception as e:
-            logger.error(e)
             raise e
 
         return (should_skip, skip_reason)
@@ -88,7 +76,6 @@ class TestDetectorTests(TestCase):
         if not expected_rulenames and not expected_spans:
             valid_keys = [rulenames_key, spans_key]
             err_msg = f"The test must have at least one of these keys: {valid_keys}"
-            logger.error(err_msg)
             raise KeyError(err_msg)
 
         # Validate the length of expected results in relation to the expected number of matches
@@ -100,7 +87,6 @@ class TestDetectorTests(TestCase):
 
             if how_many_matches.upper() == one_match_setting.upper():
                 err_msg = "The patternset expects only one match, but the test expects multiple matches"
-                logger.error(err_msg)
                 raise ValueError(err_msg)
         return (expected_rulenames, expected_spans)
 
@@ -115,7 +101,6 @@ class TestDetectorTests(TestCase):
             if bool(len(skip_reason)):
                 msg = msg + f" ({skip_reason})"
                 print(msg)
-                logger.debug(msg)
             return
 
         # Extract expected results, run matcher, and compare to actual results
@@ -144,7 +129,6 @@ class TestDetectorTests(TestCase):
             if bool(len(skip_reason)):
                 msg = msg + f": {skip_reason}"
                 print(msg)
-                logger.debug(msg)
             return
 
         # Separate using subTest to prevent failures from stopping the run
