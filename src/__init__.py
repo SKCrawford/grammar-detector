@@ -1,0 +1,1 @@
+from .SyntaxDetector import SyntaxDetector
