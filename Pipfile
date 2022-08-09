@@ -7,7 +7,6 @@ verify_ssl = true
 black = "==21.9b0"
 mypy = "*"
 python-lsp-server = "*"
-tabulate = "*"
 types-pyyaml = "*"
 types-tabulate = "*"
 
@@ -15,6 +14,7 @@ types-tabulate = "*"
 pyyaml = "*"
 spacy = "*"
 spacy-lookups-data = "*"
+tabulate = "*"
 
 [requires]
 python_version = "3.9"
