@@ -9,10 +9,16 @@ from .utils import Filepath
 
 
 class SyntaxDetector:
-    """A class for detecting syntactic features in sentences, phrases, or clauses. The core of the detector is the YAML patternset files. These files contain a list of patterns with rulenames and tokens, meta configuration options, and unittests to evaluate the patterns.
+    """A class for detecting syntactic features in sentences, phrases, and clauses. The core of the detector is the YAML patternset files. These files contain a list of `Pattern`s with rulenames and tokens, meta configuration options, and unittests to evaluate the `Pattern`s. After constructing, configuring via `configure()`, and loading via `load()`, the `SyntaxDetector` instance is ready to use. Does not currently support any text whose length is longer than a sentence.
 
-    Does not currently support any text whose length is longer than a sentence.
-    """
+        The two ways to evaluate the syntactic features of the sentence or chunk of text are:
+        * Using the `__call__()` method to run all `Detector`s automatically
+        * Using the `detectors` property and `Detector.__call__()` method to run the `Detector`s manually
+
+        Each resulting `Match` has two properties:
+        1) `rulename`   -- (str) The name of the `Pattern` that best matches the input
+        2) `span`       -- (str) The exact text that triggered the `Pattern`
+        """
     def __init__(
         self,
         dataset: str = "en_core_web_lg",
@@ -24,13 +30,7 @@ class SyntaxDetector:
         verbose: bool = False,
         very_verbose: bool = False,
     ) -> None:
-        """Create an instance of the `SyntaxDetector` by passing in configuration options. After construction, the methods `configure()` and `load()` must be called in order. After they have been called, the instance will be ready for use. The two ways to evaluate the syntactic features of the sentence or chunk of text are:
-        * Using the `__call__()` method to run all `Detector`s automatically
-        * Using the `detectors` property and `Detector.__call__()` method to run the `Detector`s manually
-
-        Each resulting `Match` has two properties:
-        1) `rulename`   -- (str) The name of the `Pattern` that best matches the input
-        2) `span`       -- (str) The exact text that triggered the `Pattern`
+        """Create an instance of the `SyntaxDetector` by passing in configuration options. After construction, the methods `configure()` and `load()` must be called in order. After they have been called, the instance is ready to use.
 
         Keyword arguments:
         dataset                     -- (str) The spaCy dataset used to create the global `nlp: Language` (default 'en_core_web_lg')
@@ -58,7 +58,7 @@ class SyntaxDetector:
         self.detector_repo = DetectorRepository()
 
     def __call__(self, input: str) -> dict[str, list[Match]]:
-        """One of the two ways to evaluate text for syntactic features. Use this `SyntaxDetector.__call__()` method to evaluate text. Returns a dict of `Match`es after running all `Detector`s on the input string.
+        """Returns a dict of `Match`es after running all `Detector`s on the input string. One of the two ways to evaluate text for syntactic features. Use this `SyntaxDetector.__call__()` method to evaluate text. 
 
         Arguments:
         input -- The sentence or chunk of text to be analyze as a string
@@ -70,7 +70,7 @@ class SyntaxDetector:
 
     @property
     def detectors(self) -> list[Detector]:
-        """One of the two ways to evaluate text for syntactic features. Returns all `Detectors` created after calling `load`. Use the `Detector.__call__` method to evaluate text."""
+        """Returns all `Detectors` created after calling `load`. One of the two ways to evaluate text for syntactic features. Use the `Detector.__call__` method to evaluate text."""
         if not self._is_loaded:
             raise RuntimeError(f"load() must be called before accessing this property")
         return self.detector_repo.get_all()
