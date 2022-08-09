@@ -1,54 +1,10 @@
-from functools import reduce, wraps
 from logging import getLogger
-from operator import concat
 from spacy import explain
 from spacy.language import Language
-from spacy.tokens import Doc, Span
 from tabulate import tabulate
-from typing import Union
-from .nlp import nlp
 
 
 logger = getLogger(__name__)
-
-
-def get_doc(text: Union[str, Doc, Span]) -> Doc:
-    """Coerce a `str`, `Doc`, or `Span` into a `Doc`. Raises a `TypeError` when `text` is none of these classes."""
-    logger.info(f"Getting the Doc for '{text}' (text_type)")
-    if isinstance(text, Doc):
-        logger.debug("Skipping tokenizing")
-        return text
-    elif isinstance(text, Span):
-        logger.debug("Converting the Span to a Doc")
-        return text.as_doc()
-    elif isinstance(text, str):
-        logger.debug("Tokenizing")
-        return nlp(text)
-    else:
-        msg = f"Cannot get the Doc for '{text}' ({type(text)})"
-        logger.error(msg)
-        raise TypeError(msg)
-
-
-def singleton(klass):
-    instances = []
-
-    @wraps(klass.__new__)
-    def _singleton(*args, **kwargs):
-        if not instances:
-            logger.debug(f"Constructing a new {klass}")
-            instance = klass(*args, **kwargs)
-            instances.append(instance)
-        else:
-            logger.debug(f"Retrieving an existing {klass}")
-        return instances[0]
-
-    return _singleton
-
-
-# Source: https://stackoverflow.com/a/45323085
-def flatten(a):
-    return reduce(concat, a)
 
 
 def to_token_table(
