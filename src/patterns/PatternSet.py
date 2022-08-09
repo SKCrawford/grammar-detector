@@ -1,6 +1,6 @@
 from logging import getLogger
 from typing import Literal, Union
-from settings import pattern_set_config
+from ..config import Config
 from .Pattern import Pattern, PatternData
 
 
@@ -54,14 +54,14 @@ class PatternSet:
         try:
             return str(self.meta["best_match"])
         except:
-            return pattern_set_config.prop_str("DEFAULT_BEST_MATCH")
+            return Config().prop_str("PATTERN_SET_DEFAULT_BEST_MATCH")
 
     @property
     def how_many_matches(self) -> str:
         try:
             return str(self.meta["how_many_matches"])
         except:
-            return pattern_set_config.prop_str("DEFAULT_HOW_MANY_MATCHES")
+            return Config().prop_str("PATTERN_SET_DEFAULT_HOW_MANY_MATCHES")
 
     @property
     def should_extract_noun_chunks(self) -> bool:

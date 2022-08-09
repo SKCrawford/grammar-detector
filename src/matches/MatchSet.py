@@ -1,6 +1,6 @@
 from logging import getLogger
 from spacy.tokens import Doc
-from settings import pattern_set_config
+from ..config import Config
 from .Match import Match, RawMatch
 
 
@@ -29,9 +29,9 @@ class MatchSet:
         if not self.matches:
             return []
 
-        if self.how_many_matches == pattern_set_config.prop_str("ONE_MATCH"):
+        if self.how_many_matches == Config().prop_str("PATTERN_SET_ONE_MATCH"):
             return [self.best]
-        elif self.how_many_matches == pattern_set_config.prop_str("ALL_MATCHES"):
+        elif self.how_many_matches == Config().prop_str("PATTERN_SET_ALL_MATCHES"):
             return self.all
         else:
             msg = f"Invalid value for 'how_many_matches': {self.how_many_matches}"
@@ -48,7 +48,7 @@ class MatchSet:
         logger.info(
             f"Getting the best match of these {len(self.matches)}: {self.matches}"
         )
-        longest_match_setting = pattern_set_config.prop_str("LONGEST_MATCH")
+        longest_match_setting = Config().prop_str("PATTERN_SET_LONGEST_MATCH")
 
         if self.best_match.upper() == longest_match_setting.upper():
             return self.longest

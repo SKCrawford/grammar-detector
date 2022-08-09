@@ -1,6 +1,6 @@
 from logging import getLogger
 from spacy.tokens import Doc
-from settings import pattern_set_config
+from ..config import Config
 from ..matches import MatchSet, RawMatch
 from .RawMatcher import RawMatcher
 
@@ -11,8 +11,10 @@ logger = getLogger(__name__)
 class MatchSetMatcher(RawMatcher):
     def __init__(
         self,
-        best_match: str = pattern_set_config.prop_str("DEFAULT_BEST_MATCH"),
-        how_many_matches: str = pattern_set_config.prop_str("DEFAULT_HOW_MANY_MATCHES"),
+        best_match: str = Config().prop_str("PATTERN_SET_DEFAULT_BEST_MATCH"),
+        how_many_matches: str = Config().prop_str(
+            "PATTERN_SET_DEFAULT_HOW_MANY_MATCHES"
+        ),
     ) -> None:
         logger.debug("Constructing the MatchSetMatcher")
         super().__init__()

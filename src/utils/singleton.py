@@ -1,4 +1,8 @@
+from logging import getLogger
 from functools import wraps
+
+
+logger = getLogger(__name__)
 
 
 def singleton(klass):

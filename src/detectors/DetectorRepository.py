@@ -1,10 +1,9 @@
 from logging import getLogger
 from typing import Type
-from settings import Filepath
 from ..loaders import FileLoader, YamlLoader
 from ..patterns import PatternSet, PatternSetData, PatternSetRepository
 from ..repositories import Repository
-from ..utils import singleton
+from ..utils import Filepath, singleton
 from .Detector import Detector
 
 

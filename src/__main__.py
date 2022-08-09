@@ -1,16 +1,15 @@
-import os
-import pprint
-import sys
-import time
 from logging import getLogger
-from settings import configure_settings, Filepath
+from os import listdir, path
+from pprint import pformat
+from sys import argv
+from time import time
+from .config import Config
 from .detectors import DetectorRepository
 from .loaders import YamlLoader
 from .logger import configure_logger
 from .matches import Match
 from .nlp import nlp
-from .utils import to_token_table
-from .config import Config
+from .utils import Filepath, to_token_table
 
 
 class SyntaxDetector:
@@ -31,6 +30,8 @@ class SyntaxDetector:
         self.settings_path: str = settings_path
         self.verbose: bool = verbose
         self.very_verbose: bool = very_verbose
+
+        self.config = Config(self.settings_path)
         self.detector_repo = DetectorRepository()
 
     def __call__(self, input: str) -> dict[str, list[Match]]:
@@ -44,41 +45,39 @@ class SyntaxDetector:
         return self.detector_repo.get_all()
 
     def configure(self):
-        config = Config(self.settings_path)
-
         # Logger
-        log_level: int = logger_conf.prop_int("LEVEL")
+        log_level: int = self.config.prop_int("LOGGER_LEVEL")
         if self.very_verbose:
             log_level = 10
         elif self.verbose:
             log_level = 20
-        configure_logger(logger_conf, log_level)
+        configure_logger(self.config, log_level)
 
     def load(self):
         # Patternsets
         patternset_filepaths: list[str] = []
         feature_list: list[str] = []
-        if not features == "all":
+        if not self.features == "all":
             feature_list = self.features.split(",")
 
         ## Internal patternsets
-        if not exclude_builtin_patternsets:
-            for fpath in patternset_conf.internal_patternset_filepaths:
+        if not self.exclude_builtin_patternsets:
+            for fpath in Config().internal_patternset_filepaths:
                 fp = Filepath(fpath)
                 if not feature_list or fp.name in feature_list:
                     patternset_filepaths.append(fp.filepath)
 
         ## External patternsets
-        if patternset_path:
-            if os.path.isdir(patternset_path):
-                for fpath in os.listdir(patternset_path):
+        if self.patternset_path:
+            if path.isdir(self.patternset_path):
+                for fpath in listdir(self.patternset_path):
                     fp = Filepath(fpath)
                     if not feature_list or fp.name in feature_list:
                         patternset_filepaths.append(fp.filepath)
-            elif os.path.isfile(patternset_path):
-                patternset_filepaths.append(patternset_path)
+            elif path.isfile(self.patternset_path):
+                patternset_filepaths.append(self.patternset_path)
             else:
-                msg = f"patternset_path expects a directory or file but got: '{patternset_path}"
+                msg = f"patternset_path expects a directory or file but got: '{self.patternset_path}"
                 logger.error(msg)
                 raise ValueError(msg)
 
@@ -91,8 +90,8 @@ def main() -> None:
     sentences: list[str] = []
 
     # Validate the input
-    if len(sys.argv) > 1:
-        sentences = sys.argv[1:]
+    if len(argv) > 1:
+        sentences = argv[1:]
     else:
         raise ValueError("No sentences were provided")
 
@@ -105,6 +104,9 @@ def main() -> None:
         verbose=True,
         very_verbose=False,
     )
+    syndet.configure()
+    syndet.load()
+    logger = getLogger(__name__)
 
     # Run the detectors
     count: int = 0
@@ -115,7 +117,6 @@ def main() -> None:
         logger.info(f"Sentence {count}: '{sentence}'")
         sentence_start_time: float = time.time()
 
-        # token_table = to_token_table(syndet.nlp, sentence)
         token_table = to_token_table(nlp, sentence)
         logger.info(f"Token table:\n{token_table}")
 
@@ -130,7 +131,7 @@ def main() -> None:
     logger.info(f"Total run time: {finish_time - start_time:.2f}s")
 
     logger.info("Detected features:")
-    logger.info("\n" + pprint.pformat(features))
+    logger.info("\n" + pformat(features))
 
 
 if __name__ == "__main__":
