@@ -1,13 +1,18 @@
+from logging import getLogger
 from os import listdir, path
 from pprint import pformat
 from .Config import Config
-from .detectors import DetectorRepository
+from .detectors import Detector, DetectorRepository
 from .logger import configure_logger
 from .matches import Match
 from .utils import Filepath
 
 
 class SyntaxDetector:
+    """A class for detecting syntactic features in sentences, phrases, or clauses. The core of the detector is the YAML patternset files. These files contain a list of patterns with rulenames and tokens, meta configuration options, and unittests to evaluate the patterns.
+
+    Does not currently support any text whose length is longer than a sentence.
+    """
     def __init__(
         self,
         dataset: str = "en_core_web_lg",
@@ -19,6 +24,27 @@ class SyntaxDetector:
         verbose: bool = False,
         very_verbose: bool = False,
     ) -> None:
+        """Create an instance of the `SyntaxDetector` by passing in configuration options. After construction, the methods `configure()` and `load()` must be called in order. After they have been called, the instance will be ready for use. The two ways to evaluate the syntactic features of the sentence or chunk of text are:
+        * Using the `__call__()` method to run all `Detector`s automatically
+        * Using the `detectors` property and `Detector.__call__()` method to run the `Detector`s manually
+
+        Each resulting `Match` has two properties:
+        1) `rulename`   -- (str) The name of the `Pattern` that best matches the input
+        2) `span`       -- (str) The exact text that triggered the `Pattern`
+
+        Keyword arguments:
+        dataset                     -- (str) The spaCy dataset used to create the global `nlp: Language` (default 'en_core_web_lg')
+        exclude_builtin_patternsets -- (bool) If True, excludes patternsets included with the `SyntaxDetector` (default False)
+        features                    -- (str) A comma-separated string of features to select specific `Detector`s   (default 'all')
+        patternset_path             -- (str) A filepath or dirpath string pointing to a patternset or collection of patternsets (default '')
+        pretty_print                -- (bool) If True, the matches are printed in a more reader-friendly format (default False)
+        settings_path               -- (str) A filepath string pointing to a settings.yaml file, which contains the configuration options (default 'settings.yaml')
+        verbose                     -- (bool) If True, log INFO-level messages; `very_verbose` takes priority over `verbose` (default False)
+        very_verbose                -- (bool) If True, log DEBUG-level messages; `very_verbose` takes priority over `verbose` (default False)
+        """
+        self._is_configured = False
+        self._is_loaded = False
+
         self.dataset: str = dataset
         self.exclude_builtin_patternsets: bool = exclude_builtin_patternsets
         self.features: str = features
@@ -32,16 +58,27 @@ class SyntaxDetector:
         self.detector_repo = DetectorRepository()
 
     def __call__(self, input: str) -> dict[str, list[Match]]:
+        """One of the two ways to evaluate text for syntactic features. Use this `SyntaxDetector.__call__()` method to evaluate text. Returns a dict of `Match`es after running all `Detector`s on the input string.
+
+        Arguments:
+        input -- The sentence or chunk of text to be analyze as a string
+        """
         matches: dict[str, list[Match]] = {}
         for detector in self.detectors:
             matches[detector.name] = detector(input)
         return matches
 
     @property
-    def detectors(self):
+    def detectors(self) -> list[Detector]:
+        """One of the two ways to evaluate text for syntactic features. Returns all `Detectors` created after calling `load`. Use the `Detector.__call__` method to evaluate text."""
+        if not self._is_loaded:
+            raise RuntimeError(f"load() must be called before accessing this property")
         return self.detector_repo.get_all()
 
-    def configure(self):
+    def configure(self) -> None:
+        """Configure the spaCy dataset and logger. Must be called before calling `load()`."""
+        # TODO add support for configuring spaCy dataset
+
         # Logger
         log_level: int = self.config.prop_int("LOGGER_LEVEL")
         if self.very_verbose:
@@ -50,7 +87,14 @@ class SyntaxDetector:
             log_level = 20
         configure_logger(self.config, log_level)
 
-    def load(self):
+        self.logger = getLogger(__name__)
+        self._is_configured = True
+
+    def load(self) -> None:
+        """Load the `PatternSet`s. If the constructor's `exclude_builtin_patternsets` is True, then the internal `PatternSet`s provided with this class will be loaded. If the constructor's `patternset_path` is a valid filepath/dirpath string, then those `PatternSet`s will be loaded."""
+        if not self._is_configured:
+            raise RuntimeError(f"configure() must be called before calling load()")
+
         # Patternsets
         patternset_filepaths: list[str] = []
         feature_list: list[str] = []
@@ -75,8 +119,9 @@ class SyntaxDetector:
                 patternset_filepaths.append(self.patternset_path)
             else:
                 msg = f"patternset_path expects a directory or file but got: '{self.patternset_path}"
-                logger.error(msg)
+                self.logger.error(msg)
                 raise ValueError(msg)
 
         # Detectors
         [self.detector_repo.create(fpath) for fpath in patternset_filepaths]
+        self._is_loaded = True
