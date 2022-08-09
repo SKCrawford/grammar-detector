@@ -1,6 +1,6 @@
 from logging import basicConfig, Formatter, INFO, StreamHandler, WARNING
 from sys import stderr, stdout
-from .config import Config
+from .Config import Config
 
 
 def configure_logger(config: Config, log_level: int):

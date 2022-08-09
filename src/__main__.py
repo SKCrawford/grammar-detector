@@ -3,13 +3,13 @@ from os import listdir, path
 from pprint import pformat
 from sys import argv
 from time import time
-from .config import Config
+from .Config import Config
 from .detectors import DetectorRepository
 from .loaders import YamlLoader
 from .logger import configure_logger
 from .matches import Match
 from .nlp import nlp
-from .utils import Filepath, to_token_table
+from .utils import Filepath, token_table
 
 
 class SyntaxDetector:
@@ -86,7 +86,7 @@ class SyntaxDetector:
 
 
 def main() -> None:
-    start_time: float = time.time()
+    start_time: float = time()
     sentences: list[str] = []
 
     # Validate the input
@@ -115,19 +115,19 @@ def main() -> None:
         feature_set = {}
 
         logger.info(f"Sentence {count}: '{sentence}'")
-        sentence_start_time: float = time.time()
+        sentence_start_time: float = time()
 
-        token_table = to_token_table(nlp, sentence)
-        logger.info(f"Token table:\n{token_table}")
+        table = token_table(nlp, sentence)
+        logger.info(f"Token table:\n{table}")
 
         for detector in syndet.detectors:
             feature_set[detector.name] = detector(sentence)
 
-        sentence_finish_time: float = time.time()
+        sentence_finish_time: float = time()
         features[sentence] = feature_set
         count += 1
 
-    finish_time: float = time.time()
+    finish_time: float = time()
     logger.info(f"Total run time: {finish_time - start_time:.2f}s")
 
     logger.info("Detected features:")

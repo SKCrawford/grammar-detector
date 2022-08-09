@@ -3,7 +3,7 @@ from spacy import load as spacy_load
 from spacy.language import Language
 from spacy.tokens import Doc, Span
 from typing import Union
-from .config import Config
+from .Config import Config
 
 
 logger = getLogger(__name__)

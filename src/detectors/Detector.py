@@ -1,5 +1,5 @@
 from logging import getLogger
-from ..inputs import Input
+from ..Input import Input
 from ..matchers import PatternSetMatcher
 from ..matches import Match, MatchSet
 from ..patterns import PatternSet

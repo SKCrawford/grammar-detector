@@ -7,7 +7,7 @@ from tabulate import tabulate
 logger = getLogger(__name__)
 
 
-def to_token_table(
+def token_table(
     nlp: Language,
     sentence: str,
     pos: bool = True,

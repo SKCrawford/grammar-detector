@@ -2,7 +2,7 @@ from logging import getLogger
 from typing import Type
 from ..loaders import FileLoader, YamlLoader
 from ..patterns import PatternSet, PatternSetData, PatternSetRepository
-from ..repositories import Repository
+from ..Repository import Repository
 from ..utils import Filepath, singleton
 from .Detector import Detector
 

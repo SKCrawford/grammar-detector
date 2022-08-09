@@ -1,5 +1,5 @@
 from logging import getLogger
-from ..repositories import Repository
+from ..Repository import Repository
 from ..utils import singleton
 from .PatternSet import PatternSet, PatternSetData
 

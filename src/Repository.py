@@ -1,6 +1,6 @@
 from logging import getLogger
 from typing import Generic, TypeVar
-from .cache import Cache
+from .Cache import Cache
 
 
 T = TypeVar("T")

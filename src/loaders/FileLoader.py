@@ -1,7 +1,5 @@
 from logging import getLogger
 from typing import Any, TextIO
-from yaml import FullLoader as FullYamlLoader, load as load_yaml
-from .utils import singleton
 
 
 logger = getLogger(__name__)
@@ -17,10 +15,3 @@ class FileLoader:
         msg = f"load(file) was not implemented"
         logger.error(msg)
         raise NotImplementedError(msg)
-
-
-@singleton
-class YamlLoader(FileLoader):
-    def load(self, file: TextIO) -> Any:
-        logger.debug(f"Loading the YAML file: {file}")
-        return load_yaml(file, Loader=FullYamlLoader)

@@ -1,6 +1,6 @@
 from logging import getLogger
 from typing import Literal, Union
-from ..config import Config
+from ..Config import Config
 from .Pattern import Pattern, PatternData
 
 
