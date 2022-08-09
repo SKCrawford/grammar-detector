@@ -12,7 +12,7 @@ LOGGER_FORMAT_DETAILED: "[%(asctime)s][%(module)s:%(funcName)s:%(lineno)d][%(lev
 
 # LoggerConfig.prop setting. The level of the logger. The default is 30.
 # DEBUG=10, INFO=20, WARN=30, ERROR=40, CRITICAL=50
-LOGGER_LEVEL: 20
+LOGGER_LEVEL: 30
 
 # PatternSetConfig.prop setting. The file extension of the patternsets. The default is "yaml".
 PATTERN_SET_FILE_EXTENSION: "yaml"
