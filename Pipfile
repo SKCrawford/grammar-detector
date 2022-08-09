@@ -9,6 +9,7 @@ mypy = "*"
 python-lsp-server = "*"
 types-pyyaml = "*"
 types-tabulate = "*"
+types-setuptools = "*"
 
 [packages]
 pyyaml = "*"
