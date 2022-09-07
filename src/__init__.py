@@ -1,1 +1,1 @@
-from .SyntaxDetector import SyntaxDetector
+from .GrammarDetector import GrammarDetector

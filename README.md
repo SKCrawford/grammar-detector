@@ -393,7 +393,7 @@ To run the `GrammarDetector` from the repository itself, execute the following: 
 
 To run the unittests contained in each `patternset` file, execute the following: `$ python -m unittest`. 
 
-To add new grammatical features or improve existing features, focus your efforts on the `patternsets` directory and its YAML files. You may find the token tables included in the debug-level logs (exposed by setting `very_verbose` to `True`) to be helpful when creating or expanding patterns. Submissions of `patternset` files will be rejected if they do not include tests for each pattern.
+To add new grammatical features or improve existing features, focus your efforts on the `patternsets` directory and its YAML files. You may find the token tables included in the info-level logs (exposed by setting `verbose` to `True`) to be helpful when creating or expanding patterns. Submissions of `patternset` files will be rejected if they do not include tests for each pattern.
 
 ## Authors
 
