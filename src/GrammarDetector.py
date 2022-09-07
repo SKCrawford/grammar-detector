@@ -21,7 +21,7 @@ class GrammarDetector:
     def __init__(
         self,
         dataset: str = "en_core_web_lg",
-        exclude_builtin_patternsets: bool = False,
+        builtins: bool = True,
         features: str = "all",
         patternset_path: str = "",
         settings_path: str = "settings.yaml",
@@ -32,7 +32,7 @@ class GrammarDetector:
 
         Keyword arguments:
         dataset                     -- (str) The spaCy dataset used to create the global `nlp: Language` (default 'en_core_web_lg')
-        exclude_builtin_patternsets -- (bool) If True, excludes patternsets included with the `GrammarDetector` (default False)
+        builtins -- (bool) If True, excludes patternsets included with the `GrammarDetector` (default False)
         features                    -- (str) A comma-separated string of features to select specific `Detector`s   (default 'all')
         patternset_path             -- (str) A filepath or dirpath string pointing to a patternset or collection of patternsets (default '')
         settings_path               -- (str) A filepath string pointing to a settings.yaml file, which contains the configuration options (default 'settings.yaml')
@@ -43,7 +43,7 @@ class GrammarDetector:
         self._is_loaded = False
 
         self.dataset: str = dataset
-        self.exclude_builtin_patternsets: bool = exclude_builtin_patternsets
+        self.builtins: bool = builtins
         self.features: str = features
         self.patternset_path: str = patternset_path
         self.settings_path: str = settings_path
@@ -87,7 +87,7 @@ class GrammarDetector:
         self._is_configured = True
 
     def load(self) -> None:
-        """Load the `PatternSet`s. If the constructor's `exclude_builtin_patternsets` is True, then the internal `PatternSet`s provided with this class will be loaded. If the constructor's `patternset_path` is a valid filepath/dirpath string, then those `PatternSet`s will be loaded."""
+        """Load the `PatternSet`s. If the constructor's `builtins` is True, then the internal `PatternSet`s provided with this class will be loaded. If the constructor's `patternset_path` is a valid filepath/dirpath string, then those `PatternSet`s will also be loaded."""
         if not self._is_configured:
             raise RuntimeError(f"configure() must be called before calling load()")
 
@@ -98,7 +98,7 @@ class GrammarDetector:
             feature_list = self.features.split(",")
 
         ## Internal patternsets
-        if not self.exclude_builtin_patternsets:
+        if self.builtins:
             for fpath in Config().internal_patternset_filepaths:
                 fp = Filepath(fpath)
                 if not feature_list or fp.name in feature_list:
