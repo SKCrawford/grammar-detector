@@ -35,7 +35,7 @@ def main() -> None:
         logger.info(f"Token table:\n{table}")
 
         sentence_start_time: float = time()
-        features[sentence] = grammar_detector(sentence)
+        features = grammar_detector(sentence)
         sentence_finish_time: float = time()
         count += 1
 
