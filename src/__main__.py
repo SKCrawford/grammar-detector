@@ -19,10 +19,6 @@ def main() -> None:
 
     # Create the detectors
     grammar_detector = GrammarDetector(
-        exclude_builtin_patternsets=False,
-        features="all",
-        patternset_path="",
-        settings_path="settings.yaml",
         verbose=True,
         very_verbose=False,
     )

@@ -33,7 +33,7 @@ class GrammarDetector:
 
         Keyword arguments:
         dataset                     -- (str) The spaCy dataset used to create the global `nlp: Language` (default 'en_core_web_lg')
-        builtins -- (bool) If True, excludes patternsets included with the `GrammarDetector` (default False)
+        builtins                    -- (bool) If True, excludes patternsets included with the `GrammarDetector` (default False)
         features                    -- (str) A comma-separated string of features to select specific `Detector`s   (default 'all')
         patternset_path             -- (str) A filepath or dirpath string pointing to a patternset or collection of patternsets (default '')
         settings_path               -- (str) A filepath string pointing to a settings.yaml file, which contains the configuration options (default 'settings.yaml')
