@@ -1,5 +1,6 @@
 from logging import getLogger
 from os import listdir, path
+from typing import Union
 from .Config import Config
 from .detectors import Detector, DetectorRepository
 from .logger import configure_logger
@@ -53,13 +54,14 @@ class GrammarDetector:
         self.config = Config(self.settings_path)
         self.detector_repo = DetectorRepository()
 
-    def __call__(self, input: str) -> dict[str, list[Match]]:
+    def __call__(self, input: str) -> dict[str, Union[str, list[Match]]]:
         """Returns a dict of `Match`es after running all `Detector`s on the input string. One of the two ways to evaluate text for grammatical features. Use this `GrammarDetector.__call__()` method to evaluate text. 
 
         Arguments:
         input -- The sentence or chunk of text to be analyze as a string
         """
-        matches: dict[str, list[Match]] = {}
+        matches: dict[str, Union[str, list[Match]]]= {}
+        matches["input"] = input
         for detector in self.detectors:
             matches[detector.name] = detector(input)
         return matches
