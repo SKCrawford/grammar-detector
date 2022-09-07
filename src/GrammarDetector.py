@@ -54,6 +54,9 @@ class GrammarDetector:
         self.config = Config(self.settings_path)
         self.detector_repo = DetectorRepository()
 
+        self.configure()
+        self.load()
+
     def __call__(self, input: str) -> dict[str, Union[str, list[Match]]]:
         """Returns a dict of `Match`es after running all `Detector`s on the input string. One of the two ways to evaluate text for grammatical features. Use this `GrammarDetector.__call__()` method to evaluate text. 
 

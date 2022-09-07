@@ -22,8 +22,6 @@ def main() -> None:
         verbose=True,
         very_verbose=False,
     )
-    grammar_detector.configure()
-    grammar_detector.load()
     logger = getLogger(__name__)
 
     # Run the detectors
