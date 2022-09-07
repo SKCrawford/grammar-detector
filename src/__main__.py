@@ -22,7 +22,6 @@ def main() -> None:
         exclude_builtin_patternsets=False,
         features="all",
         patternset_path="",
-        pretty_print=True,
         settings_path="settings.yaml",
         verbose=True,
         very_verbose=False,
@@ -48,10 +47,7 @@ def main() -> None:
     logger.info(f"Total run time: {finish_time - start_time:.2f}s")
 
     logger.info("Detected features:")
-    if grammar_detector.pretty_print:
-        print(pformat(features))
-    else:
-        print(features)
+    print(features)
 
 
 if __name__ == "__main__":

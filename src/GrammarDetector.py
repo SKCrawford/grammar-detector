@@ -1,6 +1,5 @@
 from logging import getLogger
 from os import listdir, path
-from pprint import pformat
 from .Config import Config
 from .detectors import Detector, DetectorRepository
 from .logger import configure_logger
@@ -25,7 +24,6 @@ class GrammarDetector:
         exclude_builtin_patternsets: bool = False,
         features: str = "all",
         patternset_path: str = "",
-        pretty_print: bool = False,
         settings_path: str = "settings.yaml",
         verbose: bool = False,
         very_verbose: bool = False,
@@ -37,7 +35,6 @@ class GrammarDetector:
         exclude_builtin_patternsets -- (bool) If True, excludes patternsets included with the `GrammarDetector` (default False)
         features                    -- (str) A comma-separated string of features to select specific `Detector`s   (default 'all')
         patternset_path             -- (str) A filepath or dirpath string pointing to a patternset or collection of patternsets (default '')
-        pretty_print                -- (bool) If True, the matches are printed in a more reader-friendly format (default False)
         settings_path               -- (str) A filepath string pointing to a settings.yaml file, which contains the configuration options (default 'settings.yaml')
         verbose                     -- (bool) If True, log INFO-level messages; `very_verbose` takes priority over `verbose` (default False)
         very_verbose                -- (bool) If True, log DEBUG-level messages; `very_verbose` takes priority over `verbose` (default False)
@@ -49,7 +46,6 @@ class GrammarDetector:
         self.exclude_builtin_patternsets: bool = exclude_builtin_patternsets
         self.features: str = features
         self.patternset_path: str = patternset_path
-        self.pretty_print: bool = pretty_print
         self.settings_path: str = settings_path
         self.verbose: bool = verbose
         self.very_verbose: bool = very_verbose
