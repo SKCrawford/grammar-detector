@@ -7,8 +7,8 @@ from .Config import Config
 
 
 logger = getLogger(__name__)
-dataset = Config().prop_str("DATA_DATASET")
-logger.info(f"Started loading the spaCy model with the dataset {dataset}")
+dataset = Config().prop_str("DATASET")
+logger.info(f"Started loading the spaCy model with the dataset '{dataset}'")
 
 # Don't forget to run (with the appropriate dataset):
 # $ python -m download en_core_web_lg

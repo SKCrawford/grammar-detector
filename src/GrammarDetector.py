@@ -75,9 +75,10 @@ class GrammarDetector:
 
     def configure(self) -> None:
         """Configure the spaCy dataset and logger. Must be called before calling `load()`."""
-        # TODO add support for configuring spaCy dataset
+        dataset: str = self.config.prop_str("DATASET")
+        if self.dataset:
+            dataset = self.dataset
 
-        # Logger
         log_level: int = self.config.prop_int("LOGGER_LEVEL")
         if self.very_verbose:
             log_level = 10
