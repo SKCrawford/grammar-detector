@@ -9,42 +9,39 @@ from .utils import Filepath
 
 
 class GrammarDetector:
-    """A class for detecting grammatical features in sentences, phrases, and clauses. The core of the detector is the YAML patternset files. These files contain a list of `Pattern`s with rulenames and tokens, meta configuration options, and unittests to evaluate the `Pattern`s. After constructing, configuring via `configure()`, and loading via `load()`, the `GrammarDetector` instance is ready to use. Does not currently support any text whose length is longer than a sentence.
+    """This class is the entrypoint for loading in patternset files and evaluating text input. It contains the `DetectorRepository` under the hood, which in turn contains the `Detectors`. By running `GrammarDetector.__call__(self, input: str)`, the text input will be compared against both the provided `patternsets` (via the `patternset_path` keyword argument) and the built-in `patternsets`. Extracting the `Detectors` from the `GrammarDetector` is possible via the `detectors: list[Detector]` property but unnecessary.
 
-        The two ways to evaluate the grammatical features of the sentence or chunk of text are:
-        * Using the `__call__()` method to run all `Detector`s automatically
-        * Using the `detectors` property and `Detector.__call__()` method to run the `Detector`s manually
+    Each resulting `Match` has two properties:
+    1) `rulename`   -- (str) The name of the `Pattern` that best matches the input
+    2) `span`       -- (str) The exact text that triggered the `Pattern`
+    """
 
-        Each resulting `Match` has two properties:
-        1) `rulename`   -- (str) The name of the `Pattern` that best matches the input
-        2) `span`       -- (str) The exact text that triggered the `Pattern`
-        """
     def __init__(
         self,
-        dataset: str = "en_core_web_lg",
         builtins: bool = True,
+        dataset: str = "en_core_web_lg",
         features: str = "all",
         patternset_path: str = "",
         settings_path: str = "settings.yaml",
         verbose: bool = False,
         very_verbose: bool = False,
     ) -> None:
-        """Create an instance of the `GrammarDetector` by passing in configuration options. After construction, the methods `configure()` and `load()` must be called in order. After they have been called, the instance is ready to use.
+        """Create an instance of the `GrammarDetector`.
 
         Keyword arguments:
-        dataset                     -- (str) The spaCy dataset used to create the global `nlp: Language` (default 'en_core_web_lg')
-        builtins                    -- (bool) If True, excludes patternsets included with the `GrammarDetector` (default False)
-        features                    -- (str) A comma-separated string of features to select specific `Detector`s   (default 'all')
-        patternset_path             -- (str) A filepath or dirpath string pointing to a patternset or collection of patternsets (default '')
-        settings_path               -- (str) A filepath string pointing to a settings.yaml file, which contains the configuration options (default 'settings.yaml')
-        verbose                     -- (bool) If True, log INFO-level messages; `very_verbose` takes priority over `verbose` (default False)
-        very_verbose                -- (bool) If True, log DEBUG-level messages; `very_verbose` takes priority over `verbose` (default False)
+        builtins            -- (bool) If True, include built-in patternsets (default True)
+        dataset             -- (str) The spaCy dataset used to create the global `nlp: Language` (default 'en_core_web_lg')
+        features            -- (str) A string of comma-separated features to select specific `Detectors` (default 'all')
+        patternset_path     -- (str) A filepath or dirpath string pointing to a patternset or collection of patternsets (default '')
+        settings_path       -- (str) A filepath string pointing to a settings.yaml file, which contains the configuration options (default 'settings.yaml')
+        verbose             -- (bool) If True, log INFO-level messages; `very_verbose` takes priority over `verbose` (default False)
+        very_verbose        -- (bool) If True, log DEBUG-level messages; `very_verbose` takes priority over `verbose` (default False)
         """
         self._is_configured = False
         self._is_loaded = False
 
-        self.dataset: str = dataset
         self.builtins: bool = builtins
+        self.dataset: str = dataset
         self.features: str = features
         self.patternset_path: str = patternset_path
         self.settings_path: str = settings_path
@@ -58,12 +55,12 @@ class GrammarDetector:
         self.load()
 
     def __call__(self, input: str) -> dict[str, Union[str, list[Match]]]:
-        """Returns a dict of `Match`es after running all `Detector`s on the input string. One of the two ways to evaluate text for grammatical features. Use this `GrammarDetector.__call__()` method to evaluate text. 
+        """Returns a dict of `Match`es after running all `Detectors` on the input string. One of the two ways to evaluate text for grammatical features. Use this `GrammarDetector.__call__()` method to evaluate text. 
 
         Arguments:
-        input -- The sentence or chunk of text to be analyze as a string
+        input -- (str) The sentence or chunk of text to be analyzed
         """
-        matches: dict[str, Union[str, list[Match]]]= {}
+        matches: dict[str, Union[str, list[Match]]] = {}
         matches["input"] = input
         for detector in self.detectors:
             matches[detector.name] = detector(input)
@@ -71,7 +68,7 @@ class GrammarDetector:
 
     @property
     def detectors(self) -> list[Detector]:
-        """Returns all `Detectors` created after calling `load`. One of the two ways to evaluate text for grammatical features. Use the `Detector.__call__` method to evaluate text."""
+        """Returns all `Detectors`. One of the two ways to evaluate text for grammatical features. Use the `Detector.__call__` method to evaluate text."""
         if not self._is_loaded:
             raise RuntimeError(f"load() must be called before accessing this property")
         return self.detector_repo.get_all()
@@ -92,7 +89,7 @@ class GrammarDetector:
         self._is_configured = True
 
     def load(self) -> None:
-        """Load the `PatternSet`s. If the constructor's `builtins` is True, then the internal `PatternSet`s provided with this class will be loaded. If the constructor's `patternset_path` is a valid filepath/dirpath string, then those `PatternSet`s will also be loaded."""
+        """Load the `PatternSets`. If the constructor's `builtins` is True, then the internal `PatternSets` provided with this class will be loaded. If the constructor's `patternset_path` is a valid filepath/dirpath string, then those `PatternSets` will also be loaded."""
         if not self._is_configured:
             raise RuntimeError(f"configure() must be called before calling load()")
 

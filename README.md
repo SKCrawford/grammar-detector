@@ -4,15 +4,14 @@ A tool for detecting grammatical features in sentences, clauses, and phrases wit
 
 The patterns for these grammatical features are defined in YAML files called `patternsets` in lieu of writing code. These YAML files expand the capabilities of the `GrammarDetector`. The input text to be analyzed is compared against the patterns in the `patternsets`. In other words, writing more code is unnecessary for supporting new grammatical features. This means that inaccurate results arise from inaccurate patterns and not from the code itself. Unittests can be defined in the `patternsets` to assist with improving pattern accuracy.
 
+For the purposes of this tool, a sentence is roughly defined as:
+
+1. an independent clause with sentence-final punctuation and additional clauses, or 
+1. a dependent clause with sentence-final punctuation which may satisfy the concept of a 'complete thought' in the context of surrounding sentences (e.g. "We tried updating it. Which didn't work. Neither did the reinstall.")
+
 ## Overview
 
-The core of this tool is the `GrammarDetector`. In this order, it must be:
-
-1. Constructed via `GrammarDetector.__init__(self, **kwargs)`
-1. Configured via `GrammarDetector.configure(self)`
-1. Loaded via `GrammarDetector.load(self)`
-
-After loading, the `GrammarDetector` can be used in two different ways:
+The core of this tool is the `GrammarDetector`. After construction, it can be used in two different ways:
 
 1. Using the `GrammarDetector.__call__(self, input: str)` method on the input to run **automatically**.
 1. Looping through the `detectors: list[Detector]` property and using the `Detector.__call__(self, input: str)` method on the input to run **manually**.
@@ -97,8 +96,7 @@ TODO: update install statement
 
 1. Import `GrammarDetector` from `TODO: add package name`
 1. Construct the `GrammarDetector`
-1. Call `configure()` then `load()`
-1. Run the instance on the input using the `GrammarDetector.__call__(self, input: str)` method
+1. Run the `GrammarDetector.__call__(self, input: str)` method on the input
 
 TODO: add import statement
 
@@ -107,22 +105,20 @@ TODO: add import statement
 
     # TODO: add import statement
 
-    settings = {  # Default values
-        dataset: "en_core_web_lg",
-        exclude_builtin_patternsets: False,
-        features: "all",
-        patternset_path: "",  # Custom patternsets
-        pretty_print: False,
-        settings_path: "settings.yaml",
-        verbose: False,
-        very_verbose: False,
+    # Default values
+    settings: dict[str, Union[str, bool]] = {  
+        "builtins": True,
+        "dataset": "en_core_web_lg",
+        "features": "all",
+        "patternset_path": "",  # Custom patternsets
+        "settings_path": "settings.yaml",
+        "verbose": False,
+        "very_verbose": False,
     }
     grammar_detector = GrammarDetector(**settings)  # Optionally, pass in **settings
-    grammar_detector.configure()
-    grammar_detector.load()
 
-    sentence: str = "The dog chased the cat into the house."
-    results: dict[str, list[Match]] = grammar_detector(sentence)
+    sentence: str = "The dog chased a cat into the house."
+    results: dict[str, Union[str, list[Match]]] = grammar_detector(sentence)
 ---
 
 ### Using the Results
@@ -130,21 +126,21 @@ TODO: add import statement
 ---
     # my_script.py
 
-    sentence: str = "The dog chased the cat into the house."
-    results: dict[str, list[Match]] = grammar_detector(sentence)
+    sentence: str = "The dog chased a cat into the house."
+    results: dict[str, Union[str, list[Match]]] = grammar_detector(sentence)
 
     print(results)
     # Prints the following:
     # {
-    #     'determiners': [<definite: The dog>, <definite: the cat>, <definite: the house>],
-    #     'persons': [<3rd: dog>, <3rd: cat>, <3rd: house>],
-    #     'sentence': "The dog chased the cat into the house."
-    #     'tense_aspects': [<past simple: chased>],
-    #     'transitivity': [<ditransitive: dog chased the cat into the house>],
-    #     'voices': [<active: chased>]
+    #     'input': 'The dog chased a cat into the house.', 
+    #     'voices': [<active: chased>], 
+    #     'tense_aspects': [<past simple: chased>], 
+    #     'persons': [<3rd: dog>, <3rd: cat>, <3rd: house>], 
+    #     'determiners': [<definite: The dog>, <indefinite: a cat>, <definite: the house>], 
+    #     'transitivity': [<ditransitive: dog chased a cat into the house>]
     # }
 
-    feature = "tense_aspects"
+    feature: str = "tense_aspects"
     verb_tense: Match = results[feature][0]
     print(verb_tense)  # Prints <past simple: chased>
     print(verb_tense.rulename)  # Prints "past simple"
@@ -157,7 +153,7 @@ This section describes the internal components used to build and run `Detectors`
 
 ### What is the GrammarDetector class?
 
-The `GrammarDetector` class is the entrypoint for loading in `patternset` files and evaluating text input. It contains the `DetectorRepository` under the hood, which in turn contains the `Detectors`. By running `GrammarDetector.__call__(self, sentence)`, the text input will be compared against both the provided `patternsets` (via the `patternset_path` keyword argument) and the built-in `patternsets`. Extracting the `Detectors` from the `GrammarDetector` is possible but unnecessary.
+The `GrammarDetector` class is the entrypoint for loading in `patternset` files and evaluating text input. By running `GrammarDetector.__call__(self, sentence)`, the text input will be compared against both the provided `patternsets` (via the `patternset_path` keyword argument) and the built-in `patternsets`. The `DetectorRepository` is contained under the hood, which in turn contains the `Detectors`. Extracting the internal `Detectors` from the `GrammarDetector` is possible but unnecessary.
 
 ---
     # my_script.py
@@ -169,11 +165,13 @@ The `GrammarDetector` class is the entrypoint for loading in `patternset` files 
 
 ### Component: Token
 
-The smallest atom is the [`spacy.tokens.Token`](https://spacy.io/usage/rule-based-matching) class. Each `Token` represents a single word and consists of a single JSON object. A `list[Token]` represents a chain of words. Each `Token` contains a `TAG` (tag) and/or a `DEP` (dependency). `TAGs` are broad categories (e.g. 'VERB') and `DEPs` are narrow categories (e.g. 'VB' for base form, 'VBD' for past tense, 'VBG' for gerund/present participle, 'VBN' for past participle, 'VBP' for non-3rd person singular present, and 'VBZ' for 3rd person singular present). An `OP` (operation) may also be included. 
+The smallest atom is the [`spacy.tokens.Token`](https://spacy.io/usage/rule-based-matching) class. Each `Token` represents a single word and consists of a single JSON object. A `list[Token]` represents a chain of words. Lists of `Tokens` are used in `patternset` YAML files to define grammatical patterns. Each `Token` contains a `POS` (part-of-speech), a `TAG` (tag), and/or a `DEP` (dependency). Grammatical categories are denoted with `POS` and `TAG` while syntactic categories are denoted with `DEP`. An `OP` (operation) may also be included to denote whether a `Token` is required or optional. A complete list of `POSs`, `TAGs`, and `DEPs` can be found in [the spaCy glossary](https://github.com/explosion/spaCy/blob/master/spacy/glossary.py).
 
-TODO: fix all of this nonsense
+Some examples of `POSs` are "VERB", "AUX", "NOUN", "PROPN", and "SYM" for symbol. 
 
-Lists of `Tokens` are used in `patternset` YAML files to define grammatical patterns. A complete list of part-of-speech `TAGs` and `DEPs` can be found [here](https://github.com/explosion/spaCy/blob/master/spacy/glossary.py).
+Some examples of `TAGs` are "VB" for base form verb, "VBD" for past tense verb, "VBG" for gerund/present participle verb, "VBN" for past participle verb, "VBP" for non-3rd person singular present verb, and "VBZ" for 3rd person singular present verb.
+
+Some examples of `DEPs` are "ROOT" for root verb, "aux", "auxpass", "nsubj", and "dobj".
 
 #### Examples of Tokens
 
@@ -186,7 +184,7 @@ Lists of `Tokens` are used in `patternset` YAML files to define grammatical patt
     patterns:
         - rulename: present simple verb
         # This is a single token (i.e. 1 word)
-        - tokens:  
+          tokens:  
             - {TAG: {IN: ["VBP", "VBZ"]},
 ---
 
@@ -199,7 +197,7 @@ Lists of `Tokens` are used in `patternset` YAML files to define grammatical patt
     patterns:
         - rulename: passive auxiliary
         # This is also a single token (i.e. 1 word)
-        - tokens:  
+          tokens:  
             - {
               TAG: {IN: ["VBP", "VBZ"]},
               DEP: "auxpass",
@@ -217,7 +215,7 @@ Lists of `Tokens` are used in `patternset` YAML files to define grammatical patt
     patterns:
         - rulename: future simple be-going-to passive
         # This is a list of 5 tokens (i.e. 5 words)
-        - tokens:  
+          tokens:
             - {TAG: {IN: ["VBP", "VBZ"]}, DEP: "aux", OP: "+"}
             - {TAG: "VBG", OP: "+", LEMMA: "go"}
             - {TAG: "TO", DEP: "aux", OP: "+"}
@@ -232,9 +230,9 @@ Lists of `Tokens` are used in `patternset` YAML files to define grammatical patt
 
     ---
     patterns:
-        - rulename: future simple be-going-to passive
-        # This is a list of 4 tokens minimum with some degree of recursivity        
-        - tokens:  
+        - rulename: ditransitive
+        # This is a list of 4 tokens minimum with some degree of recursivity
+          tokens:
             - {DEP: "nsubj"}
             - {OP: "*"}  # Indicates possible filler words between the tokens
             - {DEP: "ROOT"}
@@ -292,13 +290,13 @@ Each `Pattern` in `patterns` has two properties:
 
 ### Component: Patternset YAML Files
 
-`Patternsets` are the core of the `GrammarDetector`. The `patternsets` are created by loading YAML files containing these three properties: 
+The `patternsets` expand the capabilities of the `GrammarDetector` to detect for new features. The `patternsets` are created by loading YAML files containing these three properties: 
 
-1. `patterns: list[Pattern]`            -- a list of named sets of tokens
-1. `meta: dict[str, Union[str, bool]]`  -- a configuration dict to modify input/output
-1. `tests: list[Test]`                  -- a list of tests to validate the accuracy of the `patterns`
+1. `patterns: list[Pattern]`            -- an array of named sets of tokens
+1. `meta: dict[str, Union[str, bool]]`  -- a configuration object to modify input/output
+1. `tests: list[Test]`                  -- an array of tests to validate the accuracy of the `patterns`
 
-Internally, this data from the `patternset` file is converted into a `patterns.PatternSet`.
+Internally, this data from the `patternset` file is converted into a `PatternSet`.
 
 #### Patternset Files: Example for Active/Passive Voice
 
@@ -322,7 +320,7 @@ Internally, this data from the `patternset` file is converted into a `patterns.P
               - {TAG: "VBN", DEP: "ROOT"}
 
     tests:
-         - input: The cat was chased by the dog.
+        - input: The cat was chased by the dog.
           rulenames:
               - passive
           spans:
@@ -363,37 +361,40 @@ Each test must contain 1) the `input` and 2) the `rulenames` and/or the `spans`.
 
 ### Component: PatternSetRepository
 
-The `PatternSetRepository` reads a `patternset` YAML file and converts it into an internal `patterns.PatternSet`. The stored `PatternSets` can be retrieved individually by referencing its name as the cache key or retrieved collectively as a `list[PatternSet]`. The `PatternSetRepository` extends the `Repository[Generic[T]]` helper class for creating, caching, and querying.
+The `PatternSetRepository` reads a `patternset` YAML file and converts it into an internal `PatternSet`. The stored `PatternSets` can be retrieved individually by referencing its name as the cache key or retrieved collectively as a `list[PatternSet]`. The `PatternSetRepository` extends the `Repository[Generic[T]]` helper class for creating, caching, and querying.
 
 ### Component: PatternSetMatcher
 
-The `PatternSetMatcher` is a wrapper class that is composed of an inner `spacy.matcher.Matcher` and logic to interpret `PatternSets`. The patterns defined in the `PatternSets` are automatically loaded into the inner `Matcher`. The raw matches from the inner `Matcher` are converted into a reader-friendly format.
+The `PatternSetMatcher` is a wrapper class that is composed of an inner `spacy.matcher.Matcher` and logic to interpret `PatternSets`. The patterns defined in the `PatternSets` are automatically loaded into the inner `Matcher`. The raw matches from the inner `Matcher` are then converted into a reader-friendly format.
 
 ### Component: Detector
 
-The `Detector` is the internal entrypoint by which a sentence, clause, or phrase is analyzed. Each `Detector` holds one `PatternSet` and one `PatternSetMatcher`. After loading the `GrammarDetector`, the `Detectors` are accessible via the `detectors` property, allowing them to be run manually and reused.
-
-Each `Detector` is bound to a specific grammatical feature, which is in turn bound to a `PatternSet`. After loading the `GrammarDetector`, its `Detectors` can be accessed via the `detectors` property. This permits running them manually. Since the `GrammarDetector` and `Detectors` are not bound to its text input to be analyzed, they can be reused.
+The `Detector` is the internal entrypoint by which a sentence, clause, or phrase is analyzed. A `Detector` contains one `PatternSet` and one `PatternSetMatcher`. Each `Detector` is bound to the specific grammatical feature of the `PatternSet`. After loading the `GrammarDetector`, its `Detectors` can be accessed via the `detectors` property. This permits running them manually and reusing them. Since the `GrammarDetector` and `Detectors` are not bound to its text input to be analyzed, they can be reused.  
 
 ### Component: DetectorRepository
 
-The `DetectorRepository` is responsible for creating new `Detectors`. It is wrapped by the `GrammarDetector` class, the main entrypoint. The repository manages the `PatternSetRepository` and loads its `PatternSets` into the `PatternSetMatchers`. The `DetectorRepository` extends the `Repository[Generic[T]]` helper class for creating, caching, and querying.
+The `DetectorRepository` is responsible for creating and storing `Detectors`. It is wrapped by the `GrammarDetector` class, the main entrypoint. The repository manages the `PatternSetRepository` and loads its `PatternSets` into the `PatternSetMatchers`. The `DetectorRepository` extends the `Repository[Generic[T]]` helper class for creating, caching, and querying.
 
 ## Contributing
 
-This tool is only as good as the patternset YAML files that support it. There are three primary ways to contribute to this project:
+This tool is only as good as the `patternset` YAML files that support it. The primary ways to contribute to this project:
 
-* Creating and improving patterns in new/existing patternset YAML files
-* Adding tests to existing patternset YAML files
-* Adding new meta configuration options and features to the codebase
+* Creating and improving `patterns` in new/existing `patternset` YAML files
+* Adding `tests` to existing `patternset` YAML files
+* Adding new `meta` configuration options and features to the codebase
 
-To contribute, `git clone` the repository. 
+Cloning the repository: 
+    `$ git clone TODO: add github URL`
 
-To run the `GrammarDetector` from the repository itself, execute the following: `$ python -m src "The dog chased the cat."`. 
+Running the `GrammarDetector` from the repository: 
+    `$ python -m src "The dog chased the cat into the house."`
 
-To run the unittests contained in each `patternset` file, execute the following: `$ python -m unittest`. 
+Running the `patternset` unittests from the repository: 
+    `$ python -m unittest`
 
 To add new grammatical features or improve existing features, focus your efforts on the `patternsets` directory and its YAML files. You may find the token tables included in the info-level logs (exposed by setting `verbose` to `True`) to be helpful when creating or expanding patterns. Submissions of `patternset` files will be rejected if they do not include tests for each pattern.
+
+TODO: add the github URL to the instructions for cloning the repository
 
 ## Authors
 
@@ -410,4 +411,4 @@ This project is licensed under the GNU General Public License V3. See the LICENS
 
 ## Acknowledgments
 
-* [spaCy](https://spacy.io/)
+* [spaCy](https://spacy.io/) - free open-source library for Natural Language Processing in Python ([license](https://github.com/explosion/spaCy/blob/master/LICENSE))
