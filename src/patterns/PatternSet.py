@@ -69,3 +69,10 @@ class PatternSet:
             return bool(self.meta["extract_noun_chunks"])
         except:
             return False
+
+    @property
+    def skip_tests(self) -> str:
+        try:
+            return str(self.meta["skip_tests"])
+        except:
+            return ""

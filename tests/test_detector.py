@@ -1,6 +1,7 @@
 from unittest import TestCase
-from settings import Filepath, pattern_set_config
 from src.detectors import DetectorRepository
+from src.utils import Filepath
+from src.Config import Config
 
 
 class TestDetectorTests(TestCase):
@@ -9,8 +10,9 @@ class TestDetectorTests(TestCase):
     @classmethod
     def setUpClass(self):
         """Load the patternset configuration files to extract the tests."""
+        self.config = Config()
         self.repo = DetectorRepository()
-        for fpath in pattern_set_config.internal_patternset_filepaths:
+        for fpath in self.config.internal_patternset_filepaths:
             fp = Filepath(fpath)
             self.repo.create(fp.filepath)
 
@@ -20,7 +22,7 @@ class TestDetectorTests(TestCase):
         skip_reason = None
 
         try:
-            skip_setting = pset.meta["skip_tests"]
+            skip_setting = pset.skip_tests
             if type(skip_setting) == bool:
                 should_skip = skip_setting
                 skip_reason = ""
@@ -74,20 +76,20 @@ class TestDetectorTests(TestCase):
 
         # Validate the presence of at least one key containing expected results
         if not expected_rulenames and not expected_spans:
-            valid_keys = [rulenames_key, spans_key]
+            valid_keys = ["rulenames", "spans"]
             err_msg = f"The test must have at least one of these keys: {valid_keys}"
             raise KeyError(err_msg)
 
         # Validate the length of expected results in relation to the expected number of matches
-        expects_many_rulenames = bool(len(expected_rulenames) > 1)
-        expects_many_spans = bool(len(expected_spans) > 1)
-        if expects_many_rulenames or expects_many_spans:
-            how_many_matches = pset.meta["how_many_matches"]
-            one_match_setting = pattern_set_config.prop_str("ONE_MATCH")
+        # expects_many_rulenames = bool(len(expected_rulenames) > 1)
+        # expects_many_spans = bool(len(expected_spans) > 1)
+        # if expects_many_rulenames or expects_many_spans:
+        #     how_many_matches = pset.meta["how_many_matches"]
+        #     one_match_setting = Config().prop_str("PATTERN_SET_ONE_MATCH")
 
-            if how_many_matches.upper() == one_match_setting.upper():
-                err_msg = "The patternset expects only one match, but the test expects multiple matches"
-                raise ValueError(err_msg)
+        #     if how_many_matches.upper() == one_match_setting.upper():
+        #         err_msg = "The patternset expects only one match, but the test expects multiple matches"
+        #         raise ValueError(err_msg)
         return (expected_rulenames, expected_spans)
 
     def run_test(self, test, pset):
