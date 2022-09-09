@@ -1,41 +1,57 @@
 # Grammar-Detector
 
-A tool for detecting grammatical features in sentences, clauses, and phrases without writing a line of code. This tool is one piece of a larger project to facilitate the creation of reading exercises for language instruction. It is designed to determine if a text contains sentences relevant to the desired grammatical feature.
+A tool for detecting grammatical features in sentences, clauses, and phrases in just a few lines of code. This tool is one piece of a larger project to facilitate the creation of reading exercises for language instruction. It is designed to determine if a text contains sentences relevant to the desired grammatical feature.
 
-The patterns for these grammatical features are defined in YAML files called `patternsets` in lieu of writing code. These YAML files expand the capabilities of the `GrammarDetector`. The input text to be analyzed is compared against the patterns in the `patternsets`. In other words, writing more code is unnecessary for supporting new grammatical features. This means that inaccurate results arise from inaccurate patterns and not from the code itself. Unittests can be defined in the `patternsets` to assist with improving pattern accuracy.
+The patterns for these grammatical features are defined in YAML files called `patternsets` in lieu of writing code. These YAML files expand the capabilities of the `GrammarDetector`. The input text to be analyzed is compared against the patterns in the `patternsets`. In other words, writing more code is unnecessary for supporting new grammatical features. This means that inaccurate results arise from inaccurate patterns and not from the code itself. To mitigate errors, unittests can be defined in the `patternsets`.
 
 For the purposes of this tool, a sentence is roughly defined as:
 
-1. an independent clause with sentence-final punctuation and additional clauses, or 
-1. a dependent clause with sentence-final punctuation which may satisfy the concept of a 'complete thought' in the context of surrounding sentences (e.g. "We tried updating it. Which didn't work. Neither did the reinstall.")
+1. An independent clause with sentence-final punctuation and additional clauses, or
+1. A dependent clause with sentence-final punctuation which may satisfy the concept of a 'complete thought' in the context of surrounding sentences (e.g. "We tried updating it. Which didn't work. Neither did the reinstall.")
 
 ## Overview
 
 The core of this tool is the `GrammarDetector`. After construction, it can be used in two different ways:
 
 1. Using the `GrammarDetector.__call__(self, input: str)` method on the input to run **automatically**.
-1. Looping through the `detectors: list[Detector]` property and using the `Detector.__call__(self, input: str)` method on the input to run **manually**.
+1. Looping through the `GrammarDetector.detectors: list[Detector]` property and using the `Detector.__call__(self, input: str)` method on the input to run **manually**.
 
 ## Dependencies
 
 Dependencies:
 
-* **python** (>=3.9)        -- frequent use of f-strings and type hints
-* **pyyaml**                -- loading patternset YAML files
-* **spacy**                 -- rule-based grammatical pattern matching
-* **spacy-lookups-data**    -- spaCy dependency
-* **tabulate**              -- printing token tables to write patterns
+* **python** (>=3.9)                                                        -- frequent use of f-strings and type hints
+* [**pyyaml**](https://pypi.org/project/PyYAML/)                            -- loading patternset YAML files
+* [**spacy**](https://pypi.org/project/spacy/)                              -- rule-based grammatical pattern matching
+* [**spacy-lookups-data**](https://pypi.org/project/spacy-lookups-data/)    -- spaCy dependency
+* [**tabulate**](https://pypi.org/project/tabulate/)                        -- printing token tables to write patterns
 
 Dev dependencies:
 
-* **black**                 -- opinionated code formatter
-* **mypy**                  -- type checking
-* **python-lsp-server**     -- IDE integration
-* **types-pyyaml**          -- type checking
-* **types-tabulate**        -- type checking  
-* **types-setuptools**      -- type checking
+* [**black**](https://pypi.org/project/black/)                              -- opinionated code formatter
+* [**mypy**](https://pypi.org/project/mypy/)                                -- type checking
+* [**python-lsp-server**](https://pypi.org/project/python-lsp-server/)      -- IDE integration
+* [**types-pyyaml**](https://pypi.org/project/types-PyYAML/)                -- type checking
+* [**types-tabulate**](https://pypi.org/project/types-tabulate/)            -- type checking  
+* [**types-setuptools**](https://pypi.org/project/types-setuptools/)        -- type checking
 
-## Grammatical Features Currently Supported
+## Detector Features
+
+Currently supports the ability to:
+
+* Evaluate a sentence, clause, or phrase for its grammatical features
+* Produce results that are reader-friendly and reader-*useful*
+* Use built-in grammatical features with just 3 lines of code (import, construct, and call)
+* Create your own grammatical feature by passing the filepath of a simple `patternset` YAML file with spaCy `Tokens`
+* Define and run tests in `patternsets` to evaluate the accuracy of the patterns
+* Fragment an input into noun chunks automatically before the `Detector` is run
+
+Future features:
+
+* Add support for validating custom `patternset` YAML files
+* Add support for conveniently printing a table of spaCy `Tokens` for a given input
+
+## Grammatical Features
 
 All current patterns are relatively naive, so they do not yet effectively handle recursivity. This problem can be solved by 1) writing recursive patterns or 2) writing alternative patterns and suffixing the `rulename` property with numbers (e.g. ditransitive-1 and ditransitive-2).
 
@@ -84,29 +100,23 @@ All current patterns are relatively naive, so they do not yet effectively handle
     * Active
     * Passive
 
-## How to Install
+## Installation
 
 `$ pip install TODO: add package name`
 
-TODO: update install statement
+## Usage
 
-## Example Usage
-
-### Running the GrammarDetector
-
-1. Import `GrammarDetector` from `TODO: add package name`
-1. Construct the `GrammarDetector`
-1. Run the `GrammarDetector.__call__(self, input: str)` method on the input
-
-TODO: add import statement
+### Usage: 0) Constructing the GrammarDetector
 
 ---
     # my_script.py
 
-    # TODO: add import statement
+    # TODO: check import statements
+    from grammardetector import GrammarDetector
+
 
     # Default values
-    settings: dict[str, Union[str, bool]] = {  
+    settings = {  
         "builtins": True,
         "dataset": "en_core_web_lg",
         "features": "all",
@@ -116,51 +126,129 @@ TODO: add import statement
         "very_verbose": False,
     }
     grammar_detector = GrammarDetector(**settings)  # Optionally, pass in **settings
-
-    sentence: str = "The dog chased a cat into the house."
-    results: dict[str, Union[str, list[Match]]] = grammar_detector(sentence)
 ---
 
-### Using the Results
+### Usage: 1) Running the GrammarDetector
 
 ---
     # my_script.py
 
-    sentence: str = "The dog chased a cat into the house."
-    results: dict[str, Union[str, list[Match]]] = grammar_detector(sentence)
+    # TODO: check import statements
+    from grammardetector import GrammarDetector
+
+
+    grammar_detector = GrammarDetector()
+    input: str = "The dog was chasing a cat into the house."
+    results = grammar_detector(input)
+---
+
+### Usage: 2) Interpreting the Results
+
+---
+    # my_script.py
+
+    # TODO: check import statements
+    from grammardetector import GrammarDetector, Match
+    from typing import Union
+
+
+    grammar_detector = GrammarDetector()
+    input: str = "The dog was chasing a cat into the house."
+    results: dict[str, Union[str, list[Match]]] = grammar_detector(input)
 
     print(results)
-    # Prints the following:
     # {
-    #     'input': 'The dog chased a cat into the house.', 
-    #     'voices': [<active: chased>], 
-    #     'tense_aspects': [<past simple: chased>], 
+    #     'input': 'The dog was chasing a cat into the house.', 
+    #     'voices': [<active: was chasing>], 
+    #     'tense_aspects': [<past continuous: was chasing>], 
     #     'persons': [<3rd: dog>, <3rd: cat>, <3rd: house>], 
     #     'determiners': [<definite: The dog>, <indefinite: a cat>, <definite: the house>], 
-    #     'transitivity': [<ditransitive: dog chased a cat into the house>]
+    #     'transitivity': [<ditransitive: dog was chasing a cat into the house>]
     # }
 
     feature: str = "tense_aspects"
     verb_tense: Match = results[feature][0]
-    print(verb_tense)  # Prints <past simple: chased>
-    print(verb_tense.rulename)  # Prints "past simple"
-    print(verb_tense.span)  # Prints "chased"
+
+    print(verb_tense)
+    # <past continuous: was chasing>
+
+    print(verb_tense.rulename)
+    # "past continuous"
+
+    print(verb_tense.span)
+    # "was chasing"
+
+    print(verb_tense.span_features)
+    # {
+    #     'span': was chasing, 
+    #     'phrase': 'was chasing', 
+    #     'root': 'chasing', 
+    #     'root_head': 'chasing', 
+    #     'pos': 'VERB', 
+    #     'tag': 'VBG', 
+    #     'dep': 'ROOT', 
+    #     'phrase_lemma': 'be chase', 
+    #     'root_lemma': 'chase', 
+    #     'pos_desc': 'verb', 
+    #     'tag_desc': 'verb, gerund or present participle', 
+    #     'dep_desc': 'root'
+    # }
+
+---
+
+### Usage: Running the Tests in Custom Patternset YAML Files
+
+---
+    # my_script.py
+
+    # TODO: check import statements
+    from grammardetector import GrammarDetector
+
+
+    grammar_detector = GrammarDetector(patternset_path="path/to/my/patternsets/")
+    grammar_detector.run_tests()
+
+    # Run the tests for the built-in patternsets
+    grammar_detector.run_tests(internal_patternset_tests=True)
+---
+
+### Usage: Printing Token Tables
+
+TODO: implement this
+
+---
+    # my_script.py
+
+    # TODO: check import statements
+    from grammardetector import GrammarDetector
+
+
+    grammar_detector = GrammarDetector()
+    input = "The dog was chasing a cat into the house."
+    table = grammar_detector.to_token_table(input)
+
+    print(table)
+    # TODO: add sample of output
 ---
 
 ## Components of the GrammarDetector
 
 This section describes the internal components used to build and run `Detectors` inside the `GrammarDetector`. To expand on the built-in features of the `GrammarDetector`, understanding how `patternset` YAML files are created, configured, and loaded is critical. To load your own `patternset` files, pass the file or directory path to the `patternset_path` keyword argument when constructing the `GrammarDetector`.
 
-### What is the GrammarDetector class?
+### The GrammarDetector class
 
-The `GrammarDetector` class is the entrypoint for loading in `patternset` files and evaluating text input. By running `GrammarDetector.__call__(self, sentence)`, the text input will be compared against both the provided `patternsets` (via the `patternset_path` keyword argument) and the built-in `patternsets`. The `DetectorRepository` is contained under the hood, which in turn contains the `Detectors`. Extracting the internal `Detectors` from the `GrammarDetector` is possible but unnecessary.
+The `GrammarDetector` class is the entrypoint for loading in `patternset` files and evaluating text input. By running `GrammarDetector.__call__(self, sentence)`, the text input will be compared against both the provided `patternsets` (via the `patternset_path` keyword argument) and the built-in `patternsets`. The `DetectorRepository` is contained under the hood, which in turn contains the `Detectors`. Extracting the internal `Detectors` from the `GrammarDetector` is easy but unnecessary.
 
 ---
     # my_script.py
 
+    # TODO: check import statements
+    from grammardetector import GrammarDetector
+
+
     grammar_detector = GrammarDetector(patternset_path="path/to/my/patternsets/")
-    sentence = "The dog chased the cat into the house."
-    results = grammar_detector(sentence)  # Making use of the __call__ class method
+    input = "The dog was chasing a cat into the house."
+    results = grammar_detector(input)  # Making use of the __call__ method
 ---
 
 ### Component: Token
@@ -359,7 +447,9 @@ The `tests` list contains unittests with the following properties:
 
 Each test must contain 1) the `input` and 2) the `rulenames` and/or the `spans`. Execute the following to run the tests: `$ python -m unittest`. Testing external patternsets is not yet supported but is a high priority.
 
-### Component: PatternSetRepository
+To run the tests in your `patternset`, call the `GrammarDetector.run_tests(self)` method.
+
+### Component: PatternSet and PatternSetRepository
 
 The `PatternSetRepository` reads a `patternset` YAML file and converts it into an internal `PatternSet`. The stored `PatternSets` can be retrieved individually by referencing its name as the cache key or retrieved collectively as a `list[PatternSet]`. The `PatternSetRepository` extends the `Repository[Generic[T]]` helper class for creating, caching, and querying.
 
@@ -369,7 +459,7 @@ The `PatternSetMatcher` is a wrapper class that is composed of an inner `spacy.m
 
 ### Component: Detector
 
-The `Detector` is the internal entrypoint by which a sentence, clause, or phrase is analyzed. A `Detector` contains one `PatternSet` and one `PatternSetMatcher`. Each `Detector` is bound to the specific grammatical feature of the `PatternSet`. After loading the `GrammarDetector`, its `Detectors` can be accessed via the `detectors` property. This permits running them manually and reusing them. Since the `GrammarDetector` and `Detectors` are not bound to its text input to be analyzed, they can be reused.  
+The `Detector` is the internal entrypoint by which a sentence, clause, or phrase is analyzed. A `Detector` contains one `PatternSet` and one `PatternSetMatcher`. Each `Detector` is bound to the specific grammatical feature of the `PatternSet`. After loading the `GrammarDetector`, its `Detectors` can be accessed via the `detectors: list[Detector]` property. This permits running them manually and reusing them. Since the `GrammarDetector` and `Detectors` are not bound to its text input to be analyzed, they can be reused.  
 
 ### Component: DetectorRepository
 
@@ -386,24 +476,25 @@ This tool is only as good as the `patternset` YAML files that support it. The pr
 Cloning the repository: 
     `$ git clone TODO: add github URL`
 
+Preparing the dev environment:
+    `$ pipenv shell`
+
 Running the `GrammarDetector` from the repository: 
-    `$ python -m src "The dog chased the cat into the house."`
+    `$ python -m src "The dog was chasing a cat into the house."`
 
 Running the `patternset` unittests from the repository: 
     `$ python -m unittest`
 
 To add new grammatical features or improve existing features, focus your efforts on the `patternsets` directory and its YAML files. You may find the token tables included in the info-level logs (exposed by setting `verbose` to `True`) to be helpful when creating or expanding patterns. Submissions of `patternset` files will be rejected if they do not include tests for each pattern.
 
-TODO: add the github URL to the instructions for cloning the repository
-
 ## Authors
 
-Steven Kyle Crawford
+Kyle Crawford
 
 ## Version History
 
-* 0.1
-    * Initial Release
+* 0.1.0
+    * Initial release
 
 ## License
 
