@@ -2,7 +2,7 @@ from logging import getLogger
 from os import listdir, path
 from typing import Union
 from .Config import Config
-from .detectors import Detector, DetectorRepository
+from .detectors import Detector, DetectorRepository, DetectorTester
 from .logger import configure_logger
 from .matches import Match
 from .utils import Filepath
@@ -51,8 +51,8 @@ class GrammarDetector:
         self.config = Config(self.settings_path)
         self.detector_repo = DetectorRepository()
 
-        self.configure()
-        self.load()
+        self._configure()
+        self._load()
 
     def __call__(self, input: str) -> dict[str, Union[str, list[Match]]]:
         """Returns a dict of `Match`es after running all `Detectors` on the input string. One of the two ways to evaluate text for grammatical features. Use this `GrammarDetector.__call__()` method to evaluate text. 
@@ -70,11 +70,11 @@ class GrammarDetector:
     def detectors(self) -> list[Detector]:
         """Returns all `Detectors`. One of the two ways to evaluate text for grammatical features. Use the `Detector.__call__` method to evaluate text."""
         if not self._is_loaded:
-            raise RuntimeError(f"load() must be called before accessing this property")
+            raise RuntimeError(f"_load() must be called before accessing this property")
         return self.detector_repo.get_all()
 
-    def configure(self) -> None:
-        """Configure the spaCy dataset and logger. Must be called before calling `load()`."""
+    def _configure(self) -> None:
+        """Configure the spaCy dataset and logger. Must be called before calling `_load()`."""
         dataset: str = self.config.prop_str("DATASET")
         if self.dataset:
             dataset = self.dataset
@@ -89,10 +89,10 @@ class GrammarDetector:
         self.logger = getLogger(__name__)
         self._is_configured = True
 
-    def load(self) -> None:
+    def _load(self) -> None:
         """Load the `PatternSets`. If the constructor's `builtins` is True, then the internal `PatternSets` provided with this class will be loaded. If the constructor's `patternset_path` is a valid filepath/dirpath string, then those `PatternSets` will also be loaded."""
         if not self._is_configured:
-            raise RuntimeError(f"configure() must be called before calling load()")
+            raise RuntimeError(f"_configure() must be called before calling _load()")
 
         # Patternsets
         patternset_filepaths: list[str] = []
@@ -124,3 +124,24 @@ class GrammarDetector:
         # Detectors
         [self.detector_repo.create(fpath) for fpath in patternset_filepaths]
         self._is_loaded = True
+
+    def run_tests(self, internal_patternset_tests: bool = False) -> None:
+        tester = DetectorTester()
+        results = []
+
+        for detector in self.detectors:
+            # Internal patternsets
+            feature_names = [fn.replace(".yaml", "") for fn in self.config.internal_patternset_filenames]
+            if detector.name in feature_names:
+                if internal_patternset_tests:
+                    results.append(tester.run_tests(detector))
+
+            # External patternsets
+            else:
+                results.append(tester.run_tests(detector))
+        
+        if results:
+            for (name, num_pass, num_fail) in results:
+                print(f"{name} = PASS: {num_pass}, FAIL: {num_fail}")
+        else:
+            print("No tests found")
