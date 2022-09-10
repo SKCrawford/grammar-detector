@@ -2,8 +2,9 @@ from logging import getLogger
 from os import listdir, path
 from typing import Union
 from .Config import Config
+from .defaults import DATASET, LOGGER_DEFAULT_LEVEL
 from .detectors import Detector, DetectorRepository, DetectorTester
-from .logger import configure_logger, LOGGER_DEFAULT_LEVEL
+from .logger import configure_logger
 from .matches import Match
 from .Nlp import Nlp
 from .utils import Filepath
@@ -20,7 +21,7 @@ class GrammarDetector:
     def __init__(
         self,
         builtins: bool = True,
-        dataset: str = "en_core_web_lg",
+        dataset: str = DATASET,  # en_core_web_lg
         features: str = "all",
         patternset_path: str = "",
         verbose: bool = False,
@@ -128,7 +129,7 @@ class GrammarDetector:
 
         for detector in self.detectors:
             # Internal patternsets
-            feature_names = [fn.replace(".yaml", "") for fn in self.config.internal_patternset_filenames]
+            feature_names = [Filepath(fn).filename for fn in self.config.internal_patternset_filenames]
             if detector.name in feature_names:
                 if internal_patternset_tests:
                     results.append(tester.run_tests(detector))

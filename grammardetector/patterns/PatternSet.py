@@ -1,6 +1,7 @@
 from logging import getLogger
 from typing import Literal, Union
 from ..Config import Config
+from ..defaults import PATTERN_SET_DEFAULT_BEST_MATCH, PATTERN_SET_DEFAULT_HOW_MANY_MATCHES
 from .Pattern import Pattern, PatternData
 
 
@@ -25,10 +26,6 @@ TestExpectedSpans = list[str]
 Test = dict[TestKeys, Union[TestInput, TestExpectedRulenames, TestExpectedSpans]]
 
 PatternSetData = dict[str, Union[list[PatternData], Meta, list[Test]]]
-
-
-PATTERN_SET_DEFAULT_BEST_MATCH = "longest"
-PATTERN_SET_DEFAULT_HOW_MANY_MATCHES = "all"
 
 
 logger = getLogger(__name__)

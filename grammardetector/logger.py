@@ -1,16 +1,12 @@
 from logging import basicConfig, Formatter, INFO, StreamHandler, WARNING
 from sys import stderr, stdout
 from .Config import Config
-
-
-FORMAT_BASIC: str = "[%(asctime)s] %(message)s"
-FORMAT_DETAILED: str = "[%(asctime)s][%(module)s:%(funcName)s:%(lineno)d][%(levelname)s] %(message)s"
-LOGGER_DEFAULT_LEVEL: int = 30
+from .defaults import LOGGER_DEFAULT_LEVEL, LOGGER_FORMAT_BASIC, LOGGER_FORMAT_DETAILED
 
 
 def configure_logger(log_level: int = LOGGER_DEFAULT_LEVEL) -> None:
-    basic_formatter = Formatter(fmt=FORMAT_BASIC)
-    detailed_formatter = Formatter(fmt=FORMAT_DETAILED)
+    basic_formatter = Formatter(fmt=LOGGER_FORMAT_BASIC)
+    detailed_formatter = Formatter(fmt=LOGGER_FORMAT_DETAILED)
 
     handler = StreamHandler(stdout)
     formatter: Formatter = basic_formatter if log_level == INFO else detailed_formatter

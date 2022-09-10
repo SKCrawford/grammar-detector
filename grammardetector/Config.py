@@ -4,11 +4,10 @@ from os.path import abspath, join
 from pathlib import Path
 from typing import Any
 from yaml import FullLoader, load as load_yaml
+from .defaults import PATTERN_SET_FILE_EXTENSION, PATTERN_SET_HOST_DIR
 from .utils import Filepath, singleton
 
 
-PATTERN_SET_FILE_EXTENSION: str = "yaml"
-PATTERN_SET_HOST_DIR: str = "patternsets"
 
 
 logger = getLogger(__name__)
