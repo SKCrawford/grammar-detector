@@ -3,9 +3,14 @@ from sys import stderr, stdout
 from .Config import Config
 
 
-def configure_logger(config: Config, log_level: int):
-    basic_formatter = Formatter(fmt=config.prop_str("LOGGER_FORMAT_BASIC"))
-    detailed_formatter = Formatter(fmt=config.prop_str("LOGGER_FORMAT_DETAILED"))
+FORMAT_BASIC: str = "[%(asctime)s] %(message)s"
+FORMAT_DETAILED: str = "[%(asctime)s][%(module)s:%(funcName)s:%(lineno)d][%(levelname)s] %(message)s"
+LOGGER_DEFAULT_LEVEL: int = 30
+
+
+def configure_logger(log_level: int = LOGGER_DEFAULT_LEVEL) -> None:
+    basic_formatter = Formatter(fmt=FORMAT_BASIC)
+    detailed_formatter = Formatter(fmt=FORMAT_DETAILED)
 
     handler = StreamHandler(stdout)
     formatter: Formatter = basic_formatter if log_level == INFO else detailed_formatter

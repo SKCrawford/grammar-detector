@@ -1,6 +1,6 @@
 from logging import getLogger
 from spacy.tokens import Doc
-from .nlp import nlp
+from .Nlp import Nlp
 
 
 logger = getLogger(__name__)
@@ -12,7 +12,7 @@ class Input:
     def __init__(self, raw_input: str, extract_noun_chunks: bool = False) -> None:
         logger.debug(f"Constructing the Input for '{raw_input}'")
         self.raw: str = raw_input
-        self.doc: Doc = nlp(raw_input)
+        self.doc: Doc = Nlp()(raw_input)
         self.extract_noun_chunks: bool = extract_noun_chunks
 
     @property

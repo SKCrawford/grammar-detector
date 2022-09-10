@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "grammardetector"
-version = "0.1.14"
+version = "0.1.16"
 authors = [
   { name="Kyle Crawford" }
 ]
@@ -32,12 +32,11 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["patternsets*", "settings*", "grammardetector*"]
+include = ["patternsets*", "grammardetector*"]
 exclude = ["tests"]
 
 [tool.setuptools.package-data]
 patternsets = ["*.yaml"]
-settings = ["*.yaml"]
 
 [project.urls]
 "Homepage" = "https://github.com/SKCrawford/syntax-detector"

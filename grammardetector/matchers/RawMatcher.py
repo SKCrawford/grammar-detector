@@ -2,7 +2,7 @@ from logging import getLogger
 from spacy.matcher import Matcher as SpacyMatcher
 from spacy.tokens import Doc
 from ..matches import RawMatch
-from ..nlp import nlp
+from ..Nlp import Nlp
 
 
 logger = getLogger(__name__)
@@ -13,7 +13,7 @@ class RawMatcher:
 
     def __init__(self) -> None:
         logger.debug("Constructing the RawMatcher")
-        self._matcher = SpacyMatcher(nlp.vocab, validate=True)
+        self._matcher = SpacyMatcher(Nlp()._nlp.vocab, validate=True)
 
     def __call__(self, doc: Doc) -> list[RawMatch]:
         """Get all matches for the given `Doc`."""

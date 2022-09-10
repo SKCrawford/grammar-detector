@@ -3,7 +3,6 @@ from pprint import pformat
 from sys import argv
 from time import time
 from .GrammarDetector import GrammarDetector
-from .nlp import nlp
 from .utils import token_table
 
 
@@ -29,9 +28,6 @@ def main() -> None:
     features = {}
     for sentence in sentences:
         logger.info(f"Sentence {count}: '{sentence}'")
-        table = token_table(nlp, sentence)
-        logger.info(f"Token table:\n{table}")
-
         sentence_start_time: float = time()
         features = grammar_detector(sentence)
         sentence_finish_time: float = time()

@@ -3,17 +3,20 @@ from spacy import load as spacy_load
 from spacy.language import Language
 from spacy.tokens import Doc, Span
 from typing import Union
-from .Config import Config
+from .utils import singleton
 
 
 logger = getLogger(__name__)
-dataset = Config().prop_str("DATASET")
-logger.info(f"Started loading the spaCy model with the dataset '{dataset}'")
 
-# Don't forget to run (with the appropriate dataset):
-# $ python -m download en_core_web_lg
-nlp: Language = spacy_load(dataset)
-logger.info("Finished loading the spaCy model")
+
+@singleton
+class Nlp:
+    def __init__(self, dataset_label: str = "en_core_web_lg"):
+        self.label: str = dataset_label
+        self._nlp: Language = spacy_load(self.label)
+
+    def __call__(self, *args, **kwargs):
+        return self._nlp(*args, **kwargs)
 
 
 def get_doc(text: Union[str, Doc, Span]) -> Doc:
@@ -27,7 +30,7 @@ def get_doc(text: Union[str, Doc, Span]) -> Doc:
         return text.as_doc()
     elif isinstance(text, str):
         logger.debug("Tokenizing")
-        return nlp(text)
+        return Nlp()(text)
     else:
         msg = f"Cannot get the Doc for '{text}' ({type(text)})"
         logger.error(msg)

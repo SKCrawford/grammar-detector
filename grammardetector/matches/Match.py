@@ -2,7 +2,7 @@ from functools import cached_property
 from logging import getLogger
 from spacy import explain
 from spacy.tokens import Doc, Span
-from ..nlp import nlp
+from ..Nlp import Nlp
 
 
 MatchId = int
@@ -31,7 +31,7 @@ class Match:
 
     @cached_property
     def rulename(self) -> str:
-        return nlp.vocab.strings[self.match_id]
+        return Nlp()._nlp.vocab.strings[self.match_id]
 
     @cached_property
     def span(self) -> Span:

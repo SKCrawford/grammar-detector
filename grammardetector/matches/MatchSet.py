@@ -4,6 +4,11 @@ from ..Config import Config
 from .Match import Match, RawMatch
 
 
+PATTERN_SET_ALL_MATCHES: str = "all"
+PATTERN_SET_ONE_MATCH: str = "one"
+PATTERN_SET_LONGEST_MATCH: str = "longest"
+
+
 logger = getLogger(__name__)
 
 
@@ -29,9 +34,9 @@ class MatchSet:
         if not self.matches:
             return []
 
-        if self.how_many_matches == Config().prop_str("PATTERN_SET_ONE_MATCH"):
+        if self.how_many_matches == PATTERN_SET_ONE_MATCH:
             return [self.best]
-        elif self.how_many_matches == Config().prop_str("PATTERN_SET_ALL_MATCHES"):
+        elif self.how_many_matches == PATTERN_SET_ALL_MATCHES:
             return self.all
         else:
             msg = f"Invalid value for 'how_many_matches': {self.how_many_matches}"
@@ -48,7 +53,7 @@ class MatchSet:
         logger.info(
             f"Getting the best match of these {len(self.matches)}: {self.matches}"
         )
-        longest_match_setting = Config().prop_str("PATTERN_SET_LONGEST_MATCH")
+        longest_match_setting = PATTERN_SET_LONGEST_MATCH
 
         if self.best_match.upper() == longest_match_setting.upper():
             return self.longest

@@ -3,8 +3,9 @@ from os import listdir, path
 from typing import Union
 from .Config import Config
 from .detectors import Detector, DetectorRepository, DetectorTester
-from .logger import configure_logger
+from .logger import configure_logger, LOGGER_DEFAULT_LEVEL
 from .matches import Match
+from .Nlp import Nlp
 from .utils import Filepath
 
 
@@ -22,7 +23,6 @@ class GrammarDetector:
         dataset: str = "en_core_web_lg",
         features: str = "all",
         patternset_path: str = "",
-        settings_path: str = "settings/settings.yaml",
         verbose: bool = False,
         very_verbose: bool = False,
     ) -> None:
@@ -33,7 +33,6 @@ class GrammarDetector:
         dataset             -- (str) The spaCy dataset used to create the global `nlp: Language` (default 'en_core_web_lg')
         features            -- (str) A string of comma-separated features to select specific `Detectors` (default 'all')
         patternset_path     -- (str) A filepath or dirpath string pointing to a patternset or collection of patternsets (default '')
-        settings_path       -- (str) A filepath string pointing to a settings.yaml file, which contains the configuration options (default 'settings.yaml')
         verbose             -- (bool) If True, log INFO-level messages; `very_verbose` takes priority over `verbose` (default False)
         very_verbose        -- (bool) If True, log DEBUG-level messages; `very_verbose` takes priority over `verbose` (default False)
         """
@@ -44,11 +43,10 @@ class GrammarDetector:
         self.dataset: str = dataset
         self.features: str = features
         self.patternset_path: str = patternset_path
-        self.settings_path: str = settings_path
         self.verbose: bool = verbose
         self.very_verbose: bool = very_verbose
 
-        self.config = Config(self.settings_path)
+        self.config = Config()
         self.detector_repo = DetectorRepository()
 
         self._configure()
@@ -74,25 +72,24 @@ class GrammarDetector:
         return self.detector_repo.get_all()
 
     def _configure(self) -> None:
-        """Configure the spaCy dataset and logger. Must be called before calling `_load()`."""
-        dataset: str = self.config.prop_str("DATASET")
-        if self.dataset:
-            dataset = self.dataset
-
-        log_level: int = self.config.prop_int("LOGGER_LEVEL")
+        """Configure the logger. Must be called before calling `_load()`."""
+        log_level: int = LOGGER_DEFAULT_LEVEL
         if self.very_verbose:
             log_level = 10
         elif self.verbose:
             log_level = 20
-        configure_logger(self.config, log_level)
+        configure_logger(log_level)
 
         self.logger = getLogger(__name__)
         self._is_configured = True
 
     def _load(self) -> None:
-        """Load the `PatternSets`. If the constructor's `builtins` is True, then the internal `PatternSets` provided with this class will be loaded. If the constructor's `patternset_path` is a valid filepath/dirpath string, then those `PatternSets` will also be loaded."""
+        """Load the NLP and `PatternSets`. If the constructor's `builtins` is True, then the internal `PatternSets` provided with this class will be loaded. If the constructor's `patternset_path` is a valid filepath/dirpath string, then those `PatternSets` will also be loaded."""
         if not self._is_configured:
             raise RuntimeError(f"_configure() must be called before calling _load()")
+
+        # NLP
+        self.nlp = Nlp(self.dataset)
 
         # Patternsets
         patternset_filepaths: list[str] = []
