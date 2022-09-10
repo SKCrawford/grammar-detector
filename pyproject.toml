@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "grammardetector"
+version = "0.1.14"
+authors = [
+  { name="Kyle Crawford" }
+]
+description = "A grammatical feature detector for analyzing sentences, clauses, and phrases."
+readme = "README.md"
+license = { file="LICENSE.txt" }
+requires-python = ">=3.9"
+dependencies = [
+  "importlib-metadata; python_version<'3.9'",
+  "pyyaml",
+  "spacy",
+  "spacy-lookups-data",
+  "tabulate"
+]
+
+[project.optional-dependencies]
+dev = [
+  "black",
+  "mypy",
+  "python-lsp-server",
+  "types-pyyaml",
+  "types-tabulate",
+  "types-setuptools"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["patternsets*", "settings*", "grammardetector*"]
+exclude = ["tests"]
+
+[tool.setuptools.package-data]
+patternsets = ["*.yaml"]
+settings = ["*.yaml"]
+
+[project.urls]
+"Homepage" = "https://github.com/SKCrawford/syntax-detector"
+"Bug Tracker" = "https://github.com/SKCrawford/syntax-detector/issues"

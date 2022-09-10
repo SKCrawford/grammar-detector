@@ -22,7 +22,7 @@ class GrammarDetector:
         dataset: str = "en_core_web_lg",
         features: str = "all",
         patternset_path: str = "",
-        settings_path: str = "settings.yaml",
+        settings_path: str = "settings/settings.yaml",
         verbose: bool = False,
         very_verbose: bool = False,
     ) -> None:

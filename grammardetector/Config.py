@@ -14,7 +14,7 @@ logger = getLogger(__name__)
 class Config:
     """A class for managing configuration settings."""
 
-    def __init__(self, config_file_path: str = "settings.yaml") -> None:
+    def __init__(self, config_file_path: str = "settings/settings.yaml") -> None:
         with open(config_file_path, "r") as f:
             self._settings = load_yaml(f, Loader=FullLoader)
 

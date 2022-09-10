@@ -5,13 +5,17 @@ verify_ssl = true
 
 [dev-packages]
 black = "==21.9b0"
+build = "*"
 mypy = "*"
 python-lsp-server = "*"
+setuptools = "*"
+twine = "*"
 types-pyyaml = "*"
-types-tabulate = "*"
 types-setuptools = "*"
+types-tabulate = "*"
 
 [packages]
+importlib-metadata = "*"
 pyyaml = "*"
 spacy = "*"
 spacy-lookups-data = "*"
