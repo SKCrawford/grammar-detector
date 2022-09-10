@@ -102,7 +102,7 @@ All current patterns are relatively naive, so they do not yet effectively handle
 
 ## Installation
 
-`$ pip install TODO: add package name`
+`$ pip install grammardetector`
 
 ## Usage
 
@@ -111,7 +111,6 @@ All current patterns are relatively naive, so they do not yet effectively handle
 ---
     # my_script.py
 
-    # TODO: check import statements
     from grammardetector import GrammarDetector
 
 
@@ -133,7 +132,6 @@ All current patterns are relatively naive, so they do not yet effectively handle
 ---
     # my_script.py
 
-    # TODO: check import statements
     from grammardetector import GrammarDetector
 
 
@@ -147,8 +145,7 @@ All current patterns are relatively naive, so they do not yet effectively handle
 ---
     # my_script.py
 
-    # TODO: check import statements
-    from grammardetector import GrammarDetector, Match
+    from grammardetector import GrammarDetector
     from typing import Union
 
 
@@ -167,7 +164,7 @@ All current patterns are relatively naive, so they do not yet effectively handle
     # }
 
     feature: str = "tense_aspects"
-    verb_tense: Match = results[feature][0]
+    verb_tense = results[feature][0]
 
     print(verb_tense)
     # <past continuous: was chasing>
@@ -201,7 +198,6 @@ All current patterns are relatively naive, so they do not yet effectively handle
 ---
     # my_script.py
 
-    # TODO: check import statements
     from grammardetector import GrammarDetector
 
 
@@ -219,7 +215,6 @@ TODO: implement this
 ---
     # my_script.py
 
-    # TODO: check import statements
     from grammardetector import GrammarDetector
 
 
@@ -242,7 +237,6 @@ The `GrammarDetector` class is the entrypoint for loading in `patternset` files 
 ---
     # my_script.py
 
-    # TODO: check import statements
     from grammardetector import GrammarDetector
 
 
