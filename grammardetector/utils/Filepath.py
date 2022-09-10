@@ -18,8 +18,10 @@ class Filepath:
 
         (self.dir_path, self.filename) = split(self._filepath)
         fname_splits = self.filename.split(".")
-        # Use -2 instead of 0 because hidden files's 0 is an empty string
-        self.name = fname_splits[-2]
+        try:
+            self.name = fname_splits[-2]  # Use -2 instead of 0 because hidden files's 0 is an empty string
+        except:
+            self.name = fname_splits[0]
         self.extension = fname_splits[-1]
 
     @property
