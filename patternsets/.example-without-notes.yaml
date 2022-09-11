@@ -1,8 +1,10 @@
 ---
+# This example describes how to create and configure patternsets. An example with notes is also available.
+
 meta:
     extract_noun_chunks: false
     how_many_matches: one
-    # skip_tests: "not yet implemented"
+    skip_tests: false
 
 patterns:
     - rulename: present simple
@@ -15,7 +17,7 @@ patterns:
               TAG: {IN: ["VBP", "VBZ"]},
               DEP: "auxpass",
               LEMMA: "be",
-              OP: "+",
+              OP: "+"
           }
           - {TAG: "VBN", OP: "+"}
 
@@ -27,32 +29,34 @@ patterns:
           - {TAG: "VB", DEP: "xcomp", OP: "+"}
 
 tests:
-    - input: He chases it.
+    - input: I run.
       rulenames:
           - present simple
       spans:
-          - chases
+          - run
+      skip: false
 
-    - input: He is chased by it.
+    - input: He runs.
       rulenames:
-          - present simple passive
+          - present simple
       spans:
-          - is chased
+          - runs
+      skip: true
 
-    - input: He is going to chase it.
+    - input: She runs.
+      rulenames:
+          - present simple
+      spans:
+          - runs
+
+    - input: They run.
+      rulenames:
+          - present simple
+      spans:
+          - run
+
+    - input: I am going to run.
       rulenames:
           - future simple be-going-to
       spans:
-          - is going to chase
-
-    - input: the book that was on a shelf behind the TV
-      skip: true
-      rulenames:
-          - definite
-          # none - FIXME this result was unexpected
-          - indefinite  # other - FIXME this result is incorrect
-          - definite
-      spans:
-          - the book
-          - a shelf
-          - the TV
+          - am going to run

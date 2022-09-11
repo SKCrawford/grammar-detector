@@ -1,0 +1,83 @@
+---
+# This example describes how to create and configure patternsets. An example without notes is also available. Patternsets are YAML that describe and validate grammatical rules. They are automatically loaded by the GrammarDetector on construction. External patternsets can be loaded by passing the filepath or dirpath to the GrammarDetector constructor's "patternset_path".
+
+# meta: list[dict[str, Union[str, bool]]] -- Settings for modifying the input, output, or detector features.
+meta:
+
+    # extract_noun_chunks: bool -- If true, split the input into its nouns before analyzing. Defaults to false.
+    extract_noun_chunks: false
+
+    # how_many_matches: str -- If "all", get all matches. If "one", get the best match. Defaults to "all".
+    how_many_matches: one
+
+    # skip_tests: bool -- If true, skip all tests in this file when running the GrammarDetector.run_tests(self) method. Defaults to false.
+    skip_tests: false
+
+# patterns: list[dict[str, Union[str, list[spacy.tokens.Token]]]] -- The grammatical rules to be added to the feature detector. The patterns are automatically loaded into the spacy.matchers.Matcher on construction of the GrammarDetector. Each pattern must contain at minimum 1) the rulename and 2) the tokens.
+patterns:
+
+    # rulename: str -- The name of the grammatical rule assigned to the corresponding tokens.
+    - rulename: present simple
+
+      # tokens: list[spacy.tokens.Token] -- The pattern against which input is compared.
+      tokens:
+          - {TAG: {IN: ["VBP", "VBZ"]}, OP: "+"}
+
+    - rulename: present simple passive
+      tokens:
+          - {
+              TAG: {IN: ["VBP", "VBZ"]},
+              DEP: "auxpass",
+              LEMMA: "be",
+              OP: "+"
+          }
+          - {TAG: "VBN", OP: "+"}
+
+    - rulename: future simple be-going-to
+      tokens:
+          - {TAG: {IN: ["VBP", "VBZ"]}, DEP: "aux", OP: "+"}
+          - {TAG: "VBG", OP: "+", LEMMA: "go"}
+          - {TAG: "TO", DEP: "aux", OP: "+"}
+          - {TAG: "VB", DEP: "xcomp", OP: "+"}
+
+# tests: list[dict[str, Union[str, list[str]]]] -- The tests to validate the accuracy of the patterns defined above. Run the tests using the GrammarDetector.run_tests(self) method. Each test must have at minimum 1) the input and 2) the rulenames and/or spans. A test may be skipped by setting "skip" to true.
+tests:
+
+    # input: str -- The sentence, clause, or phrase to be tested.
+    - input: I run.
+
+      # rulenames: list[str] -- The expected matching rulenames.
+      rulenames:
+          - present simple
+
+      # spans: list[str] -- The expected matching fragment of the input.
+      spans:
+          - run
+
+      # skip: bool -- If true, skip this test (but not the others). Defaults to false.
+      skip: false
+
+    - input: He runs.
+      rulenames:
+          - present simple
+      spans:
+          - runs
+      skip: true
+
+    - input: She runs.
+      rulenames:
+          - present simple
+      spans:
+          - runs
+
+    - input: They run.
+      rulenames:
+          - present simple
+      spans:
+          - run
+
+    - input: I am going to run.
+      rulenames:
+          - future simple be-going-to
+      spans:
+          - am going to run
