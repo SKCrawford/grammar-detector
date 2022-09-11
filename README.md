@@ -102,7 +102,10 @@ All current patterns are relatively naive, so they do not yet effectively handle
 
 ## Installation
 
-`$ pip install grammardetector`
+---
+    $ pip install grammardetector spacy
+    $ python -m spacy download en_core_web_lg
+---
 
 ## Usage
 
@@ -118,9 +121,7 @@ All current patterns are relatively naive, so they do not yet effectively handle
     settings = {  
         "builtins": True,
         "dataset": "en_core_web_lg",
-        "features": "all",
         "patternset_path": "",  # Custom patternsets
-        "settings_path": "settings.yaml",
         "verbose": False,
         "very_verbose": False,
     }
@@ -146,12 +147,11 @@ All current patterns are relatively naive, so they do not yet effectively handle
     # my_script.py
 
     from grammardetector import GrammarDetector
-    from typing import Union
 
 
     grammar_detector = GrammarDetector()
     input: str = "The dog was chasing a cat into the house."
-    results: dict[str, Union[str, list[Match]]] = grammar_detector(input)
+    results = grammar_detector(input)
 
     print(results)
     # {
@@ -190,10 +190,26 @@ All current patterns are relatively naive, so they do not yet effectively handle
     #     'tag_desc': 'verb, gerund or present participle', 
     #     'dep_desc': 'root'
     # }
-
 ---
 
-### Usage: Running the Tests in Custom Patternset YAML Files
+### Usage: Loading Patterns in Custom Patternset YAML Files
+
+---
+    from grammardetector import GrammarDetector
+
+
+    grammar_detector = GrammarDetector(
+        builtins=False,
+        patternset_path="path/to/my/patternset/files/",
+    )
+    input: str = "The dog was chasing a cat into the house."
+    results = grammar_detector(input)
+    
+    print(results)
+    # Prints only your custom features
+---
+
+### Usage: Running Tests in Custom Patternset YAML Files
 
 ---
     # my_script.py
@@ -210,7 +226,7 @@ All current patterns are relatively naive, so they do not yet effectively handle
 
 ### Usage: Printing Token Tables
 
-TODO: implement this
+Not yet implemented.
 
 ---
     # my_script.py
