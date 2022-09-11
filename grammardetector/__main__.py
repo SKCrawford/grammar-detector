@@ -17,10 +17,7 @@ def main() -> None:
         raise ValueError("No sentences were provided")
 
     # Create the detectors
-    grammar_detector = GrammarDetector(
-        verbose=True,
-        very_verbose=False,
-    )
+    grammar_detector = GrammarDetector()
     logger = getLogger(__name__)
 
     # Run the detectors

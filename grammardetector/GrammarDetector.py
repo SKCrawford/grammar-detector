@@ -22,7 +22,6 @@ class GrammarDetector:
         self,
         builtins: bool = True,
         dataset: str = DATASET,  # en_core_web_lg
-        features: str = "all",
         patternset_path: str = "",
         verbose: bool = False,
         very_verbose: bool = False,
@@ -32,7 +31,6 @@ class GrammarDetector:
         Keyword arguments:
         builtins            -- (bool) If True, include built-in patternsets (default True)
         dataset             -- (str) The spaCy dataset used to create the global `nlp: Language` (default 'en_core_web_lg')
-        features            -- (str) A string of comma-separated features to select specific `Detectors` (default 'all')
         patternset_path     -- (str) A filepath or dirpath string pointing to a patternset or collection of patternsets (default '')
         verbose             -- (bool) If True, log INFO-level messages; `very_verbose` takes priority over `verbose` (default False)
         very_verbose        -- (bool) If True, log DEBUG-level messages; `very_verbose` takes priority over `verbose` (default False)
@@ -42,7 +40,6 @@ class GrammarDetector:
 
         self.builtins: bool = builtins
         self.dataset: str = dataset
-        self.features: str = features
         self.patternset_path: str = patternset_path
         self.verbose: bool = verbose
         self.very_verbose: bool = very_verbose
@@ -94,24 +91,19 @@ class GrammarDetector:
 
         # Patternsets
         patternset_filepaths: list[str] = []
-        feature_list: list[str] = []
-        if not self.features == "all":
-            feature_list = self.features.split(",")
 
         ## Internal patternsets
         if self.builtins:
             for fpath in Config().internal_patternset_filepaths:
                 fp = Filepath(fpath)
-                if not feature_list or fp.name in feature_list:
-                    patternset_filepaths.append(fp.filepath)
+                patternset_filepaths.append(fp.filepath)
 
         ## External patternsets
         if self.patternset_path:
             if path.isdir(self.patternset_path):
                 for fpath in listdir(self.patternset_path):
-                    fp = Filepath(fpath)
-                    if not feature_list or fp.name in feature_list:
-                        patternset_filepaths.append(fp.filepath)
+                    fp = Filepath(f"{self.patternset_path}/{fpath}")
+                    patternset_filepaths.append(fp.filepath)
             elif path.isfile(self.patternset_path):
                 patternset_filepaths.append(self.patternset_path)
             else:
