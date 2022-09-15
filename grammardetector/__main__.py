@@ -27,6 +27,7 @@ def main() -> None:
         logger.info(f"Sentence {count}: '{sentence}'")
         sentence_start_time: float = time()
         features = grammar_detector(sentence)
+        print(grammar_detector.token_table(sentence))
         sentence_finish_time: float = time()
         count += 1
 

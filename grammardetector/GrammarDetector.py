@@ -7,7 +7,7 @@ from .detectors import Detector, DetectorRepository, DetectorTester
 from .logger import configure_logger
 from .matches import Match
 from .Nlp import Nlp
-from .utils import Filepath
+from .utils import Filepath, token_table
 
 
 class GrammarDetector:
@@ -135,3 +135,6 @@ class GrammarDetector:
                 print(f"{name} = PASS: {num_pass}, FAIL: {num_fail}")
         else:
             print("No tests found")
+
+    def token_table(self, input: str) -> str:
+        return token_table(self.nlp._nlp, input)

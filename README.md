@@ -43,13 +43,13 @@ Currently supports the ability to:
 * Produce results that are reader-friendly and reader-*useful*
 * Use built-in grammatical features with just 3 lines of code (import, construct, and call)
 * Create your own grammatical feature by passing the filepath of a simple `patternset` YAML file with spaCy `Tokens`
+* Convert input into a table of `Tokens` to aid in writing `patterns`
 * Define and run tests in `patternsets` to evaluate the accuracy of the patterns
 * Fragment an input into noun chunks automatically before the `Detector` is run
 
 Future features:
 
 * Add support for validating custom `patternset` YAML files
-* Add support for conveniently printing a table of spaCy `Tokens` for a given input
 
 ## Grammatical Features
 
@@ -146,12 +146,16 @@ All current patterns are relatively naive, so they do not yet effectively handle
 ---
     # my_script.py
 
-    from grammardetector import GrammarDetector
+    from grammardetector import GrammarDetector, Match
+    from typing import Union
+
+
+    ResultsType = dict[str, Union[str, list[Match]]]
 
 
     grammar_detector = GrammarDetector()
     input: str = "The dog was chasing a cat into the house."
-    results = grammar_detector(input)
+    results: ResultsType = grammar_detector(input)
 
     print(results)
     # {
@@ -164,7 +168,7 @@ All current patterns are relatively naive, so they do not yet effectively handle
     # }
 
     feature: str = "tense_aspects"
-    verb_tense = results[feature][0]
+    verb_tense: Match = results[feature][0]
 
     print(verb_tense)
     # <past continuous: was chasing>
@@ -226,8 +230,6 @@ All current patterns are relatively naive, so they do not yet effectively handle
 
 ### Usage: Printing Token Tables
 
-Not yet implemented.
-
 ---
     # my_script.py
 
@@ -236,10 +238,37 @@ Not yet implemented.
 
     grammar_detector = GrammarDetector()
     input = "The dog was chasing a cat into the house."
-    table = grammar_detector.to_token_table(input)
-
+    table = grammar_detector.token_table(input)
     print(table)
-    # TODO: add sample of output
+
+| Word   | POS   | POS Definition   | Tag   | Tag Definition                            | Dep.   | Dep. Definition        | Lemma.   |
+|--------|-------|------------------|-------|-------------------------------------------|--------|------------------------|----------|
+| The    | DET   | determiner       | DT    | determiner                                | det    | determiner             | the      |
+| dog    | NOUN  | noun             | NN    | noun, singular or mass                    | nsubj  | nominal subject        | dog      |
+| chased | VERB  | verb             | VBD   | verb, past tense                          | ROOT   | root                   | chase    |
+| a      | DET   | determiner       | DT    | determiner                                | det    | determiner             | a        |
+| cat    | NOUN  | noun             | NN    | noun, singular or mass                    | dobj   | direct object          | cat      |
+| into   | ADP   | adposition       | IN    | conjunction, subordinating or preposition | prep   | prepositional modifier | into     |
+| the    | DET   | determiner       | DT    | determiner                                | det    | determiner             | the      |
+| house  | NOUN  | noun             | NN    | noun, singular or mass                    | pobj   | object of preposition  | house    |
+| .      | PUNCT | punctuation      | .     | punctuation mark, sentence closer         | punct  | punctuation            | .        |
+
+---
+
+### Usage: Figuring Out What Went Wrong
+
+---
+    # my_script.py
+
+    from grammardetector import GrammarDetector
+
+
+    grammar_detector = GrammarDetector(verbose=True, very_verbose=False)  # very_verbose prioritized over verbose
+    # Prints logs for configuring and loading patternsets
+
+    input = "The dog was chasing a cat into the house."
+    results = grammar_detector(input)
+    # Prints logs for running the matcher and interpreting the results
 ---
 
 ## Components of the GrammarDetector
