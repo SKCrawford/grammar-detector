@@ -1,6 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/linux,vim,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=linux,vim,python
 
+
 ### Linux ###
 *~
 
@@ -45,6 +46,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+README.html
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
