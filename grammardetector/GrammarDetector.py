@@ -115,7 +115,7 @@ class GrammarDetector:
         [self.detector_repo.create(fpath) for fpath in patternset_filepaths]
         self._is_loaded = True
 
-    def run_tests(self, internal_patternset_tests: bool = False) -> None:
+    def run_tests(self, internal_tests: bool = False) -> None:
         tester = DetectorTester()
         results = []
 
@@ -123,7 +123,7 @@ class GrammarDetector:
             # Internal patternsets
             feature_names = [Filepath(fn).filename for fn in self.config.internal_patternset_filenames]
             if detector.name in feature_names:
-                if internal_patternset_tests:
+                if internal_tests:
                     results.append(tester.run_tests(detector))
 
             # External patternsets
