@@ -255,7 +255,7 @@ All current patterns are relatively naive, so they do not yet effectively handle
 
 ---
 
-### Usage: Figuring Out What Went Wrong
+### Usage: Troubleshooting
 
 ---
     # my_script.py

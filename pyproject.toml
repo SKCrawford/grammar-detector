@@ -3,8 +3,8 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "grammardetector"
-version = "0.1.23"
+name = "grammar-detector"
+version = "0.2.0"
 authors = [
   { name="Kyle Crawford" }
 ]
@@ -39,5 +39,5 @@ exclude = ["tests"]
 patternsets = ["*.yaml"]
 
 [project.urls]
-"Homepage" = "https://github.com/SKCrawford/syntax-detector"
-"Bug Tracker" = "https://github.com/SKCrawford/syntax-detector/issues"
+"Homepage" = "https://github.com/SKCrawford/grammar-detector"
+"Bug Tracker" = "https://github.com/SKCrawford/grammar-detector/issues"
