@@ -102,16 +102,13 @@ All current patterns are relatively naive, so they do not yet effectively handle
 
 ## Installation
 
----
     $ pip install grammar-detector
     $ python -m spacy download en_core_web_lg
----
 
 ## Usage
 
 ### Usage: 0) Constructing the GrammarDetector
 
----
     # my_script.py
 
     from grammardetector import GrammarDetector
@@ -121,16 +118,14 @@ All current patterns are relatively naive, so they do not yet effectively handle
     settings = {  
         "builtins": True,
         "dataset": "en_core_web_lg",
-        "patternset_path": "",  # Custom patternsets
+         "patternset_path": "",  # Custom patternsets
         "verbose": False,
         "very_verbose": False,
     }
     grammar_detector = GrammarDetector(**settings)  # Optionally, pass in **settings
----
 
 ### Usage: 1) Running the GrammarDetector
 
----
     # my_script.py
 
     from grammardetector import GrammarDetector
@@ -139,11 +134,9 @@ All current patterns are relatively naive, so they do not yet effectively handle
     grammar_detector = GrammarDetector()
     input: str = "The dog was chasing a cat into the house."
     results = grammar_detector(input)
----
 
 ### Usage: 2) Interpreting the Results
 
----
     # my_script.py
 
     from grammardetector import GrammarDetector, Match
@@ -170,7 +163,7 @@ All current patterns are relatively naive, so they do not yet effectively handle
     feature: str = "tense_aspects"
     verb_tense: Match = results[feature][0]
 
-    print(verb_tense)
+     print(verb_tense)
     # <past continuous: was chasing>
 
     print(verb_tense.rulename)
@@ -194,11 +187,9 @@ All current patterns are relatively naive, so they do not yet effectively handle
     #     'tag_desc': 'verb, gerund or present participle', 
     #     'dep_desc': 'root'
     # }
----
 
 ### Usage: Loading Patterns in Custom Patternset YAML Files
 
----
     from grammardetector import GrammarDetector
 
 
@@ -211,11 +202,9 @@ All current patterns are relatively naive, so they do not yet effectively handle
     
     print(results)
     # Prints only your custom features
----
 
 ### Usage: Running Tests in Custom Patternset YAML Files
 
----
     # my_script.py
 
     from grammardetector import GrammarDetector
@@ -226,11 +215,9 @@ All current patterns are relatively naive, so they do not yet effectively handle
 
     # Run the tests for the built-in patternsets
     grammar_detector.run_tests(internal_tests=True)
----
 
 ### Usage: Printing Token Tables
 
----
     # my_script.py
 
     from grammardetector import GrammarDetector
@@ -241,6 +228,7 @@ All current patterns are relatively naive, so they do not yet effectively handle
     table: str = grammar_detector.token_table(input)
     print(table)
 
+---
 | Word   | POS   | POS Definition   | Tag   | Tag Definition                            | Dep.   | Dep. Definition        | Lemma.   |
 |--------|-------|------------------|-------|-------------------------------------------|--------|------------------------|----------|
 | The    | DET   | determiner       | DT    | determiner                                | det    | determiner             | the      |
@@ -257,11 +245,10 @@ All current patterns are relatively naive, so they do not yet effectively handle
 
 ### Usage: Troubleshooting
 
----
     # my_script.py
 
     from grammardetector import GrammarDetector
-
+ 
 
     grammar_detector = GrammarDetector(verbose=True, very_verbose=False)  # very_verbose prioritized over verbose
     # Prints logs for configuring and loading patternsets
@@ -269,7 +256,6 @@ All current patterns are relatively naive, so they do not yet effectively handle
     input = "The dog was chasing a cat into the house."
     results = grammar_detector(input)
     # Prints logs for running the matcher and interpreting the results
----
 
 ## Components of the GrammarDetector
 
@@ -279,7 +265,6 @@ This section describes the internal components used to build and run `Detectors`
 
 The `GrammarDetector` class is the entrypoint for loading in `patternset` files and evaluating text input. By running `GrammarDetector.__call__(self, input)`, the text input will be compared against both the built-in `patternsets` and the provided `patternsets` via the `patternset_path` keyword argument. The `DetectorRepository` is contained under the hood, which in turn contains the `Detectors`. Extracting the internal `Detectors` from the `GrammarDetector` is unnecessary but easy via the `detectors: list[Detector]` property.
 
----
     # my_script.py
 
     from grammardetector import Detector, GrammarDetector
@@ -292,7 +277,6 @@ The `GrammarDetector` class is the entrypoint for loading in `patternset` files 
     detectors: list[Detector] = grammar_detector.detectors
     for detector in detectors:
         print(detector(input))
----
 
 ### Component: Token
 
@@ -308,23 +292,18 @@ Some examples of `DEPs` are "ROOT" for root verb, "aux", "auxpass", "nsubj", and
 
 ##### Token: Present Simple Verb
 
----
     # my_feature.yaml
-
-    ---
+ 
     patterns:
         - rulename: present simple verb
         # This is a single token (i.e. 1 word)
           tokens:  
             - {TAG: {IN: ["VBP", "VBZ"]},  # IN == one of these
----
 
 ##### Token: Passive Auxiliary Verb
 
----
     # my_feature.yaml
     
-    ---
     patterns:
         - rulename: passive auxiliary
         # This is also a single token (i.e. 1 word)
@@ -335,14 +314,11 @@ Some examples of `DEPs` are "ROOT" for root verb, "aux", "auxpass", "nsubj", and
               LEMMA: "be",
               OP: "+"
             }
----
 
 ##### Token: Future Simple Be-going-to Passive
 
----
     # my_feature.yaml
 
-    ---
     patterns:
         - rulename: future simple be-going-to passive
         # This is a list of 5 tokens (i.e. 5 words)
@@ -352,14 +328,11 @@ Some examples of `DEPs` are "ROOT" for root verb, "aux", "auxpass", "nsubj", and
             - {TAG: "TO", DEP: "aux", OP: "+"}
             - {TAG: "VB", DEP: "auxpass", LEMMA: "be"}
             - {TAG: "VBN", OP: "+"}
----
 
 ##### Token: Ditransitive/Trivalency
 
----
     # my_feature.yaml
 
-    ---
     patterns:
         - rulename: ditransitive
         # This is a list of 4 tokens minimum with some degree of recursivity
@@ -371,7 +344,6 @@ Some examples of `DEPs` are "ROOT" for root verb, "aux", "auxpass", "nsubj", and
             - {DEP: {IN: ["dobj", "iobj", "pobj", "dative"]}}
             - {OP: "*"}
             - {DEP: {IN: ["dobj", "iobj", "pobj", "dative"]}}
----
 
 ### Component: Patterns
 
@@ -383,7 +355,6 @@ Each `Pattern` in `patterns` has two properties:
 ---
     # transitivity.yaml
 
-    ---
     meta:
         how_many_matches: one
 
@@ -417,7 +388,6 @@ Each `Pattern` in `patterns` has two properties:
               - {TAG: "PRP", DEP: "nsubj", LOWER: "it"}
               - {OP: "*"}
               - {DEP: "ROOT"}
----
 
 ### Component: Patternset YAML Files
 
@@ -431,10 +401,8 @@ Internally, this data from the `patternset` file is converted into a `PatternSet
 
 #### Patternset Files: Example for Active/Passive Voice
 
----
     # voices.yaml
 
-    ---
     meta:
         how_many_matches: one
 
@@ -462,7 +430,6 @@ Internally, this data from the `patternset` file is converted into a `PatternSet
               - active
           spans:
               - chased
----
 
 #### Patternset Files: 1) Defining Rules via `patterns`
 
@@ -515,21 +482,22 @@ This tool is only as good as the `patternset` YAML files that support it. The pr
 * Adding new `meta` configuration options and features to the codebase
 
 Cloning the repository: 
-    `$ git clone https://github.com/SKCrawford/grammar-detector.git`
+
+    $ git clone https://github.com/SKCrawford/grammar-detector.git
 
 Preparing the dev environment:
 
----
     $ pipenv shell
     $ pipenv install --dev
     $ python -m spacy download en_core_web_lg
----
 
 Running the `GrammarDetector` from the repository: 
-    `$ python -m grammardetector "The dog was chasing a cat into the house."`
+
+    $ python -m grammardetector "The dog was chasing a cat into the house."
 
 Running the `patternset` unittests from the repository: 
-    `$ python -m unittest`
+
+    $ python -m unittest
 
 To add new grammatical features or improve existing features, focus your efforts on the `patternsets` directory and its YAML files. You may find the token tables included in the info-level logs (exposed by setting `verbose` to `True`) to be helpful when creating or expanding patterns. Submissions of `patternset` files will be rejected if they do not include tests for each pattern.
 
@@ -539,8 +507,12 @@ Kyle Crawford
 
 ## Version History
 
-* 0.1.0
+* 0.2.1
+    * Improve readme readability
+* 0.2.0
     * Alpha release
+* 0.1.0
+    * Pre-alpha release
 
 ## License
 
