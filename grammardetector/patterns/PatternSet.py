@@ -42,7 +42,7 @@ class PatternSet:
             logger.info(f"Adding '{pattern.rulename}' to '{self.name}'")
             self.patterns[pattern.rulename] = pattern
 
-        self.meta: Meta = data["meta"] if "meta" in data else {}
+        self.meta: Meta = data["config"] if "config" in data else {}
         for meta_key in self.meta:
             logger.debug(f"Found '{self.meta[meta_key]}' for meta '{meta_key}'")
 
