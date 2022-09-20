@@ -1,8 +1,8 @@
 ---
 # This example describes how to create and configure patternsets. An example without notes is also available. Patternsets are YAML that describe and validate grammatical rules. They are automatically loaded by the GrammarDetector on construction. External patternsets can be loaded by passing the filepath or dirpath to the GrammarDetector constructor's "patternset_path".
 
-# meta: list[dict[str, Union[str, bool]]] -- Settings for modifying the input, output, or detector features.
-meta:
+# config: list[dict[str, Union[str, bool]]] -- Settings for modifying the input, output, or detector features.
+config:
 
     # extract_noun_chunks: bool -- If true, split the input into its nouns before analyzing. Defaults to false.
     extract_noun_chunks: false

@@ -1,5 +1,5 @@
 ---
-meta:
+config:
     extract_noun_chunks: true
     how_many_matches: one
 

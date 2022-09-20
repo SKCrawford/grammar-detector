@@ -1,7 +1,7 @@
 ---
 # This example describes how to create and configure patternsets. An example with notes is also available.
 
-meta:
+config:
     extract_noun_chunks: false
     how_many_matches: one
     skip_tests: false
