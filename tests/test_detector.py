@@ -1,7 +1,7 @@
 from unittest import TestCase
-from src.detectors import DetectorRepository
-from src.utils import Filepath
-from src.Config import Config
+from grammardetector.detectors import DetectorRepository
+from grammardetector.utils import Filepath
+from grammardetector.Config import Config
 
 
 class TestDetectorTests(TestCase):
