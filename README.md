@@ -515,6 +515,7 @@ Steven Kyle Crawford
 * 0.2.2
     * Rename the patternset file property from meta to config. Retain usage of meta internally to avoid confusion with the Config class.
     * Rename the run_tests keyword argument from internal_tests to builtin_tests.
+    * Bugfix the repository's test suite runner.
 * 0.2.1
     * Improve readme readability
 * 0.2.0
