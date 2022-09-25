@@ -103,10 +103,10 @@ All current patterns are relatively naive, so they do not yet effectively handle
 
 ## Installation
 
-The default language model, [`en_core_web_lg`](https://spacy.io/models/en#en_core_web_lg) (560 MB), can be substituted with another [spaCy language model](https://spacy.io/usage/models#languages), such as [`en_core_web_sm`](https://spacy.io/models/en#en_core_web_sm) (12 MB) or [`en_core_web_md`](https://spacy.io/models/en#en_core_web_md) (40 MB). Be sure to disable `builtins` (see below) if using a model from a language other than English.
+The default language model, [`en_core_web_md`](https://spacy.io/models/en#en_core_web_lg) (40 MB), can be substituted with another [spaCy language model](https://spacy.io/usage/models#languages), such as [`en_core_web_lg`](https://spacy.io/models/en#en_core_web_sm) (560 MB) or [`en_core_web_sm`](https://spacy.io/models/en#en_core_web_md) (12 MB). Be sure to disable `builtins` (see below) if using a model from a language other than English.
 
     $ pip install grammar-detector
-    $ python -m spacy download en_core_web_lg
+    $ python -m spacy download en_core_web_md
 
 ## Usage
 
@@ -120,8 +120,8 @@ The default language model, [`en_core_web_lg`](https://spacy.io/models/en#en_cor
     # Default values
     settings = {  
         "builtins": True,
-        "language_model": "en_core_web_lg",
-         "patternset_path": "",  # Custom patternsets
+        "language_model": "en_core_web_md",
+        "patternset_path": "",  # Custom patternsets
         "verbose": False,
         "very_verbose": False,
     }
@@ -166,7 +166,7 @@ The default language model, [`en_core_web_lg`](https://spacy.io/models/en#en_cor
     feature: str = "tense_aspects"
     verb_tense: Match = results[feature][0]
 
-     print(verb_tense)
+    print(verb_tense)
     # <past continuous: was chasing>
 
     print(verb_tense.rulename)
@@ -494,7 +494,7 @@ Preparing the dev environment:
 
     $ pipenv shell
     $ pipenv install --dev
-    $ python -m spacy download en_core_web_lg
+    $ python -m spacy download en_core_web_md
 
 Running the `GrammarDetector` from the repository: 
 
@@ -512,6 +512,9 @@ Steven Kyle Crawford
 
 ## Version History
 
+* 0.2.3
+    * Rename the GrammarDetector constructor keyword argument from dataset to language_model.
+    * Change the default language model from en_core_web_lg to en_core_web_md
 * 0.2.2
     * Rename the patternset file property from meta to config. Retain usage of meta internally to avoid confusion with the Config class.
     * Rename the run_tests keyword argument from internal_tests to builtin_tests.

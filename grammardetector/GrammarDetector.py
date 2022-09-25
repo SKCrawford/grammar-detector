@@ -21,7 +21,7 @@ class GrammarDetector:
     def __init__(
         self,
         builtins: bool = True,
-        language_model: str = LANGUAGE_MODEL,  # en_core_web_lg
+        language_model: str = LANGUAGE_MODEL,  # en_core_web_md
         patternset_path: str = "",
         verbose: bool = False,
         very_verbose: bool = False,
@@ -30,7 +30,7 @@ class GrammarDetector:
 
         Keyword arguments:
         builtins            -- (bool) If True, include built-in patternsets (default True)
-        language_model      -- (str) The spaCy language_model used to create the global `nlp: Language` (default 'en_core_web_lg')
+        language_model      -- (str) The spaCy language_model used to create the global `nlp: Language` (default 'en_core_web_md')
         patternset_path     -- (str) A filepath or dirpath string pointing to a patternset or collection of patternsets (default '')
         verbose             -- (bool) If True, log INFO-level messages; `very_verbose` takes priority over `verbose` (default False)
         very_verbose        -- (bool) If True, log DEBUG-level messages; `very_verbose` takes priority over `verbose` (default False)

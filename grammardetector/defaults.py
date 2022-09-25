@@ -1,5 +1,5 @@
 # The default language model for spaCy's nlp
-LANGUAGE_MODEL: str = "en_core_web_lg"
+LANGUAGE_MODEL: str = "en_core_web_md"
 
 
 # The default format for INFO-level logs
