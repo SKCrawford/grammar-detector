@@ -51,7 +51,7 @@ class GrammarDetector:
         self._load()
 
     def __call__(self, input: str) -> dict[str, Union[str, list[Match]]]:
-        """Returns a dict of `Match`es after running all `Detectors` on the input string. One of the two ways to evaluate text for grammatical features. Use this `GrammarDetector.__call__()` method to evaluate text. 
+        """Returns a dict of `Match`es after running all `Detectors` on the input string. One of the two ways to evaluate text for grammatical features. Use this `GrammarDetector.__call__()` method to evaluate text.
 
         Arguments:
         input -- (str) The sentence or chunk of text to be analyzed
@@ -119,9 +119,12 @@ class GrammarDetector:
         tester = DetectorTester()
         results = []
 
+        # Internal patternsets
+        feature_names = [
+            Filepath(fn).name for fn in self.config.internal_patternset_filenames
+        ]
+
         for detector in self.detectors:
-            # Internal patternsets
-            feature_names = [Filepath(fn).filename for fn in self.config.internal_patternset_filenames]
             if detector.name in feature_names:
                 if builtin_tests:
                     results.append(tester.run_tests(detector))
@@ -129,12 +132,21 @@ class GrammarDetector:
             # External patternsets
             else:
                 results.append(tester.run_tests(detector))
-        
+
         if results:
-            for (name, num_pass, num_fail) in results:
+            for name, num_pass, num_fail in results:
                 print(f"{name} = PASS: {num_pass}, FAIL: {num_fail}")
         else:
             print("No tests found")
 
-    def token_table(self, input: str) -> str:
-        return token_table(self.nlp._nlp, input)
+    def token_table(
+        self,
+        input: str,
+        pos: bool = True,
+        tag: bool = True,
+        dependency: bool = True,
+        lemma: bool = True,
+    ) -> str:
+        return token_table(
+            self.nlp._nlp, input, pos=pos, tag=tag, dependency=dependency, lemma=lemma
+        )

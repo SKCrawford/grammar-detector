@@ -28,14 +28,12 @@ def main() -> None:
         sentence_start_time: float = time()
         features = grammar_detector(sentence)
         print(grammar_detector.token_table(sentence))
+        print(features)
         sentence_finish_time: float = time()
         count += 1
 
     finish_time: float = time()
     logger.info(f"Total run time: {finish_time - start_time:.2f}s")
-
-    logger.info("Detected features:")
-    print(features)
 
 
 if __name__ == "__main__":
