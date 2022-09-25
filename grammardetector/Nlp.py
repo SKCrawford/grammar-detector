@@ -3,7 +3,7 @@ from spacy import load as spacy_load
 from spacy.language import Language
 from spacy.tokens import Doc, Span
 from typing import Union
-from .defaults import DATASET
+from .defaults import LANGUAGE_MODEL
 from .utils import singleton
 
 
@@ -12,8 +12,8 @@ logger = getLogger(__name__)
 
 @singleton
 class Nlp:
-    def __init__(self, dataset_label: str = DATASET):
-        self.label: str = dataset_label
+    def __init__(self, language_model: str = LANGUAGE_MODEL):
+        self.label: str = language_model
         self._nlp: Language = spacy_load(self.label)
 
     def __call__(self, *args, **kwargs):

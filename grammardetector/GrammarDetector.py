@@ -2,7 +2,7 @@ from logging import getLogger
 from os import listdir, path
 from typing import Union
 from .Config import Config
-from .defaults import DATASET, LOGGER_DEFAULT_LEVEL
+from .defaults import LANGUAGE_MODEL, LOGGER_DEFAULT_LEVEL
 from .detectors import Detector, DetectorRepository, DetectorTester
 from .logger import configure_logger
 from .matches import Match
@@ -21,7 +21,7 @@ class GrammarDetector:
     def __init__(
         self,
         builtins: bool = True,
-        dataset: str = DATASET,  # en_core_web_lg
+        language_model: str = LANGUAGE_MODEL,  # en_core_web_lg
         patternset_path: str = "",
         verbose: bool = False,
         very_verbose: bool = False,
@@ -30,7 +30,7 @@ class GrammarDetector:
 
         Keyword arguments:
         builtins            -- (bool) If True, include built-in patternsets (default True)
-        dataset             -- (str) The spaCy dataset used to create the global `nlp: Language` (default 'en_core_web_lg')
+        language_model      -- (str) The spaCy language_model used to create the global `nlp: Language` (default 'en_core_web_lg')
         patternset_path     -- (str) A filepath or dirpath string pointing to a patternset or collection of patternsets (default '')
         verbose             -- (bool) If True, log INFO-level messages; `very_verbose` takes priority over `verbose` (default False)
         very_verbose        -- (bool) If True, log DEBUG-level messages; `very_verbose` takes priority over `verbose` (default False)
@@ -39,7 +39,7 @@ class GrammarDetector:
         self._is_loaded = False
 
         self.builtins: bool = builtins
-        self.dataset: str = dataset
+        self.language_model: str = language_model
         self.patternset_path: str = patternset_path
         self.verbose: bool = verbose
         self.very_verbose: bool = very_verbose
@@ -87,7 +87,7 @@ class GrammarDetector:
             raise RuntimeError(f"_configure() must be called before calling _load()")
 
         # NLP
-        self.nlp = Nlp(self.dataset)
+        self.nlp = Nlp(self.language_model)
 
         # Patternsets
         patternset_filepaths: list[str] = []

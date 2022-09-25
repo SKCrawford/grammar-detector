@@ -103,7 +103,7 @@ All current patterns are relatively naive, so they do not yet effectively handle
 
 ## Installation
 
-The default dataset, [`en_core_web_lg`](https://spacy.io/models/en#en_core_web_lg) (560 MB), can be substituted with another [spaCy dataset](https://spacy.io/usage/models#languages), such as [`en_core_web_sm`](https://spacy.io/models/en#en_core_web_sm) (12 MB) or [`en_core_web_md`](https://spacy.io/models/en#en_core_web_md) (40 MB). Be sure to disable `builtins` (see below) if using a dataset from a language other than English.
+The default language model, [`en_core_web_lg`](https://spacy.io/models/en#en_core_web_lg) (560 MB), can be substituted with another [spaCy language model](https://spacy.io/usage/models#languages), such as [`en_core_web_sm`](https://spacy.io/models/en#en_core_web_sm) (12 MB) or [`en_core_web_md`](https://spacy.io/models/en#en_core_web_md) (40 MB). Be sure to disable `builtins` (see below) if using a model from a language other than English.
 
     $ pip install grammar-detector
     $ python -m spacy download en_core_web_lg
@@ -120,7 +120,7 @@ The default dataset, [`en_core_web_lg`](https://spacy.io/models/en#en_core_web_l
     # Default values
     settings = {  
         "builtins": True,
-        "dataset": "en_core_web_lg",
+        "language_model": "en_core_web_lg",
          "patternset_path": "",  # Custom patternsets
         "verbose": False,
         "very_verbose": False,
