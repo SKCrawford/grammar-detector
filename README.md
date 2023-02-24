@@ -2,7 +2,7 @@
 
 A tool for detecting grammatical features in sentences, clauses, and phrases in just a few lines of code. This tool is one piece of a larger project to facilitate the creation of reading exercises for language instruction. It is designed to determine if a text contains sentences relevant to the desired grammatical feature. Any language [supported by spaCy](https://spacy.io/usage/models#languages) is theoretically supported.
 
-The patterns for these grammatical features are defined in YAML files called `patternsets` in lieu of writing code. These YAML files expand the capabilities of the `GrammarDetector`. The input text to be analyzed is compared against the patterns in the `patternsets`. In other words, writing more code is unnecessary for supporting new grammatical features. This means that inaccurate results arise from inaccurate patterns and not from the code itself. To mitigate errors, unittests can be defined in the `patternsets`.
+The patterns for these grammatical features are defined in YAML files called `patternsets` in lieu of writing code. These YAML files expand the capabilities of the `GrammarDetector`. The input text to be analyzed is compared against the patterns in the `patternsets`. In other words, writing more code is unnecessary for supporting new grammatical features. This means that inaccurate results arise from inaccurate patterns (and not from the code itself). To mitigate errors, unittests can be defined in the `patternsets`.
 
 For the purposes of this tool, a sentence is roughly defined as:
 
@@ -43,7 +43,8 @@ Currently supports the ability to:
 * Produce results that are reader-friendly and reader-*useful*
 * Use built-in grammatical features with just 3 lines of code (import, construct, and call)
 * Create your own grammatical feature by passing the filepath of a simple `patternset` YAML file with spaCy `Tokens`
-* Convert input into a table of `Tokens` to aid in writing `patterns`
+* Convert input into a table of `Tokens` to aid in visualizing and conceptualizing `patterns`
+* Convert input into list of `Tokenlikes` to aid in creating and improving `patterns`
 * Define and run tests in `patternsets` to evaluate the accuracy of the patterns
 * Fragment an input into noun chunks automatically before the `Detector` is run
 
@@ -227,24 +228,67 @@ The default language model, [`en_core_web_md`](https://spacy.io/models/en#en_cor
 
 
     grammar_detector = GrammarDetector()
-    input = "The dog was chasing a cat into the house."
-    table: str = grammar_detector.token_table(input)
+    input: str = "The dog was chasing a cat into the house."
+
+    default_kwargs = {
+        "pos": True,
+        "tag": True,
+        "dependency": True,
+        "lemma": True,
+    }
+    table: str = grammar_detector.token_table(input, **default_kwargs)
     print(table)
 
 ---
-| Word   | POS   | POS Definition   | Tag   | Tag Definition                            | Dep.   | Dep. Definition        | Lemma.   |
-|--------|-------|------------------|-------|-------------------------------------------|--------|------------------------|----------|
-| The    | DET   | determiner       | DT    | determiner                                | det    | determiner             | the      |
-| dog    | NOUN  | noun             | NN    | noun, singular or mass                    | nsubj  | nominal subject        | dog      |
-| chased | VERB  | verb             | VBD   | verb, past tense                          | ROOT   | root                   | chase    |
-| a      | DET   | determiner       | DT    | determiner                                | det    | determiner             | a        |
-| cat    | NOUN  | noun             | NN    | noun, singular or mass                    | dobj   | direct object          | cat      |
-| into   | ADP   | adposition       | IN    | conjunction, subordinating or preposition | prep   | prepositional modifier | into     |
-| the    | DET   | determiner       | DT    | determiner                                | det    | determiner             | the      |
-| house  | NOUN  | noun             | NN    | noun, singular or mass                    | pobj   | object of preposition  | house    |
-| .      | PUNCT | punctuation      | .     | punctuation mark, sentence closer         | punct  | punctuation            | .        |
+| Word    | POS   | POS Definition   | Tag   | Tag Definition                            | Dep.   | Dep. Definition        | Lemma.   |
+|---------|-------|------------------|-------|-------------------------------------------|--------|------------------------|----------|
+| The     | DET   | determiner       | DT    | determiner                                | det    | determiner             | the      |
+| dog     | NOUN  | noun             | NN    | noun, singular or mass                    | nsubj  | nominal subject        | dog      |
+| was     | AUX   | auxiliary        | VBD   | verb, past tense                          | aux    | auxiliary              | be       |
+| chasing | VERB  | verb             | VBG   | verb, gerund or present participle        | ROOT   | root                   | chase    |
+| a       | DET   | determiner       | DT    | determiner                                | det    | determiner             | a        |
+| cat     | NOUN  | noun             | NN    | noun, singular or mass                    | dobj   | direct object          | cat      |
+| into    | ADP   | adposition       | IN    | conjunction, subordinating or preposition | prep   | prepositional modifier | into     |
+| the     | DET   | determiner       | DT    | determiner                                | det    | determiner             | the      |
+| house   | NOUN  | noun             | NN    | noun, singular or mass                    | pobj   | object of preposition  | house    |
+| .       | PUNCT | punctuation      | .     | punctuation mark, sentence closer         | punct  | punctuation            | .        |
 
 ---
+
+### Usage: Printing Token Data
+
+    # my_script.py
+
+    from grammardetector import GrammarDetector, Tokenlike
+
+
+    # TokenlikeKeys = Literal["pos", "tag", "dep", "lemma", "word"]
+    # Tokenlike = dict[TokenlikeKeys, str]
+
+    grammar_detector = GrammarDetector()
+    input: str = "The dog was chasing a cat into the house."
+
+    default_kwargs = {
+        "pos": True,
+        "tag": True,
+        "dependency": True,
+        "lemma": False,
+        "word": False,
+    }
+    data: list[Tokenlike] = grammar_detector.token_data(input, **default_kwargs)
+    for entry in data:
+        print(entry)
+
+    # {'pos': 'DET', 'tag': 'DT', 'dep': 'det'}
+    # {'pos': 'NOUN', 'tag': 'NN', 'dep': 'nsubj'}
+    # {'pos': 'AUX', 'tag': 'VBD', 'dep': 'aux'}
+    # {'pos': 'VERB', 'tag': 'VBG', 'dep': 'ROOT'}
+    # {'pos': 'DET', 'tag': 'DT', 'dep': 'det'}
+    # {'pos': 'NOUN', 'tag': 'NN', 'dep': 'dobj'}
+    # {'pos': 'ADP', 'tag': 'IN', 'dep': 'prep'}
+    # {'pos': 'DET', 'tag': 'DT', 'dep': 'det'}
+    # {'pos': 'NOUN', 'tag': 'NN', 'dep': 'pobj'}
+    # {'pos': 'PUNCT', 'tag': '.', 'dep': 'punct'}
 
 ### Usage: Troubleshooting
 
@@ -256,7 +300,7 @@ The default language model, [`en_core_web_md`](https://spacy.io/models/en#en_cor
     grammar_detector = GrammarDetector(verbose=True, very_verbose=False)  # very_verbose prioritized over verbose
     # Prints logs for configuring and loading patternsets
 
-    input = "The dog was chasing a cat into the house."
+    input: str = "The dog was chasing a cat into the house."
     results = grammar_detector(input)
     # Prints logs for running the matcher and interpreting the results
 
@@ -274,7 +318,7 @@ The `GrammarDetector` class is the entrypoint for loading in `patternset` files 
 
 
     grammar_detector = GrammarDetector(patternset_path="path/to/my/patternset/files/")
-    input = "The dog was chasing a cat into the house."
+    input: str = "The dog was chasing a cat into the house."
     results = grammar_detector(input)  # Making use of the __call__ method
 
     # Alternatively, extract the detectors
@@ -479,7 +523,7 @@ The `DetectorRepository` is responsible for creating and storing `Detectors`. It
 
 ## Contributing
 
-This tool is only as good as the `patternset` YAML files that support it. The primary ways to contribute to this project:
+This tool is only as good as the `patternset` YAML files that support it. The primary ways to contribute to this project are:
 
 * Creating new built-in `patternsets`
 * Improving existing `patterns` in the built-in `patternsets`
@@ -504,7 +548,9 @@ Running the `patternset` unittests from the repository:
 
     $ python -m unittest
 
-To add new grammatical features or improve existing features, focus your efforts on the `patternsets` directory and its YAML files. You may find the token tables generated by the `GrammarDetector.token_table(self, input: str)` instance method to be helpful when creating or expanding patterns. Submissions of `patternset` files will be rejected if they do not include tests for each pattern.
+To add new grammatical features or improve existing features, focus your efforts on the `patternsets` directory and its YAML files. You may find the token tables generated by the `GrammarDetector.token_table(self, input: str, **kwargs)` instance method to be helpful for conceptualizing sequences of tokens. You may also find the tokenlike lists generated by the `GrammarDetector.token_data(self, input: str, **kwargs)` instance method to be helpful when generating new patterns or improving upon existing patterns.
+
+Submissions of `patternset` files will be rejected if they do not include tests for each pattern.
 
 ## Authors
 
@@ -512,6 +558,10 @@ Steven Kyle Crawford
 
 ## Version History
 
+* 0.2.4
+    * New feature: Generate lists of tokens, which may be adapted for use in patternset files, via the `GrammarDetector.token_data(self, input: str, **kwargs)` instance method.
+    * Export the `Tokenlike` return type for the `token_data` method for type safety.
+    * Improve docstrings for the `token_data` and `token_table` methods in the `GrammarDetector` class and utilities package.
 * 0.2.3
     * Rename the GrammarDetector constructor keyword argument from dataset to language_model.
     * Change the default language model from en_core_web_lg to en_core_web_md

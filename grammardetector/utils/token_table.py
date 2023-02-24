@@ -15,11 +15,14 @@ def token_table(
     dependency: bool = True,
     lemma: bool = True,
 ) -> str:
-    """Print the linguistics features of each word in a sentence.
-    If pos is True, then print the part-of-speech (POS). Defaults to True.
-    If tag is True, then print the tag. Defaults to True.
-    If dependency is True, then print the dependencices. Defaults to True.
-    If lemma is True, then print the lemma. Defaults to True.
+    """Generate a table containing the parts-of-speech, tag, dependency, and lemma of each token. This is helpful for visualizing token sequences.
+
+    Keyword arguments:
+    input       -- (str) The sentence or chunk of text to be analyzed
+    pos         -- (bool) If True, include the part-of-speech property (default True)
+    tag         -- (bool) If True, include the tag property (default True)
+    dependency  -- (bool) If True, include the dependency property (default True)
+    lemma       -- (bool) If True, include the lemma property (default True)
     """
     logger.debug(f"Creating the token table for `{sentence}`")
 

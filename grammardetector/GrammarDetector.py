@@ -7,7 +7,7 @@ from .detectors import Detector, DetectorRepository, DetectorTester
 from .logger import configure_logger
 from .matches import Match
 from .Nlp import Nlp
-from .utils import Filepath, token_table
+from .utils import Filepath, token_data, Tokenlike, token_table
 
 
 class GrammarDetector:
@@ -116,6 +116,11 @@ class GrammarDetector:
         self._is_loaded = True
 
     def run_tests(self, builtin_tests: bool = False) -> None:
+        """Run the tests defined in the patternset YAML files.
+
+        Keyword arguments:
+        builtins_tests -- (bool) If True, include built-in patternsets (default False)
+        """
         tester = DetectorTester()
         results = []
 
@@ -139,6 +144,35 @@ class GrammarDetector:
         else:
             print("No tests found")
 
+    def token_data(
+        self,
+        input: str,
+        pos: bool = True,
+        tag: bool = True,
+        dependency: bool = True,
+        lemma: bool = False,
+        word: bool = False,
+    ) -> list[Tokenlike]:
+        """Generate a list of objects containing the parts-of-speech, tags, dependencies, and lemmas of each token. This is helpful for creating and improving patterns.
+
+        Keyword arguments:
+        input       -- (str) The sentence or chunk of text to be analyzed
+        pos         -- (bool) If True, include the part-of-speech property (default True)
+        tag         -- (bool) If True, include the tag property (default True)
+        dependency  -- (bool) If True, include the dependency property (default True)
+        lemma       -- (bool) If True, include the lemma property (default False)
+        word        -- (bool) If True, include the word itself (default False)
+        """
+        return token_data(
+            self.nlp._nlp,
+            input,
+            pos=pos,
+            tag=tag,
+            dependency=dependency,
+            lemma=lemma,
+            word=word,
+        )
+
     def token_table(
         self,
         input: str,
@@ -147,6 +181,15 @@ class GrammarDetector:
         dependency: bool = True,
         lemma: bool = True,
     ) -> str:
+        """Generate a table containing the parts-of-speech, tag, dependency, and lemma of each token. This is helpful for visualizing token sequences.
+
+        Keyword arguments:
+        input       -- (str) The sentence or chunk of text to be analyzed
+        pos         -- (bool) If True, include the part-of-speech property (default True)
+        tag         -- (bool) If True, include the tag property (default True)
+        dependency  -- (bool) If True, include the dependency property (default True)
+        lemma       -- (bool) If True, include the lemma property (default True)
+        """
         return token_table(
             self.nlp._nlp, input, pos=pos, tag=tag, dependency=dependency, lemma=lemma
         )
