@@ -1,13 +1,13 @@
 from logging import getLogger
 from pprint import pformat
 from sys import argv
-from time import time
 from .GrammarDetector import GrammarDetector
-from .utils import token_table
+from .utils import Timekeeper, token_table
 
 
 def main() -> None:
-    start_time: float = time()
+    tk = Timekeeper()
+    tk.start("Total")
     sentences: list[str] = []
 
     # Validate the input
@@ -17,23 +17,26 @@ def main() -> None:
         raise ValueError("No sentences were provided")
 
     # Create the detectors
-    grammar_detector = GrammarDetector()
+    tk.start("GrammarDetector init")
+    grammar_detector = GrammarDetector(verbose=True)
     logger = getLogger(__name__)
+    tk.stop("GrammarDetector init")
 
     # Run the detectors
+    tk.start("Sentences")
     count: int = 0
-    features = {}
     for sentence in sentences:
-        logger.info(f"Sentence {count}: '{sentence}'")
-        sentence_start_time: float = time()
+        print(f"Sentence {count}: '{sentence}'")
+        tk.start(f"Sentence #{count}")
         features = grammar_detector(sentence)
         print(grammar_detector.token_table(sentence))
         print(features)
-        sentence_finish_time: float = time()
+        tk.stop(f"Sentence #{count}")
         count += 1
 
-    finish_time: float = time()
-    logger.info(f"Total run time: {finish_time - start_time:.2f}s")
+    tk.stop("Sentences")
+    tk.stop("Total")
+    tk.report()
 
 
 if __name__ == "__main__":
