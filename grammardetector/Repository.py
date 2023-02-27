@@ -1,6 +1,7 @@
 from logging import getLogger
 from typing import Generic, TypeVar
 from .Cache import Cache
+from .utils import Timeable
 
 
 T = TypeVar("T")
@@ -9,10 +10,11 @@ T = TypeVar("T")
 logger = getLogger(__name__)
 
 
-class Repository(Generic[T]):
+class Repository(Generic[T], Timeable):
     def __init__(self, klass: T) -> None:
         """Create a repository for the specified `klass`."""
         logger.debug(f"Constructing the Repository[{klass}]")
+        super().__init__()
         self._klass: T = klass
         self.cache: Cache = Cache()
 
@@ -27,15 +29,19 @@ class Repository(Generic[T]):
         logger.debug("Making the cache key")
         cache_key: str = self.cache_key(*args, **kwargs)
 
+        k_name: str = self._klass.__name__  # type:ignore[attr-defined]
+        stop_timer = self.tk.start(f"Creating the '{cache_key}' {k_name}")
+
         logger.debug(f"Checking the cache for key '{cache_key}'")
         if self.cache.has_key(cache_key):
             return self.get_one(cache_key)
 
         logger.debug(f"Constructing a new {self._klass}")
-        instance: T = self._klass(*args, **kwargs)
+        instance: T = self._klass(*args, **kwargs)  # type:ignore[operator]
 
         logger.debug(f"Caching the new {self._klass} instance to key '{cache_key}'")
         self.cache.save(cache_key, instance)
+        stop_timer()
         return self.get_one(cache_key)
 
     def get_all(self) -> list[T]:
