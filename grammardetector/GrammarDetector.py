@@ -7,10 +7,10 @@ from .detectors import Detector, DetectorRepository, DetectorTester
 from .logger import configure_logger
 from .matches import Match
 from .Nlp import Nlp
-from .utils import Filepath, token_data, Tokenlike, token_table
+from .utils import Filepath, Timeable, token_data, Tokenlike, token_table
 
 
-class GrammarDetector:
+class GrammarDetector(Timeable):
     """This class is the entrypoint for loading in patternset files and evaluating text input. It contains the `DetectorRepository` under the hood, which in turn contains the `Detectors`. By running `GrammarDetector.__call__(self, input: str)`, the text input will be compared against both the provided `patternsets` (via the `patternset_path` keyword argument) and the built-in `patternsets`. Extracting the `Detectors` from the `GrammarDetector` is possible via the `detectors: list[Detector]` property but unnecessary.
 
     Each resulting `Match` has two properties:
@@ -35,6 +35,9 @@ class GrammarDetector:
         verbose             -- (bool) If True, log INFO-level messages; `very_verbose` takes priority over `verbose` (default False)
         very_verbose        -- (bool) If True, log DEBUG-level messages; `very_verbose` takes priority over `verbose` (default False)
         """
+        super().__init__()
+        stop_timer = self.tk.start("Init the GrammarDetector")
+
         self._is_configured = False
         self._is_loaded = False
 
@@ -49,6 +52,7 @@ class GrammarDetector:
 
         self._configure()
         self._load()
+        stop_timer()
 
     def __call__(self, input: str) -> dict[str, Union[str, list[Match]]]:
         """Returns a dict of `Match`es after running all `Detectors` on the input string. One of the two ways to evaluate text for grammatical features. Use this `GrammarDetector.__call__()` method to evaluate text.
@@ -71,6 +75,8 @@ class GrammarDetector:
 
     def _configure(self) -> None:
         """Configure the logger. Must be called before calling `_load()`."""
+        stop_timer = self.tk.start("Configure the GrammarDetector")
+
         log_level: int = LOGGER_DEFAULT_LEVEL
         if self.very_verbose:
             log_level = 10
@@ -80,9 +86,12 @@ class GrammarDetector:
 
         self.logger = getLogger(__name__)
         self._is_configured = True
+        stop_timer()
 
     def _load(self) -> None:
         """Load the NLP and `PatternSets`. If the constructor's `builtins` is True, then the internal `PatternSets` provided with this class will be loaded. If the constructor's `patternset_path` is a valid filepath/dirpath string, then those `PatternSets` will also be loaded."""
+        stop_timer = self.tk.start("Load the GrammarDetector")
+
         if not self._is_configured:
             raise RuntimeError(f"_configure() must be called before calling _load()")
 
@@ -114,6 +123,7 @@ class GrammarDetector:
         # Detectors
         [self.detector_repo.create(fpath) for fpath in patternset_filepaths]
         self._is_loaded = True
+        stop_timer()
 
     def run_tests(self, builtin_tests: bool = False) -> None:
         """Run the tests defined in the patternset YAML files.
