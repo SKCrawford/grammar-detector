@@ -97,7 +97,7 @@ class Timekeeper:
         print()
         print(f"Runtimes (sort_by={sort_by}, ascending={str(ascending)}):")
         for timer in sorted_timers:
-            print(f"  {timer.elapsed:.2f}s: {timer.name}")
+            print(f"  {timer.elapsed:.4f}s: {timer.name}")
         print()
 
 
