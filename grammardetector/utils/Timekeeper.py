@@ -27,11 +27,12 @@ class Timer:
 
     @property
     def elapsed(self) -> float:
+        """Return the elapsed duration in milliseconds."""
         if not self.stopped_at:
             msg = f"Timer '{self.name}' was not stopped"
             logger.error(msg)
             raise AttributeError(msg)
-        return self.stopped_at - self.started_at
+        return (self.stopped_at - self.started_at) * 1000
 
     @property
     def name(self) -> str:
@@ -85,7 +86,7 @@ class Timekeeper:
         return timer.stop
 
     def report(self, sort_by: SortKeys = "started_at", ascending: bool = True) -> None:
-        """Print the elapsed duration of all timers, ordered by `sort_by`.
+        """Print the elapsed duration of all timers in milliseconds, ordered by `sort_by`.
 
         Keyword arguments:
         sort_by     -- (str) One of these: elapsed, name, started_at, stopped_at
@@ -95,9 +96,9 @@ class Timekeeper:
         sorted_timers = sorted(self.timers, key=key_fn, reverse=not ascending)
 
         print()
-        print(f"Runtimes (sort_by={sort_by}, ascending={str(ascending)}):")
+        print(f"Runtimes in ms (sort_by={sort_by}, ascending={str(ascending)}):")
         for timer in sorted_timers:
-            print(f"  {timer.elapsed:.4f}s: {timer.name}")
+            print(f"  {timer.elapsed:7.2f}: {timer.name}")
         print()
 
 

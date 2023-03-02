@@ -19,4 +19,7 @@ class PatternSetRepository(Repository):
     def create(self, name: str, data: PatternSetData) -> PatternSet:
         """Create a new `PatternSet`, cache it, and return it. If a `PatternSet` with the same name has already been created, the cached instance will be returned."""
         logger.info(f"Creating or retrieving the '{name}' PatternSet")
-        return super().create(name, data)
+        stop_timer = self.tk.start(f"Create the '{name}' PatternSet")
+        pattern_set: PatternSet = super().create(name, data)
+        stop_timer()
+        return pattern_set

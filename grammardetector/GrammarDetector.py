@@ -75,7 +75,6 @@ class GrammarDetector(Timeable):
 
     def _configure(self) -> None:
         """Configure the logger. Must be called before calling `_load()`."""
-        stop_timer = self.tk.start("Configure the GrammarDetector")
 
         log_level: int = LOGGER_DEFAULT_LEVEL
         if self.very_verbose:
@@ -86,7 +85,6 @@ class GrammarDetector(Timeable):
 
         self.logger = getLogger(__name__)
         self._is_configured = True
-        stop_timer()
 
     def _load(self) -> None:
         """Load the NLP and `PatternSets`. If the constructor's `builtins` is True, then the internal `PatternSets` provided with this class will be loaded. If the constructor's `patternset_path` is a valid filepath/dirpath string, then those `PatternSets` will also be loaded."""
@@ -116,12 +114,16 @@ class GrammarDetector(Timeable):
             elif path.isfile(self.patternset_path):
                 patternset_filepaths.append(self.patternset_path)
             else:
-                msg = f"patternset_path expects a directory or file but got: '{self.patternset_path}"
+                msg = (
+                    f"patternset_path expects a directory or file but got: '{self.patternset_path}"
+                )
                 self.logger.error(msg)
                 raise ValueError(msg)
 
         # Detectors
+        stop_dets_timer = self.tk.start("Create all Detectors")
         [self.detector_repo.create(fpath) for fpath in patternset_filepaths]
+        stop_dets_timer()
         self._is_loaded = True
         stop_timer()
 
@@ -135,9 +137,7 @@ class GrammarDetector(Timeable):
         results = []
 
         # Internal patternsets
-        feature_names = [
-            Filepath(fn).name for fn in self.config.internal_patternset_filenames
-        ]
+        feature_names = [Filepath(fn).name for fn in self.config.internal_patternset_filenames]
 
         for detector in self.detectors:
             if detector.name in feature_names:

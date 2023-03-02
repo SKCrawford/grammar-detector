@@ -29,9 +29,6 @@ class Repository(Generic[T], Timeable):
         logger.debug("Making the cache key")
         cache_key: str = self.cache_key(*args, **kwargs)
 
-        k_name: str = self._klass.__name__  # type:ignore[attr-defined]
-        stop_timer = self.tk.start(f"Creating the '{cache_key}' {k_name}")
-
         logger.debug(f"Checking the cache for key '{cache_key}'")
         if self.cache.has_key(cache_key):
             return self.get_one(cache_key)
@@ -41,7 +38,6 @@ class Repository(Generic[T], Timeable):
 
         logger.debug(f"Caching the new {self._klass} instance to key '{cache_key}'")
         self.cache.save(cache_key, instance)
-        stop_timer()
         return self.get_one(cache_key)
 
     def get_all(self) -> list[T]:

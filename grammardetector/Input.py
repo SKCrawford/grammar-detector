@@ -1,19 +1,21 @@
 from logging import getLogger
 from spacy.tokens import Doc
 from .Nlp import Nlp
+from .utils import Timeable
 
 
 logger = getLogger(__name__)
 
 
-class Input:
+class Input(Timeable):
     """A helper class for tokenizing text and fragmenting the result into a `list[Doc]`. All properties must return a `list[Doc]` for compatibility purposes, hence the `docs` property."""
 
     def __init__(self, raw_input: str, extract_noun_chunks: bool = False) -> None:
+        super().__init__()
         logger.debug(f"Constructing the Input for '{raw_input}'")
         self.raw: str = raw_input
-        self.doc: Doc = Nlp()(raw_input)
         self.extract_noun_chunks: bool = extract_noun_chunks
+        self.doc: Doc = Nlp()(raw_input)
 
     @property
     def docs(self) -> list[Doc]:

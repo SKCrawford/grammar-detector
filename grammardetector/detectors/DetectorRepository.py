@@ -25,4 +25,7 @@ class DetectorRepository(Repository):
         fp = Filepath(pattern_set_filepath)
         pset_data: PatternSetData = self.file_loader(fp.filepath)
         pattern_set: PatternSet = self.pattern_set_repo.create(fp.name, pset_data)
-        return super().create(pattern_set)
+        stop_timer = self.tk.start(f"Create the '{pattern_set.name}' Detector")
+        detector: Detector = super().create(pattern_set)
+        stop_timer()
+        return detector

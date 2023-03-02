@@ -28,9 +28,10 @@ def main() -> None:
     for count, sentence in enumerate(sentences):
         stop_timer = tk.start(f"Sentence #{count}")
         features = grammar_detector(sentence)
+        stop_timer()
+
         table = grammar_detector.token_table(sentence)
         results.append((features, table))
-        stop_timer()
 
     stop_timer_all_sent()
     stop_timer_total()
