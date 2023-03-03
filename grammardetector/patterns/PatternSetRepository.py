@@ -1,3 +1,4 @@
+import asyncio
 from logging import getLogger
 from ..Repository import Repository
 from ..utils import singleton
@@ -16,10 +17,10 @@ class PatternSetRepository(Repository):
     def cache_key(self, name: str, data: PatternSetData) -> str:
         return name
 
-    def create(self, name: str, data: PatternSetData) -> PatternSet:
+    async def create(self, name: str, data: PatternSetData) -> PatternSet:
         """Create a new `PatternSet`, cache it, and return it. If a `PatternSet` with the same name has already been created, the cached instance will be returned."""
         logger.info(f"Creating or retrieving the '{name}' PatternSet")
         stop_timer = self.tk.start(f"Create the '{name}' PatternSet")
-        pattern_set: PatternSet = super().create(name, data)
+        pattern_set: PatternSet = await super().create(name, data)
         stop_timer()
         return pattern_set

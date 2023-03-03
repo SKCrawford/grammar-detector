@@ -1,3 +1,4 @@
+import asyncio
 from logging import getLogger
 from typing import Generic, TypeVar
 from .Cache import Cache
@@ -24,7 +25,7 @@ class Repository(Generic[T], Timeable):
         logger.error(msg)
         raise NotImplementedError(msg)
 
-    def create(self, *args, **kwargs) -> T:
+    async def create(self, *args, **kwargs) -> T:
         """When saving the instance to the cache, its key is created by the overriden `make_cache_key` method."""
         logger.debug("Making the cache key")
         cache_key: str = self.cache_key(*args, **kwargs)

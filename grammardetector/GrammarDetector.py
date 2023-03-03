@@ -1,3 +1,4 @@
+import asyncio
 from logging import getLogger
 from os import listdir, path
 from typing import Union
@@ -36,7 +37,6 @@ class GrammarDetector(Timeable):
         very_verbose        -- (bool) If True, log DEBUG-level messages; `very_verbose` takes priority over `verbose` (default False)
         """
         super().__init__()
-        stop_timer = self.tk.start("Init the GrammarDetector")
 
         self._is_configured = False
         self._is_loaded = False
@@ -51,8 +51,12 @@ class GrammarDetector(Timeable):
         self.detector_repo = DetectorRepository()
 
         self._configure()
-        self._load()
-        stop_timer()
+
+    @classmethod
+    async def init(cls, *args, **kwargs):
+        self = GrammarDetector(*args, **kwargs)
+        await self._load()
+        return self
 
     def __call__(self, input: str) -> dict[str, Union[str, list[Match]]]:
         """Returns a dict of `Match`es after running all `Detectors` on the input string. One of the two ways to evaluate text for grammatical features. Use this `GrammarDetector.__call__()` method to evaluate text.
@@ -86,7 +90,7 @@ class GrammarDetector(Timeable):
         self.logger = getLogger(__name__)
         self._is_configured = True
 
-    def _load(self) -> None:
+    async def _load(self) -> None:
         """Load the NLP and `PatternSets`. If the constructor's `builtins` is True, then the internal `PatternSets` provided with this class will be loaded. If the constructor's `patternset_path` is a valid filepath/dirpath string, then those `PatternSets` will also be loaded."""
         stop_timer = self.tk.start("Load the GrammarDetector")
 
@@ -122,8 +126,10 @@ class GrammarDetector(Timeable):
 
         # Detectors
         stop_dets_timer = self.tk.start("Create all Detectors")
-        [self.detector_repo.create(fpath) for fpath in patternset_filepaths]
+        gathered = [self.detector_repo.create(fpath) for fpath in patternset_filepaths]
+        await asyncio.gather(*gathered)
         stop_dets_timer()
+
         self._is_loaded = True
         stop_timer()
 

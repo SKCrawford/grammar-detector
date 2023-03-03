@@ -1,3 +1,4 @@
+import asyncio
 from logging import getLogger
 from typing import Type
 from ..loaders import FileLoader, YamlLoader
@@ -20,12 +21,13 @@ class DetectorRepository(Repository):
     def cache_key(self, pattern_set: PatternSet) -> str:
         return pattern_set.name
 
-    def create(self, pattern_set_filepath: str) -> Detector:
+    async def create(self, pattern_set_filepath: str) -> Detector:
         """Create and cache a Detector instance."""
         fp = Filepath(pattern_set_filepath)
         pset_data: PatternSetData = self.file_loader(fp.filepath)
-        pattern_set: PatternSet = self.pattern_set_repo.create(fp.name, pset_data)
+        pattern_set: PatternSet = await self.pattern_set_repo.create(fp.name, pset_data)
+
         stop_timer = self.tk.start(f"Create the '{pattern_set.name}' Detector")
-        detector: Detector = super().create(pattern_set)
+        detector: Detector = await super().create(pattern_set)
         stop_timer()
         return detector

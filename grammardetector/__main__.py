@@ -1,3 +1,4 @@
+import asyncio
 from logging import getLogger
 from pprint import pformat
 from sys import argv
@@ -5,7 +6,7 @@ from .GrammarDetector import GrammarDetector
 from .utils import Timekeeper, token_table
 
 
-def main() -> None:
+async def main() -> None:
     is_verbose: bool = False
 
     tk = Timekeeper()
@@ -19,7 +20,7 @@ def main() -> None:
         raise ValueError("No sentences were provided")
 
     # Create the detectors
-    grammar_detector = GrammarDetector(verbose=is_verbose)
+    grammar_detector = await GrammarDetector.init(verbose=is_verbose)
     logger = getLogger(__name__)
 
     # Run the detectors
@@ -46,4 +47,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.get_event_loop().run_until_complete(main())
