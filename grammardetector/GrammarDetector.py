@@ -5,6 +5,7 @@ from typing import Union
 from .Config import Config
 from .defaults import LANGUAGE_MODEL, LOGGER_DEFAULT_LEVEL
 from .detectors import Detector, DetectorRepository, DetectorTester
+from .Input import Input
 from .logger import configure_logger
 from .matches import Match
 from .Nlp import Nlp
@@ -58,14 +59,15 @@ class GrammarDetector(Timeable):
         await self._load()
         return self
 
-    def __call__(self, input: str) -> dict[str, Union[str, list[Match]]]:
+    def __call__(self, text: str) -> dict[str, Union[str, list[Match]]]:
         """Returns a dict of `Match`es after running all `Detectors` on the input string. One of the two ways to evaluate text for grammatical features. Use this `GrammarDetector.__call__()` method to evaluate text.
 
         Arguments:
         input -- (str) The sentence or chunk of text to be analyzed
         """
         matches: dict[str, Union[str, list[Match]]] = {}
-        matches["input"] = input
+        matches["input"] = text
+        input = Input(text)
         for detector in self.detectors:
             matches[detector.name] = detector(input)
         return matches
@@ -80,11 +82,13 @@ class GrammarDetector(Timeable):
     def _configure(self) -> None:
         """Configure the logger. Must be called before calling `_load()`."""
 
-        log_level: int = LOGGER_DEFAULT_LEVEL
+        log_level: int
         if self.very_verbose:
             log_level = 10
         elif self.verbose:
             log_level = 20
+        else:
+            log_level = LOGGER_DEFAULT_LEVEL
         configure_logger(log_level)
 
         self.logger = getLogger(__name__)
