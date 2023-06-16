@@ -1,5 +1,5 @@
 from logging import getLogger
-from spacy.tokens import Doc
+from spacy.tokens import Doc, Span
 from ..Config import Config
 from .Match import Match, RawMatch
 
@@ -10,6 +10,16 @@ PATTERN_SET_LONGEST_MATCH: str = "longest"
 
 
 logger = getLogger(__name__)
+
+
+def remove_nested_spans(spans: list[Span]) -> list[Span]:
+    sorted_spans = sorted(spans, key=lambda span: (span.start, -span.end))
+    filtered_span_idx, filtered_spans = [], []
+    for span in sorted_spans:
+        if not any(span.start >= start and span.end <= end for start, end in filtered_span_idx):
+            filtered_span_idx.append((span.start, span.end))
+            filtered_spans.append(span)
+    return filtered_spans
 
 
 class MatchSet:
@@ -33,6 +43,9 @@ class MatchSet:
     def result(self) -> list[Match]:
         if not self.matches:
             return []
+        
+        # clear nested
+        self.matches = remove_nested_spans(self.matches)
 
         if self.how_many_matches == PATTERN_SET_ONE_MATCH:
             return [self.best]
